@@ -329,6 +329,8 @@ gameMenu::gameMenu()
 
     m_lcd.createChar(SUN_CHAR, m_customCharArray[SUN_CHAR]);
     m_lcd.createChar(CONTRAST_CHAR, m_customCharArray[CONTRAST_CHAR]);
+    m_lcd.createChar(ARROW_RIGHT_CHAR, m_customCharArray[ARROW_RIGHT_CHAR]);
+    m_lcd.createChar(ARROW_LEFT_CHAR, m_customCharArray[ARROW_LEFT_CHAR]);
 }
 
 int gameMenu::menuSequence()
@@ -355,7 +357,14 @@ int gameMenu::menuSequence()
         {
             g_map.displayIcon(ICON_START);
             
-            m_lcd.print(F("   start game"));
+            m_lcd.print(F(" "));
+            m_lcd.write(ARROW_RIGHT_CHAR);
+            m_lcd.print(F(" start game "));
+            m_lcd.write(ARROW_LEFT_CHAR);
+
+            m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+            m_lcd.print(F("    settings"));
+
             m_changedState = false;
         }
 
@@ -371,7 +380,14 @@ int gameMenu::menuSequence()
             if(m_changedState)
             {
                 g_map.displayIcon(ICON_HAMMER);
-                m_lcd.print(F("    settings"));
+
+                m_lcd.print(F("  "));
+                m_lcd.write(ARROW_RIGHT_CHAR);
+                m_lcd.print(F(" settings "));
+                m_lcd.write(ARROW_LEFT_CHAR);
+
+                m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+                m_lcd.print(F("   learn more"));
 
                 m_changedState = false;
                 m_inSubmenu = false;
@@ -396,7 +412,13 @@ int gameMenu::menuSequence()
 
             if(!m_showAboutText)
             {
-                m_lcd.print(F("   learn more"));
+                m_lcd.print(F(" "));
+                m_lcd.write(ARROW_RIGHT_CHAR);
+                m_lcd.print(F(" learn more "));
+                m_lcd.write(ARROW_LEFT_CHAR);
+
+                m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+                m_lcd.print(F("   start game"));
 
                 m_changedState = false;
             }

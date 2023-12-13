@@ -35,11 +35,13 @@
 
 // custom lcd characters
 #define LCD_CHARACTER_HEIGHT 8
-#define NUMBER_OF_CUSTOM_CHARACTERS 3
+#define NUMBER_OF_CUSTOM_CHARACTERS 5
 
 #define EMPTY_CHAR 0
 #define SUN_CHAR 1
 #define CONTRAST_CHAR 2
+#define ARROW_RIGHT_CHAR 3
+#define ARROW_LEFT_CHAR 4
 
 // miscelanious
 #define PWM_RESOLUTION 255
@@ -74,7 +76,6 @@ private:
     byte m_lcdContrast = PWM_RESOLUTION/2;
     byte m_lcdBrightness = PWM_RESOLUTION/2;
     inputHwControl m_hwCtrl;
-    // const int RESET = 12, EN = 11, D4 = 5, D5 = 4, D6 = 3, D7 = 2;
     LiquidCrystal m_lcd = LiquidCrystal(RESET, ENABLE, DATA4, DATA5, DATA6, DATA7);
 
     // custom LCD characters:
@@ -107,6 +108,26 @@ private:
             B10111,
             B11111,
             B00000,
+            B00000
+        },
+        {
+            B00000,
+            B00100,
+            B00110,
+            B11111,
+            B11111,
+            B00110,
+            B00100,
+            B00000
+        },
+        {
+            B00000,
+            B00100,
+            B01100,
+            B11111,
+            B11111,
+            B01100,
+            B00100,
             B00000
         }
     };
