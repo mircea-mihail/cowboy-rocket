@@ -88,7 +88,7 @@ void gameMenu::displayStartMessage()
     m_lcd.setCursor(SECOND_LCD_COL, FIRST_LCD_ROW);
     m_lcd.print(F("Welcome to ..."));
     m_lcd.setCursor(SECOND_LCD_COL, SECOND_LCD_ROW);
-    m_lcd.print(F("ROCKET  COWBOY"));
+    m_lcd.print(F("COWBOY  ROCKET"));
 }
 
 void gameMenu::displayEndMessage()
@@ -402,7 +402,7 @@ int gameMenu::menuSequence()
             }
             else
             {
-                m_lcd.print(F("Rocket Cowboy by Mircea Mihail Ionescu"));
+                m_lcd.print(F("Cowboy Rocket by Mircea Mihail Ionescu"));
                 m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_COL);
                 m_lcd.print(F("github.com/mircea-mihail for more info"));
                 m_changedState = false;
