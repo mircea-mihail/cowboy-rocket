@@ -189,7 +189,7 @@ void gameMenu::goToSettingsMenu()
 {
     goToNextMenuOption(m_settingsState, IN_MATRIX_BRIGHTNESS, IN_LCD_BRIGHTNESS);
 
-    if(m_hwCtrl.joystickLeft() && m_hwCtrl.pressedButton())
+    if(m_hwCtrl.pressedButton())
     {
         m_inSubmenu = false;
         changeState(m_settingsState, RETURN_FROM_SETTINGS);
@@ -200,10 +200,8 @@ void gameMenu::goToSettingsMenu()
     case IN_MATRIX_BRIGHTNESS:
         if(m_changedState)
         {
-            m_lcd.print(F("<     mat "));
+            m_lcd.print(F("      mat "));
             m_lcd.write(SUN_CHAR);
-            m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
-            m_lcd.print(F("< "));
             printHashesForMatrix(g_map.getMatrixBrightness());
 
             m_changedState = false;
@@ -238,10 +236,8 @@ void gameMenu::goToSettingsMenu()
     case IN_LCD_CONTRAST:
         if(m_changedState)
         {
-            m_lcd.print(F("<     lcd "));
+            m_lcd.print(F("      lcd "));
             m_lcd.write(CONTRAST_CHAR);
-            m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
-            m_lcd.print(F("< "));
             printHashesLCD(m_lcdContrast);
             
             m_changedState = false;
@@ -278,10 +274,8 @@ void gameMenu::goToSettingsMenu()
     case IN_LCD_BRIGHTNESS:
         if(m_changedState)
         {
-            m_lcd.print(F("<     lcd "));
+            m_lcd.print(F("      lcd "));
             m_lcd.write(SUN_CHAR);
-            m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
-            m_lcd.print(F("< "));
             printHashesLCD(PWM_RESOLUTION - m_lcdBrightness);
 
             m_changedState = false;
@@ -377,16 +371,13 @@ int gameMenu::menuSequence()
             if(m_changedState)
             {
                 g_map.displayIcon(ICON_HAMMER);
-
-                m_lcd.print(F("    settings   >"));
-                m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
-                m_lcd.print(F("               >"));
+                m_lcd.print(F("    settings"));
 
                 m_changedState = false;
                 m_inSubmenu = false;
             }
 
-            if(m_hwCtrl.joystickRight() && m_hwCtrl.pressedButton())
+            if(m_hwCtrl.pressedButton())
             {
                 m_inSubmenu = true;
                 changeState(m_settingsState, IN_MATRIX_BRIGHTNESS);

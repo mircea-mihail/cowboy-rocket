@@ -16,13 +16,26 @@ private:
         int m_prevState = LOW;
         int m_prevCountedState = LOW;
         unsigned long m_prevTime = 0;
+
+        // needed when the readings are rare and biased( as in the case for the hold ) 
+        // -> prevState and prevCountedState don't get to even out as in the case with normal button reads
+        void resetStates()
+        {
+            m_prevState = LOW;   
+            m_prevCountedState = LOW;
+            m_prevTime = 0;
+        }
     };
 
     button m_btn;
+    button m_btnLongerWait;
 
 public:
     // returns true if the button has been pressed -> does debounce and sig rise detection 
     bool pressedButton();
+
+    // returns true if the button stayed pressed for p_ms millis
+    bool pressedButtonFor(unsigned long p_p_sameStateMsms);
 
     // detects joystick movement (any direction) and returns the values of x and y read
     bool joystickDetected(int &p_xCommand, int &p_yCommand);
