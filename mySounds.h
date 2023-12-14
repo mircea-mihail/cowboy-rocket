@@ -1,0 +1,10 @@
+#ifndef MY_SOUNDS_H
+#define MY_SOUNDS_H
+
+#define FREQ_BUTTON 440
+#define FREQ_BACK_BUTTON  523
+#define FREQ_JOYSTICK 587
+
+#define SOUND_DURATION_BTN_PRESS 100
+
+#endif
