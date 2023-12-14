@@ -195,6 +195,11 @@ void gameMenu::goToSettingsMenu()
         changeState(m_settingsState, RETURN_FROM_SETTINGS);
     }
 
+    if(m_settingsState != RETURN_FROM_SETTINGS)
+    {
+        m_previousSettingsState = m_settingsState;
+    }
+
     switch (m_settingsState)
     {
     case IN_MATRIX_BRIGHTNESS:
@@ -307,6 +312,7 @@ void gameMenu::goToSettingsMenu()
             }
         }
         break;
+        
     case RETURN_FROM_SETTINGS:
         break;
     
@@ -396,7 +402,7 @@ int gameMenu::menuSequence()
             if(m_hwCtrl.pressedButton())
             {
                 m_inSubmenu = true;
-                changeState(m_settingsState, IN_MATRIX_BRIGHTNESS);
+                changeState(m_settingsState, m_previousSettingsState);
             }
         }
         else

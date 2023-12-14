@@ -54,6 +54,7 @@ private:
     bool m_inSubmenu = false;
     int m_state = MENU_IN_START_GAME;
     int m_settingsState = RETURN_FROM_SETTINGS;
+    int m_previousSettingsState = IN_MATRIX_BRIGHTNESS;
 
     bool m_changedState = true;
     unsigned long m_lastCycleTime = 0;
