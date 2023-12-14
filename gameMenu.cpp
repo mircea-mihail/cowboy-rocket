@@ -386,7 +386,6 @@ void gameMenu::goToChangeName()
     }
 }
 
-// enter name
 // sound control on off
 // reset high scores
 
@@ -481,7 +480,28 @@ void gameMenu::goToSettingsMenu()
         {
             goToChangeName();
         }
-        
+
+        break;
+    case IN_TOGGLE_SOUND:
+        if(m_changedState)
+        {
+            m_lcd.print(F("    sound "));
+            m_lcd.print(m_soundOn ? "on" : "off");
+            m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+            m_lcd.print("   ");
+            m_lcd.write(ARROW_RIGHT_CHAR);
+            m_lcd.print(F(" toggle "));    
+            m_lcd.write(ARROW_LEFT_CHAR);
+
+            m_changedState = false;
+        }
+        if(m_hwCtrl.pressedButton())
+        {
+            m_soundOn = !m_soundOn;
+            m_changedState = true;
+            m_lcd.clear();
+            EEPROM.update(ADDRESS_OF_SOUND_TOGGLE, m_soundOn);
+        }
 
         break;
 
@@ -573,6 +593,7 @@ gameMenu::gameMenu()
     {
         m_nameArray[nameIdx] = EEPROM.read(ADDRESS_OF_LAST_NAME_USED + nameIdx);
     }
+    m_soundOn = EEPROM.read(ADDRESS_OF_SOUND_TOGGLE);
 
     m_lcd.createChar(SUN_CHAR, m_customCharArray[SUN_CHAR]);
     m_lcd.createChar(CONTRAST_CHAR, m_customCharArray[CONTRAST_CHAR]);

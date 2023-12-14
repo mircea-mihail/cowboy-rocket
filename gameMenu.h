@@ -38,7 +38,7 @@
 #define RETURN_FROM_SETTINGS 6 // always the biggest of the options
 
 #define LOWEST_SETTINGS_STATE IN_MATRIX_BRIGHTNESS
-#define HIGHEST_SETTINGS_STATE IN_ENTER_NAME
+#define HIGHEST_SETTINGS_STATE IN_TOGGLE_SOUND
 
 // custom lcd characters
 #define LCD_CHARACTER_HEIGHT 8
@@ -83,8 +83,9 @@ private:
 
     char m_nameArray[LETTERS_IN_NAME] = {'A', 'A', 'A', 'A'};
     int m_nameArrayIdx = 0;
-
     int m_wallsLeftOnMap = 0;
+
+    bool m_soundOn = false;
     
     // menu variables:
     bool m_showAboutText = false;
@@ -147,14 +148,14 @@ private:
             B00000
         },
         {
-              B00100,
-  B01110,
-  B11111,
-  B01110,
-  B01110,
-  B01110,
-  B00000,
-  B00000
+            B00100,
+            B01110,
+            B11111,
+            B01110,
+            B01110,
+            B01110,
+            B00000,
+            B00000
         }
     };
 

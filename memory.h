@@ -28,11 +28,15 @@
 #define ADDRESS_OF_LAST_NAME_USED (EEPROM_LCD_CONTRAST_ADDRESS + SIZE_OF_PWM)
 #define LAST_NAME_USED_SIZE SIZE_OF_NAME_IN_EEPROM
 
+#define ADDRESS_OF_SOUND_TOGGLE (ADDRESS_OF_LAST_NAME_USED + LAST_NAME_USED_SIZE)
+#define SIZE_OF_SOUND_TOGGLE sizeof(byte)
 
 /// visual map:
 /*               addr (in EEPROM)
 ---------------- 1024 (Max size)
 ...
+---------------- 932
+sound toggle
 ---------------- 931
 last name
 used
