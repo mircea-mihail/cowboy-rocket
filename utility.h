@@ -30,6 +30,7 @@
 #define JS_X_PIN A0
 #define JS_Y_PIN A1
 #define BUTTON_PIN 13
+#define BACK_BUTTON_PIN A3
 
 // matrix occupation related
 #define MAP_NUMBER_OF_ORIENTATIONS 4

@@ -31,6 +31,7 @@ void initAllHw()
     pinMode(JS_X_PIN, INPUT);
     pinMode(JS_Y_PIN, INPUT);
     pinMode(BUTTON_PIN, INPUT_PULLUP);   
+    pinMode(BACK_BUTTON_PIN, INPUT_PULLUP);
 
     // matrix
     pinMode(DATA_IN_PIN, OUTPUT);
@@ -117,7 +118,7 @@ void doInGameRoutine()
 void doInStartAnimationRoutine()
 {
     // skip animation 
-    if(g_hwCtrl.pressedButtonFor(ANIMATION_SKIP_DELAY_MS))
+    if(g_hwCtrl.pressedBackButton())
     {
         g_finishedAnimiation = true;
     }
@@ -145,7 +146,7 @@ void doInStartAnimationRoutine()
 void doInWinningStateRoutine()
 {
     // skip animation 
-    if(g_hwCtrl.pressedButtonFor(ANIMATION_SKIP_DELAY_MS))
+    if(g_hwCtrl.pressedBackButton())
     {
         g_finishedAnimiation = true;
     }

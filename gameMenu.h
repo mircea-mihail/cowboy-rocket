@@ -133,8 +133,7 @@ private:
         }
     };
 
-    // updates the state and does other changes to prepare the object for the state change
-    void changeState(int &p_state, int p_newState);
+    /////////////////////////////////// INTRO OUTRO MESSAGES
 
     // ensures the display of the intro message (when, how, if and for how long)
     bool doIntroMessageSequence();
@@ -148,23 +147,49 @@ private:
     // only does the printing of the acutal end game words
     void displayEndMessage();
 
-    // makes sure the state given is within bounds and if not, modifies it to be
-    void keepStateInBounds(int &p_state, const int p_lowerBound, const int p_upperBound);
+    /////////////////////////////////// GENERAL MENU UTILITY FUNCTIONS
 
-    // the settings menu logic that orchestrates the changes between settings-menu options
-    void goToSettingsMenu();
+    // updates the state and does other changes to prepare the object for the state change
+    void changeState(int &p_state, int p_newState);
 
     // changes the current menu option by increasing/decreasing the menu state according to joystick input 
     void goToNextMenuOption(int &p_currentState, const int p_lowerBound, const int p_upperBound);
 
+    // makes sure the state given is within bounds and if not, modifies it to be
+    void keepStateInBounds(int &p_state, const int p_lowerBound, const int p_upperBound);
+
     // used to refresh menu variables when going from a state to another
     void refreshMenuVariables();
 
+    /////////////////////////////////// SUBMENU UTILITY FUNCTIONS
+
     // used to print percent hashes showing LCD related info in a graphical manner
     void printHashesLCD(int p_fillAmount);
-
+    
     // used to print percent hashes showing Matrix related info in a graphical manner
     void printHashesForMatrix(int p_fillAmount);
+
+    // updates the matrix brightness and does the logic to display it on the lcd
+    void updateMatrixBrightness();
+
+    // updates the lcd contrast and does the logic to display it on the lcd
+    void updateLcdContrast();
+
+    // updates the lcd brightness and does the logic to display it on the lcd
+    void updateLcdBrightness();
+
+    /////////////////////////////////// FUNCTIONS TO ENTER SUBMENUS    
+
+    // the settings menu logic that orchestrates the changes between settings-menu options
+    void goToSettingsMenu();
+
+    /////////////////////////////////// MAIN MENU UTILITY FUNCTIONS
+    
+    // deals with the display of the about in main menu and in submenu
+    void displayAboutMenu();
+
+    // goes through the about submenu and exits/enters it depending on input
+    void doAboutMenuLogic();
 
 public:
     // constructor, does the initializations and setups for the lcd

@@ -36,7 +36,7 @@ bool gameMenu::doIntroMessageSequence()
 
     // bypass intro message mechanism
     int xCommand, yCommand;
-    if(m_hwCtrl.pressedButton() || m_hwCtrl.joystickDetected(xCommand, yCommand))
+    if(m_hwCtrl.pressedBackButton() || m_hwCtrl.joystickDetected(xCommand, yCommand))
     {
         m_showedIntroMessage = true;
         m_lcd.clear();
@@ -73,7 +73,7 @@ bool gameMenu::doEndMessageSequence()
 
     // bypass end message mechanism
     int xCommand, yCommand;
-    if(m_hwCtrl.pressedButton() || m_hwCtrl.joystickDetected(xCommand, yCommand))
+    if(m_hwCtrl.pressedBackButton() || m_hwCtrl.joystickDetected(xCommand, yCommand))
     {
         m_showEndMessage = false;
         m_lcd.clear();
@@ -185,16 +185,104 @@ void gameMenu::printHashesForMatrix(int p_fillAmount)
     }
 }
 
+void gameMenu::updateMatrixBrightness()
+{
+    if(m_hwCtrl.joystickLeft())
+    {
+        if(millis() - m_lastMatrixBrightnessChange > CYCLE_DELAY_MILLIS)
+        {
+            m_lastMatrixBrightnessChange = millis();
+            byte matrixBrightness = g_map.decrementMatrixBrightness();
+            printHashesForMatrix(matrixBrightness);
+            
+            EEPROM.update(EEPROM_MATRIX_BRIGHTNESS_ADDRESS, matrixBrightness);
+        }
+    }
+
+    if(m_hwCtrl.joystickRight())
+    {
+        if(millis() - m_lastMatrixBrightnessChange > CYCLE_DELAY_MILLIS)
+        {
+            m_lastMatrixBrightnessChange = millis();
+            byte matrixBrightness = g_map.incrementMatrixBrightness();
+            printHashesForMatrix(matrixBrightness);
+            
+            EEPROM.update(EEPROM_MATRIX_BRIGHTNESS_ADDRESS, matrixBrightness);
+        }
+    }
+}
+
+void gameMenu::updateLcdContrast()
+{
+    if(m_hwCtrl.joystickLeft())
+    {
+        if(millis() - m_lastContrastChange > CYCLE_DELAY_MILLIS)
+        {
+            m_lastContrastChange = millis();
+            m_lcdContrast += LCD_INCREMENT_VAL;
+            printHashesLCD(m_lcdContrast);
+
+            analogWrite(LCD_CONTRAST, m_lcdContrast);
+            EEPROM.update(EEPROM_LCD_CONTRAST_ADDRESS, m_lcdContrast);
+        }
+    }
+
+    if(m_hwCtrl.joystickRight())
+    {
+        if(millis() - m_lastContrastChange > CYCLE_DELAY_MILLIS)
+        {
+            m_lastContrastChange = millis();
+            m_lcdContrast -= LCD_INCREMENT_VAL;
+            printHashesLCD(m_lcdContrast);
+
+            analogWrite(LCD_CONTRAST, m_lcdContrast);
+            EEPROM.update(EEPROM_LCD_CONTRAST_ADDRESS, m_lcdContrast);
+
+        }
+    }
+}
+
+void gameMenu::updateLcdBrightness()
+{
+    if(m_hwCtrl.joystickLeft())
+    {
+        if(millis() - m_lastBrightnessChange > CYCLE_DELAY_MILLIS)
+        {
+            m_lastBrightnessChange = millis();
+            m_lcdBrightness -= LCD_INCREMENT_VAL;
+            printHashesLCD(PWM_RESOLUTION - m_lcdBrightness);
+
+            analogWrite(LCD_BRIGHTNESS, m_lcdBrightness);
+            EEPROM.update(EEPROM_LCD_BRIGHTNESS_ADDRESS, m_lcdBrightness);
+        }
+    }
+
+    if(m_hwCtrl.joystickRight())
+    {
+        if(millis() - m_lastBrightnessChange > CYCLE_DELAY_MILLIS)
+        {
+            m_lastBrightnessChange = millis();
+            m_lcdBrightness += LCD_INCREMENT_VAL;
+            printHashesLCD(PWM_RESOLUTION - m_lcdBrightness);
+
+            analogWrite(LCD_BRIGHTNESS, m_lcdBrightness);
+            EEPROM.update(EEPROM_LCD_BRIGHTNESS_ADDRESS, m_lcdBrightness);
+        }
+    }
+}
+
 void gameMenu::goToSettingsMenu()
 {
     goToNextMenuOption(m_settingsState, IN_MATRIX_BRIGHTNESS, IN_LCD_BRIGHTNESS);
 
-    if(m_hwCtrl.pressedButton())
+    // to exit submenu
+    if(m_hwCtrl.pressedBackButton())
     {
         m_inSubmenu = false;
         changeState(m_settingsState, RETURN_FROM_SETTINGS);
     }
 
+    // remember last submenu state
     if(m_settingsState != RETURN_FROM_SETTINGS)
     {
         m_previousSettingsState = m_settingsState;
@@ -211,30 +299,7 @@ void gameMenu::goToSettingsMenu()
 
             m_changedState = false;
         }
-        
-        if(m_hwCtrl.joystickLeft())
-        {
-            if(millis() - m_lastMatrixBrightnessChange > CYCLE_DELAY_MILLIS)
-            {
-                m_lastMatrixBrightnessChange = millis();
-                byte matrixBrightness = g_map.decrementMatrixBrightness();
-                printHashesForMatrix(matrixBrightness);
-                
-                EEPROM.update(EEPROM_MATRIX_BRIGHTNESS_ADDRESS, matrixBrightness);
-            }
-        }
-
-        if(m_hwCtrl.joystickRight())
-        {
-            if(millis() - m_lastMatrixBrightnessChange > CYCLE_DELAY_MILLIS)
-            {
-                m_lastMatrixBrightnessChange = millis();
-                byte matrixBrightness = g_map.incrementMatrixBrightness();
-                printHashesForMatrix(matrixBrightness);
-                
-                EEPROM.update(EEPROM_MATRIX_BRIGHTNESS_ADDRESS, matrixBrightness);
-            }
-        }
+        updateMatrixBrightness();
 
         break;
 
@@ -247,33 +312,8 @@ void gameMenu::goToSettingsMenu()
             
             m_changedState = false;
         }
+        updateLcdContrast();
 
-        if(m_hwCtrl.joystickLeft())
-        {
-            if(millis() - m_lastContrastChange > CYCLE_DELAY_MILLIS)
-            {
-                m_lastContrastChange = millis();
-                m_lcdContrast += LCD_INCREMENT_VAL;
-                printHashesLCD(m_lcdContrast);
-
-                analogWrite(LCD_CONTRAST, m_lcdContrast);
-                EEPROM.update(EEPROM_LCD_CONTRAST_ADDRESS, m_lcdContrast);
-            }
-        }
-
-        if(m_hwCtrl.joystickRight())
-        {
-            if(millis() - m_lastContrastChange > CYCLE_DELAY_MILLIS)
-            {
-                m_lastContrastChange = millis();
-                m_lcdContrast -= LCD_INCREMENT_VAL;
-                printHashesLCD(m_lcdContrast);
-
-                analogWrite(LCD_CONTRAST, m_lcdContrast);
-                EEPROM.update(EEPROM_LCD_CONTRAST_ADDRESS, m_lcdContrast);
-
-            }
-        }
         break;
 
     case IN_LCD_BRIGHTNESS:
@@ -285,32 +325,8 @@ void gameMenu::goToSettingsMenu()
 
             m_changedState = false;
         }
+        updateLcdBrightness();
 
-        if(m_hwCtrl.joystickLeft())
-        {
-            if(millis() - m_lastBrightnessChange > CYCLE_DELAY_MILLIS)
-            {
-                m_lastBrightnessChange = millis();
-                m_lcdBrightness -= LCD_INCREMENT_VAL;
-                printHashesLCD(PWM_RESOLUTION - m_lcdBrightness);
-
-                analogWrite(LCD_BRIGHTNESS, m_lcdBrightness);
-                EEPROM.update(EEPROM_LCD_BRIGHTNESS_ADDRESS, m_lcdBrightness);
-            }
-        }
-
-        if(m_hwCtrl.joystickRight())
-        {
-            if(millis() - m_lastBrightnessChange > CYCLE_DELAY_MILLIS)
-            {
-                m_lastBrightnessChange = millis();
-                m_lcdBrightness += LCD_INCREMENT_VAL;
-                printHashesLCD(PWM_RESOLUTION - m_lcdBrightness);
-
-                analogWrite(LCD_BRIGHTNESS, m_lcdBrightness);
-                EEPROM.update(EEPROM_LCD_BRIGHTNESS_ADDRESS, m_lcdBrightness);
-            }
-        }
         break;
         
     case RETURN_FROM_SETTINGS:
@@ -319,6 +335,70 @@ void gameMenu::goToSettingsMenu()
     default:
         break;
     }
+}
+
+void gameMenu::displayAboutMenu()
+{
+    g_map.displayIcon(ICON_ABOUT);
+
+    if(!m_showAboutText)
+    {
+        m_lcd.print(F(" "));
+        m_lcd.write(ARROW_RIGHT_CHAR);
+        m_lcd.print(F(" learn more "));
+        m_lcd.write(ARROW_LEFT_CHAR);
+
+        m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+        m_lcd.print(F("   start game"));
+
+        m_changedState = false;
+    }
+    else
+    {
+        m_lcd.print(F("Cowboy Rocket by Mircea Mihail Ionescu"));
+        m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_COL);
+        m_lcd.print(F("github.com/mircea-mihail for more info"));
+        m_changedState = false;
+    }
+}
+
+void gameMenu::doAboutMenuLogic()
+{
+    if(m_showAboutText)
+    {
+        if(m_hwCtrl.joystickLeft())
+        {
+            if(millis() - m_lcdScrollChange > CYCLE_DELAY_MILLIS)
+            {
+                m_lcd.scrollDisplayRight();
+                m_lcdScrollChange = millis();
+            }
+        }
+        if(m_hwCtrl.joystickRight())
+        {
+            if(millis() - m_lcdScrollChange > CYCLE_DELAY_MILLIS)
+            {
+                m_lcd.scrollDisplayLeft();
+                m_lcdScrollChange = millis();
+            }
+        }
+    }
+
+    if(m_hwCtrl.pressedButton() && !m_showAboutText)
+    {
+        m_inSubmenu = true;
+        m_showAboutText = !m_showAboutText;
+        m_lcd.clear();
+        m_changedState = true;
+    }
+    
+    if(m_hwCtrl.pressedBackButton() && m_showAboutText)
+    {
+        m_inSubmenu = false;
+        m_showAboutText = !m_showAboutText;
+        m_lcd.clear();
+        m_changedState = true;
+        }
 }
 
 ////////////////////////// public methods:
@@ -414,54 +494,11 @@ int gameMenu::menuSequence()
     case MENU_IN_ABOUT:
         if(m_changedState)
         {
-            g_map.displayIcon(ICON_ABOUT);
-
-            if(!m_showAboutText)
-            {
-                m_lcd.print(F(" "));
-                m_lcd.write(ARROW_RIGHT_CHAR);
-                m_lcd.print(F(" learn more "));
-                m_lcd.write(ARROW_LEFT_CHAR);
-
-                m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
-                m_lcd.print(F("   start game"));
-
-                m_changedState = false;
-            }
-            else
-            {
-                m_lcd.print(F("Cowboy Rocket by Mircea Mihail Ionescu"));
-                m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_COL);
-                m_lcd.print(F("github.com/mircea-mihail for more info"));
-                m_changedState = false;
-            }
-        }
-        if(m_showAboutText)
-        {
-            if(m_hwCtrl.joystickLeft())
-            {
-                if(millis() - m_lcdScrollChange > CYCLE_DELAY_MILLIS)
-                {
-                    m_lcd.scrollDisplayRight();
-                    m_lcdScrollChange = millis();
-                }
-            }
-            if(m_hwCtrl.joystickRight())
-            {
-                if(millis() - m_lcdScrollChange > CYCLE_DELAY_MILLIS)
-                {
-                    m_lcd.scrollDisplayLeft();
-                    m_lcdScrollChange = millis();
-                }
-            }
+            displayAboutMenu();
         }
 
-        if(m_hwCtrl.pressedButton())
-        {
-            m_showAboutText = !m_showAboutText;
-            m_lcd.clear();
-            m_changedState = true;
-        }
+        doAboutMenuLogic();
+
         break; 
 
     case MENU_IN_GAME:

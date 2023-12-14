@@ -30,12 +30,17 @@ private:
     button m_btn;
     button m_btnLongerWait;
 
+    button m_backBtn;
+
 public:
     // returns true if the button has been pressed -> does debounce and sig rise detection 
     bool pressedButton();
 
     // returns true if the button stayed pressed for p_ms millis
     bool pressedButtonFor(unsigned long p_p_sameStateMsms);
+
+    // returns true if the back button has been pressed (debounce and sig rise detection)
+    bool pressedBackButton();
 
     // detects joystick movement (any direction) and returns the values of x and y read
     bool joystickDetected(int &p_xCommand, int &p_yCommand);

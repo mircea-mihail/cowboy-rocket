@@ -61,6 +61,36 @@ bool inputHwControl::pressedButtonFor(unsigned long p_sameStateMs)
     return false;
 }
 
+bool inputHwControl::pressedBackButton()
+{
+    unsigned long time = millis();
+    int state = !digitalRead(BACK_BUTTON_PIN);
+
+    // if the button has a constant state
+    if(state == m_backBtn.m_prevState)
+    {
+        // if the constant state has been kept for a while
+        if(time - m_backBtn.m_prevTime > DEBOUNCE_TIME && m_backBtn.m_prevCountedState != state)
+        {
+            m_backBtn.m_prevCountedState = state;
+
+            if(state == HIGH)
+            {
+                m_backBtn.m_prevState = state;
+                return true;
+            }
+        }
+    }
+    else
+    {
+        m_backBtn.m_prevTime = time;
+    }
+
+    m_backBtn.m_prevState = state;
+    
+    return false;
+}
+
 bool inputHwControl::joystickDetected(int &p_xCommand, int &p_yCommand)
 {
     p_xCommand = analogRead(JS_X_PIN);
