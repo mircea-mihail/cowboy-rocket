@@ -1,6 +1,35 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
+/////////////////////////// pins
+
+// player pins
+#define JS_X_PIN A0
+#define JS_Y_PIN A1
+#define BUTTON_PIN 13
+#define BACK_BUTTON_PIN A3
+
+// LCD display pins
+#define RESET 9
+#define ENABLE 8
+#define DATA4 7
+#define DATA5 A4
+#define DATA6 2
+#define DATA7 4
+#define LCD_CONTRAST 10
+#define LCD_BRIGHTNESS 5
+
+// bit shifter pins
+#define DATA_IN_PIN 12
+#define CLOCK_PIN 6
+#define LOAD_PIN 3
+
+// for reading outside brightness
+#define BRIGHTNESS_PIN A2
+
+// buzzer pin
+#define BUZZER_PIN 11
+
 // utility
 #define MATRIX_ADDRESS 0
 #define MATRIX_SIZE 16
@@ -27,12 +56,6 @@
 #define HIGHEST_MENU_STATE MENU_IN_ABOUT
 // Not options but valid states
 #define MENU_IN_GAME 3
-
-// player pins
-#define JS_X_PIN A0
-#define JS_Y_PIN A1
-#define BUTTON_PIN 13
-#define BACK_BUTTON_PIN A3
 
 // matrix occupation related
 #define MAP_NUMBER_OF_ORIENTATIONS 4
@@ -78,24 +101,11 @@
 #define MIN_JS_THRESHOLD 312
 #define MAX_JS_THRESHOLD 712
 
-// LCD display
-#define RESET 9
-#define ENABLE 8
-#define DATA4 7
-#define DATA5 6
-#define DATA6 2
-#define DATA7 4
-#define LCD_CONTRAST 3
-#define LCD_BRIGHTNESS 5
-
 // icons for the menu
 #define NUMBER_OF_ICONS 3
 #define ICON_HAMMER 0
 #define ICON_START 1
 #define ICON_ABOUT 2
-
-// misc peripherals
-#define BRIGHTNESS_PIN A2
 
 // player name
 #define LETTERS_IN_NAME 4
