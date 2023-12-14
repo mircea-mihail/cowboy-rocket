@@ -99,16 +99,16 @@ void gameMenu::displayEndMessage()
     m_lcd.print(F("keep  slingin'"));   
 }
 
-void gameMenu::keepStateInBounds(int &p_state, const int p_lowerBound, const int p_upperBound)
+void gameMenu::keepInBounds(int &p_value, const int p_lowerBound, const int p_upperBound)
 {
-    if(p_state > p_upperBound)
+    if(p_value > p_upperBound)
     {
-        p_state = p_lowerBound;
+        p_value = p_lowerBound;
     }
 
-    if(p_state < p_lowerBound)
+    if(p_value < p_lowerBound)
     {
-        p_state = p_upperBound;
+        p_value = p_upperBound;
     }
 }
 
@@ -141,7 +141,7 @@ void gameMenu::goToNextMenuOption(int &p_currentState, const int p_lowerBound, c
                 p_currentState ++;
             }
     
-            keepStateInBounds(p_currentState, p_lowerBound, p_upperBound);
+            keepInBounds(p_currentState, p_lowerBound, p_upperBound);
 
             m_lcd.clear();
             m_changedState = true;
@@ -271,15 +271,137 @@ void gameMenu::updateLcdBrightness()
     }
 }
 
-void gameMenu::goToSettingsMenu()
+void gameMenu::displayNameCharArrow()
 {
-    goToNextMenuOption(m_settingsState, IN_MATRIX_BRIGHTNESS, IN_LCD_BRIGHTNESS);
+    m_lcd.print("   ");
 
-    // to exit submenu
+    for(int idx = 0; idx < m_nameArrayIdx; idx++)
+    {
+        m_lcd.print("   ");
+    }
+    
+    m_lcd.write(ARROW_UP_CHAR);
+}
+
+void gameMenu::goToChangeName()
+{
     if(m_hwCtrl.pressedBackButton())
     {
-        m_inSubmenu = false;
-        changeState(m_settingsState, RETURN_FROM_SETTINGS);
+        m_inSettingsSubmenu = false;
+        m_changedState = true;
+        m_lcd.clear();
+
+        // save last name used in memory
+        for(int nameIdx = 0; nameIdx < LETTERS_IN_NAME; nameIdx ++)
+        {
+            EEPROM.update(ADDRESS_OF_LAST_NAME_USED + nameIdx, m_nameArray[nameIdx]);
+        }
+        
+        return;
+    }
+
+    if(m_changedState)
+    {
+        m_lcd.print("   ");
+        for(int idx = 0; idx < LETTERS_IN_NAME; idx++)
+        {
+            m_lcd.print(m_nameArray[idx]);
+            m_lcd.print("  ");
+        }
+        m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+        m_changedState = false;
+        displayNameCharArrow();
+    }
+
+    if(m_hwCtrl.joystickLeft())
+    {
+        if(millis() - m_lastNameArrowChange > CYCLE_DELAY_MILLIS)
+        {
+            m_changedState = true;
+            m_nameArrayIdx--;
+            keepInBounds(m_nameArrayIdx, 0, LETTERS_IN_NAME - 1);
+            
+            m_lastNameArrowChange = millis();
+            m_lcd.clear();
+        }
+    }
+
+    if(m_hwCtrl.joystickRight())
+    {
+        if(millis() - m_lastNameArrowChange > CYCLE_DELAY_MILLIS)
+        {
+            m_changedState = true;
+            m_nameArrayIdx++;
+            keepInBounds(m_nameArrayIdx, 0, LETTERS_IN_NAME - 1);
+            
+            m_lastNameArrowChange = millis();
+            m_lcd.clear();
+        }
+    }
+
+    if(m_hwCtrl.joystickUp())
+    {
+        if(millis() - m_lastNameArrowChange > CYCLE_DELAY_MILLIS)
+        {
+            if(m_nameArray[m_nameArrayIdx] == 'Z')
+            {
+                m_nameArray[m_nameArrayIdx] = ' ';
+            }
+            else if(m_nameArray[m_nameArrayIdx] == ' ')
+            {
+                m_nameArray[m_nameArrayIdx] = 'A';
+            }
+            else
+            {
+                m_nameArray[m_nameArrayIdx] ++;
+            }
+
+            m_lastNameArrowChange = millis();
+            m_changedState = true;
+            m_lcd.clear();
+        }
+    }
+
+    if(m_hwCtrl.joystickDown())
+    {
+        if(millis() - m_lastNameArrowChange > CYCLE_DELAY_MILLIS)
+        {
+            if(m_nameArray[m_nameArrayIdx] == 'A')
+            {
+                m_nameArray[m_nameArrayIdx] = ' ';
+            }
+            else if(m_nameArray[m_nameArrayIdx] == ' ')
+            {
+                m_nameArray[m_nameArrayIdx] = 'Z';
+            }
+            else
+            {
+                m_nameArray[m_nameArrayIdx] --;
+            }
+
+            m_lastNameArrowChange = millis();
+            m_changedState = true;
+            m_lcd.clear();
+        }
+    }
+}
+
+// enter name
+// sound control on off
+// reset high scores
+
+void gameMenu::goToSettingsMenu()
+{
+    if(!m_inSettingsSubmenu)
+    {
+        goToNextMenuOption(m_settingsState, LOWEST_SETTINGS_STATE, HIGHEST_SETTINGS_STATE);
+        
+        // to exit submenu
+        if(m_hwCtrl.pressedBackButton())
+        {
+            m_inSubmenu = false;
+            changeState(m_settingsState, RETURN_FROM_SETTINGS);
+        }
     }
 
     // remember last submenu state
@@ -326,9 +448,43 @@ void gameMenu::goToSettingsMenu()
             m_changedState = false;
         }
         updateLcdBrightness();
-
+        
         break;
         
+    case IN_ENTER_NAME:
+        if(!m_inSettingsSubmenu)
+        {
+            if(m_changedState)
+            {
+                m_lcd.print(F("   name: "));
+                for(int nameIdx = 0; nameIdx < LETTERS_IN_NAME; nameIdx++)
+                {
+                    m_lcd.print(m_nameArray[nameIdx]);
+                }
+                m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+                m_lcd.print("   ");
+                m_lcd.write(ARROW_RIGHT_CHAR);       
+                m_lcd.print(F(" change "));
+                m_lcd.write(ARROW_LEFT_CHAR);       
+
+                m_changedState = false;
+            }
+
+            if(m_hwCtrl.pressedButton())
+            {   
+                m_inSettingsSubmenu = true;
+                m_changedState = true;
+                m_lcd.clear();
+            }
+        }
+        else
+        {
+            goToChangeName();
+        }
+        
+
+        break;
+
     case RETURN_FROM_SETTINGS:
         break;
     
@@ -412,11 +568,17 @@ gameMenu::gameMenu()
     m_lcd.begin(LCD_COLS, LCD_ROWS);
     m_lcd.clear();
     analogWrite(LCD_CONTRAST, m_lcdContrast);
+    
+    for(int nameIdx = 0; nameIdx < LETTERS_IN_NAME; nameIdx ++)
+    {
+        m_nameArray[nameIdx] = EEPROM.read(ADDRESS_OF_LAST_NAME_USED + nameIdx);
+    }
 
     m_lcd.createChar(SUN_CHAR, m_customCharArray[SUN_CHAR]);
     m_lcd.createChar(CONTRAST_CHAR, m_customCharArray[CONTRAST_CHAR]);
     m_lcd.createChar(ARROW_RIGHT_CHAR, m_customCharArray[ARROW_RIGHT_CHAR]);
     m_lcd.createChar(ARROW_LEFT_CHAR, m_customCharArray[ARROW_LEFT_CHAR]);
+    m_lcd.createChar(ARROW_UP_CHAR, m_customCharArray[ARROW_UP_CHAR]);    
 }
 
 int gameMenu::menuSequence()
@@ -433,7 +595,7 @@ int gameMenu::menuSequence()
 
     if(m_state != MENU_IN_GAME && !m_inSubmenu)
     {
-        goToNextMenuOption(m_state, MENU_IN_START_GAME, MENU_IN_ABOUT);
+        goToNextMenuOption(m_state, LOWEST_MENU_STATE, HIGHEST_MENU_STATE);
     }
 
     switch (m_state)

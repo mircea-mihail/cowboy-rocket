@@ -29,19 +29,27 @@
 
 // settings submenu states:
 #define IN_MATRIX_BRIGHTNESS 0
-#define IN_LCD_CONTRAST 1
-#define IN_LCD_BRIGHTNESS 2 // always second biggest (for logic purposes)
-#define RETURN_FROM_SETTINGS 3 // always the biggest of the three
+#define IN_LCD_BRIGHTNESS 1 
+#define IN_LCD_CONTRAST 2
+#define IN_ENTER_NAME 3
+#define IN_TOGGLE_SOUND 4
+#define IN_RESET_HIGH_SCORES 5
+
+#define RETURN_FROM_SETTINGS 6 // always the biggest of the options
+
+#define LOWEST_SETTINGS_STATE IN_MATRIX_BRIGHTNESS
+#define HIGHEST_SETTINGS_STATE IN_ENTER_NAME
 
 // custom lcd characters
 #define LCD_CHARACTER_HEIGHT 8
-#define NUMBER_OF_CUSTOM_CHARACTERS 5
+#define NUMBER_OF_CUSTOM_CHARACTERS 6
 
 #define EMPTY_CHAR 0
 #define SUN_CHAR 1
 #define CONTRAST_CHAR 2
 #define ARROW_RIGHT_CHAR 3
 #define ARROW_LEFT_CHAR 4
+#define ARROW_UP_CHAR 5
 
 // miscelanious
 #define PWM_RESOLUTION 255
@@ -52,6 +60,8 @@ class gameMenu
 {
 private:
     bool m_inSubmenu = false;
+    bool m_inSettingsSubmenu = false;
+
     int m_state = MENU_IN_START_GAME;
     int m_settingsState = RETURN_FROM_SETTINGS;
     int m_previousSettingsState = IN_MATRIX_BRIGHTNESS;
@@ -69,8 +79,13 @@ private:
     unsigned long m_lastBrightnessChange = 0;
     unsigned long m_lcdScrollChange = 0;
     unsigned long m_lastMatrixBrightnessChange = 0;
+    unsigned long m_lastNameArrowChange = 0;
+
+    char m_nameArray[LETTERS_IN_NAME] = {'A', 'A', 'A', 'A'};
+    int m_nameArrayIdx = 0;
 
     int m_wallsLeftOnMap = 0;
+    
     // menu variables:
     bool m_showAboutText = false;
 
@@ -130,6 +145,16 @@ private:
             B01100,
             B00100,
             B00000
+        },
+        {
+              B00100,
+  B01110,
+  B11111,
+  B01110,
+  B01110,
+  B01110,
+  B00000,
+  B00000
         }
     };
 
@@ -155,8 +180,8 @@ private:
     // changes the current menu option by increasing/decreasing the menu state according to joystick input 
     void goToNextMenuOption(int &p_currentState, const int p_lowerBound, const int p_upperBound);
 
-    // makes sure the state given is within bounds and if not, modifies it to be
-    void keepStateInBounds(int &p_state, const int p_lowerBound, const int p_upperBound);
+    // makes sure the given value is within its bounds and if not, modifies it to be
+    void keepInBounds(int &p_value, const int p_lowerBound, const int p_upperBound);
 
     // used to refresh menu variables when going from a state to another
     void refreshMenuVariables();
@@ -178,10 +203,15 @@ private:
     // updates the lcd brightness and does the logic to display it on the lcd
     void updateLcdBrightness();
 
+    void displayNameCharArrow();
+
     /////////////////////////////////// FUNCTIONS TO ENTER SUBMENUS    
 
     // the settings menu logic that orchestrates the changes between settings-menu options
     void goToSettingsMenu();
+
+    // call this to go to change name submenu of the settings submenu
+    void goToChangeName();
 
     /////////////////////////////////// MAIN MENU UTILITY FUNCTIONS
     

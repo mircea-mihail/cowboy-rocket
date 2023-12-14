@@ -22,9 +22,11 @@
 #define MENU_IN_START_GAME 0 
 #define MENU_IN_SETTINGS 1
 #define MENU_IN_ABOUT 2
+
+#define LOWEST_MENU_STATE MENU_IN_START_GAME
+#define HIGHEST_MENU_STATE MENU_IN_ABOUT
 // Not options but valid states
 #define MENU_IN_GAME 3
-
 
 // player pins
 #define JS_X_PIN A0
@@ -86,7 +88,6 @@
 #define LCD_CONTRAST 3
 #define LCD_BRIGHTNESS 5
 
-
 // icons for the menu
 #define NUMBER_OF_ICONS 3
 #define ICON_HAMMER 0
@@ -95,6 +96,9 @@
 
 // misc peripherals
 #define BRIGHTNESS_PIN A2
+
+// player name
+#define LETTERS_IN_NAME 4
 
 // reverses the direction. If it is up it makes it down. If it's right makes it left
 #define reverseDirection(direction) (direction = (direction + (MAP_NUMBER_OF_ORIENTATIONS/2)) % MAP_NUMBER_OF_ORIENTATIONS) 
