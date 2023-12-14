@@ -6,10 +6,7 @@
 #include "utility.h"
 #include "memory.h"
 
-// bit shifter 
-#define DATA_IN_PIN 12
-#define CLOCK_PIN 11
-#define LOAD_PIN 10
+// only one matrix driver
 #define DRIVER_INDEX 1
 
 // matrix generation
