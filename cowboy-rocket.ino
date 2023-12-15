@@ -24,6 +24,7 @@ byte g_menuState;
 bool g_finishedAnimiation = false;
 unsigned long g_timeForLastFrame = 0;
 unsigned long g_timeForBulletUpdate = 0;
+bool g_disableSound = false;
 
 void initAllHw()
 {

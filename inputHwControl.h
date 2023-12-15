@@ -8,6 +8,8 @@
 // button
 #define DEBOUNCE_TIME 50
 
+extern bool g_disableSound;
+
 class inputHwControl
 {
 private:
@@ -30,10 +32,14 @@ private:
 
     button m_btn;
     button m_btnLongerWait;
-
     button m_backBtn;
 
+    unsigned long m_lastJoystickSound = 0;
+
 public:
+    // plays the buzzer sound only once every button press. Checks if sound is off and does not play if the case
+    void playButtonSound(const int p_frequency);
+
     // returns true if the button has been pressed -> does debounce and sig rise detection 
     bool pressedButton();
 
@@ -42,6 +48,9 @@ public:
 
     // returns true if the back button has been pressed (debounce and sig rise detection)
     bool pressedBackButton();
+
+    // plays the buzzer sound only once every js move. Checks if sound is off and does not play if the case
+    void playJoystickSound();
 
     // detects joystick movement (any direction) and returns the values of x and y read
     bool joystickDetected(int &p_xCommand, int &p_yCommand);

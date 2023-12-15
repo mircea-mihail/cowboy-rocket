@@ -1,5 +1,16 @@
 #include "inputHwControl.h"
 
+void inputHwControl::playButtonSound(const int p_frequency)
+{
+    // don't play anything if sound is disabled
+    if(g_disableSound)
+    {
+        return;
+    }
+
+    tone(BUZZER_PIN, p_frequency, SOUND_DURATION_BTN_PRESS);
+}
+
 bool inputHwControl::pressedButton()
 {
     unsigned long time = millis();
@@ -15,7 +26,7 @@ bool inputHwControl::pressedButton()
 
             if(state == HIGH)
             {
-                tone(BUZZER_PIN, FREQ_BUTTON, SOUND_DURATION_BTN_PRESS);
+                playButtonSound(FREQ_BUTTON);
                 m_btn.m_prevState = state;
                 return true;
             }
@@ -46,6 +57,7 @@ bool inputHwControl::pressedButtonFor(unsigned long p_sameStateMs)
 
             if(state == HIGH)
             {
+                playButtonSound(FREQ_BUTTON);
                 m_btnLongerWait.m_prevState = state;
                 m_btnLongerWait.resetStates(); 
                 return true;
@@ -77,7 +89,7 @@ bool inputHwControl::pressedBackButton()
 
             if(state == HIGH)
             {
-                tone(BUZZER_PIN, FREQ_BACK_BUTTON, SOUND_DURATION_BTN_PRESS);
+                playButtonSound(FREQ_BACK_BUTTON);
                 m_backBtn.m_prevState = state;
                 return true;
             }
@@ -93,6 +105,22 @@ bool inputHwControl::pressedBackButton()
     return false;
 }
 
+void inputHwControl::playJoystickSound()
+{
+    // don't play anything if sound is disabled
+    if(g_disableSound)
+    {
+        return;
+    }
+    
+    if(millis() - m_lastJoystickSound > CYCLE_DELAY_MILLIS)
+    {
+        m_lastJoystickSound = millis();
+        tone(BUZZER_PIN, FREQ_JOYSTICK, SOUND_DURATION_BTN_PRESS);
+    }
+}
+
+
 bool inputHwControl::joystickDetected(int &p_xCommand, int &p_yCommand)
 {
     p_xCommand = analogRead(JS_X_PIN);
@@ -100,7 +128,7 @@ bool inputHwControl::joystickDetected(int &p_xCommand, int &p_yCommand)
 
     if(p_xCommand < MIN_JS_THRESHOLD || p_xCommand > MAX_JS_THRESHOLD || p_yCommand < MIN_JS_THRESHOLD || p_yCommand > MAX_JS_THRESHOLD)
     {
-        tone(BUZZER_PIN, FREQ_JOYSTICK, SOUND_DURATION_BTN_PRESS);
+        playJoystickSound();
         return true;
     }
     return false;
@@ -117,7 +145,7 @@ bool inputHwControl::joystickLeft()
         {
             if(yCommand > MAX_JS_THRESHOLD)
             {
-                tone(BUZZER_PIN, FREQ_JOYSTICK, SOUND_DURATION_BTN_PRESS);
+                playJoystickSound();
                 return true;
             }
         }   
@@ -136,7 +164,7 @@ bool inputHwControl::joystickRight()
         {
             if(yCommand < MIN_JS_THRESHOLD)
             {
-                tone(BUZZER_PIN, FREQ_JOYSTICK, SOUND_DURATION_BTN_PRESS);
+                playJoystickSound();
                 return true;
             }
         }   
@@ -155,7 +183,7 @@ bool inputHwControl::joystickUp()
         {
             if(xCommand < MIN_JS_THRESHOLD)
             {
-                tone(BUZZER_PIN, FREQ_JOYSTICK, SOUND_DURATION_BTN_PRESS);
+                playJoystickSound();
                 return true;
             }
         }   
@@ -174,7 +202,7 @@ bool inputHwControl::joystickDown()
         {
             if(xCommand > MAX_JS_THRESHOLD)
             {
-                tone(BUZZER_PIN, FREQ_JOYSTICK, SOUND_DURATION_BTN_PRESS);
+                playJoystickSound();
                 return true;
             }
         }   

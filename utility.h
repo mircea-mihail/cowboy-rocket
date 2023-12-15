@@ -57,6 +57,9 @@
 // Not options but valid states
 #define MENU_IN_GAME 3
 
+// menu time related
+#define CYCLE_DELAY_MILLIS 400
+
 // matrix occupation related
 #define MAP_NUMBER_OF_ORIENTATIONS 4
 #define MAP_BULLET_RANGE 1

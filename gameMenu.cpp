@@ -486,7 +486,7 @@ void gameMenu::goToSettingsMenu()
         if(m_changedState)
         {
             m_lcd.print(F("    sound "));
-            m_lcd.print(m_soundOn ? "on" : "off");
+            m_lcd.print(g_disableSound ? "off" : "on");
             m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
             m_lcd.print("   ");
             m_lcd.write(ARROW_RIGHT_CHAR);
@@ -497,10 +497,10 @@ void gameMenu::goToSettingsMenu()
         }
         if(m_hwCtrl.pressedButton())
         {
-            m_soundOn = !m_soundOn;
+            g_disableSound = !g_disableSound;
             m_changedState = true;
             m_lcd.clear();
-            EEPROM.update(ADDRESS_OF_SOUND_TOGGLE, m_soundOn);
+            EEPROM.update(ADDRESS_OF_SOUND_TOGGLE, g_disableSound);
         }
 
         break;
@@ -593,7 +593,7 @@ gameMenu::gameMenu()
     {
         m_nameArray[nameIdx] = EEPROM.read(ADDRESS_OF_LAST_NAME_USED + nameIdx);
     }
-    m_soundOn = EEPROM.read(ADDRESS_OF_SOUND_TOGGLE);
+    g_disableSound = EEPROM.read(ADDRESS_OF_SOUND_TOGGLE);
 
     m_lcd.createChar(SUN_CHAR, m_customCharArray[SUN_CHAR]);
     m_lcd.createChar(CONTRAST_CHAR, m_customCharArray[CONTRAST_CHAR]);

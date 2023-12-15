@@ -23,7 +23,6 @@
 #define SECOND_LCD_COL 1
 
 // menu cycling
-#define CYCLE_DELAY_MILLIS 400
 #define INTRO_MESSAGE_MILLIS 3000
 #define END_MESSAGE_MILLIS 3000
 
@@ -55,6 +54,7 @@
 #define PWM_RESOLUTION 255
 
 extern gameMap g_map;
+extern bool g_disableSound;
 
 class gameMenu
 {
@@ -83,10 +83,8 @@ private:
 
     char m_nameArray[LETTERS_IN_NAME] = {'A', 'A', 'A', 'A'};
     int m_nameArrayIdx = 0;
-    int m_wallsLeftOnMap = 0;
+    int m_wallsLeftOnMap = 0;  
 
-    bool m_soundOn = false;
-    
     // menu variables:
     bool m_showAboutText = false;
 
