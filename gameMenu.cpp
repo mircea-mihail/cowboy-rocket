@@ -386,7 +386,49 @@ void gameMenu::goToChangeName()
     }
 }
 
-// sound control on off
+void gameMenu::doResetScoresLogic()
+{
+    if(m_hwCtrl.pressedBackButton())
+    {
+        m_inSettingsSubmenu = false;
+        m_changedState = true;
+        m_lcd.clear();
+    }
+
+    switch (m_deleteHighScores)
+    {
+    case NOT_SURE_YET:
+        if(m_changedState)
+        {
+            //             ----\\\\----////
+            m_lcd.print(F("  reset scores"));
+            m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+            
+            m_lcd.print("   ");
+            m_lcd.write(ARROW_RIGHT_CHAR);
+            m_lcd.print(F(" delete "));
+            m_lcd.write(ARROW_LEFT_CHAR);
+
+            m_changedState = false;
+        }
+        if(m_hwCtrl.pressedButton())
+        {
+            m_changedState = true;
+            m_inSettingsSubmenu = true;
+            m_lcd.clear();
+            // m_deleteHighScores ++;
+        }
+
+        break;
+    
+    case ARE_YOU_SURE:
+
+        break;
+    default:
+        break;
+    }
+}
+
 // reset high scores
 
 void gameMenu::goToSettingsMenu()
@@ -503,6 +545,10 @@ void gameMenu::goToSettingsMenu()
             EEPROM.update(ADDRESS_OF_SOUND_TOGGLE, g_disableSound);
         }
 
+        break;
+
+    case IN_RESET_HIGH_SCORES:
+        doResetScoresLogic();
         break;
 
     case RETURN_FROM_SETTINGS:

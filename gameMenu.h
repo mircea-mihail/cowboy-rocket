@@ -37,7 +37,7 @@
 #define RETURN_FROM_SETTINGS 6 // always the biggest of the options
 
 #define LOWEST_SETTINGS_STATE IN_MATRIX_BRIGHTNESS
-#define HIGHEST_SETTINGS_STATE IN_TOGGLE_SOUND
+#define HIGHEST_SETTINGS_STATE IN_RESET_HIGH_SCORES
 
 // custom lcd characters
 #define LCD_CHARACTER_HEIGHT 8
@@ -52,6 +52,13 @@
 
 // miscelanious
 #define PWM_RESOLUTION 255
+
+// reset scores stages
+#define NOT_SURE_YET 0 
+#define ARE_YOU_SURE 1
+#define SURE_SURE 2
+#define CERTAIN 3
+#define ABSOLUTELY_POSITIVE 4
 
 extern gameMap g_map;
 extern bool g_disableSound;
@@ -87,6 +94,7 @@ private:
 
     // menu variables:
     bool m_showAboutText = false;
+    byte m_deleteHighScores = NOT_SURE_YET;
 
     byte m_lcdContrast = PWM_RESOLUTION/2;
     byte m_lcdBrightness = PWM_RESOLUTION/2;
@@ -219,6 +227,10 @@ private:
 
     // goes through the about submenu and exits/enters it depending on input
     void doAboutMenuLogic();
+
+    // does quadruple checking before deleting high scores ( some people might be mad about the decision )
+    void doResetScoresLogic();
+
 
 public:
     // constructor, does the initializations and setups for the lcd
