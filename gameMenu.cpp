@@ -464,6 +464,17 @@ void gameMenu::doResetScoresLogic()
             m_inSettingsSubmenu = true;
             m_lcd.clear();
             m_deleteHighScores ++;
+
+            unsigned long smallestScore = 0;
+            char defaultLetter = ' ';
+            for(int memPtr = SCORE_MEMORY_ADDRESS; memPtr < ADDRESS_AFTER_LAST_SCORE; memPtr += SCORE_SIZE_IN_MEMORY)
+            {
+                EEPROM.put(memPtr, smallestScore);
+            }
+            for(int memPtr = SCORE_NAMES_ADDRESS; memPtr < ADDRESS_AFTER_LAST_SCORE_NAME; memPtr += sizeof(char))
+            {
+                EEPROM.put(memPtr, defaultLetter);
+            }
         }
 
         break;
@@ -489,8 +500,6 @@ void gameMenu::doResetScoresLogic()
         break;
     }
 }
-
-// reset high scores
 
 void gameMenu::goToSettingsMenu()
 {
