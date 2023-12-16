@@ -414,8 +414,9 @@ void gameMenu::doResetScoresLogic()
             m_lcd.print(F("  reset scores"));
             m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
             
+            m_lcd.print(F("   "));
             m_lcd.write(ARROW_RIGHT_CHAR);
-            m_lcd.print(F("confirm delete"));
+            m_lcd.print(F(" do  it "));
             m_lcd.write(ARROW_LEFT_CHAR);
 
             m_changedState = false;
@@ -658,7 +659,7 @@ void gameMenu::displayAboutMenu()
     {
         m_lcd.print(F("Cowboy Rocket by Mircea Mihail Ionescu"));
         m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_COL);
-        m_lcd.print(F("github.com/mircea-mihail for more info"));
+        m_lcd.print(F("github.com/mircea-mihail/cowboy-rocket"));
         m_changedState = false;
     }
 }
@@ -672,6 +673,7 @@ void gameMenu::doScrollMenuLogic(bool &p_showText)
             if(millis() - m_lcdScrollChange > CYCLE_DELAY_MILLIS)
             {
                 m_lcd.scrollDisplayRight();
+                m_lcd.scrollDisplayRight();
                 m_lcdScrollChange = millis();
             }
         }
@@ -679,6 +681,7 @@ void gameMenu::doScrollMenuLogic(bool &p_showText)
         {
             if(millis() - m_lcdScrollChange > CYCLE_DELAY_MILLIS)
             {
+                m_lcd.scrollDisplayLeft();
                 m_lcd.scrollDisplayLeft();
                 m_lcdScrollChange = millis();
             }
@@ -810,25 +813,67 @@ int gameMenu::menuSequence()
     switch (m_state)
     {
     case MENU_IN_START_GAME:
-        if(m_changedState)
+        if(!m_playGame)
         {
-            g_map.displayIcon(ICON_START);
+            if(m_changedState)
+            {
+                g_map.displayIcon(ICON_START);
+                
+                m_lcd.print(F(" "));
+                m_lcd.write(ARROW_RIGHT_CHAR);
+                m_lcd.print(F(" start game "));
+                m_lcd.write(ARROW_LEFT_CHAR);
+
+                m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+                m_lcd.print(F("  high  scores"));
+
+                m_changedState = false;
+            }
+
+            if(m_hwCtrl.pressedButton())
+            {
+                m_lcd.clear();
+                m_playGame = true;
+                m_changedState = true;
+                m_inSubmenu = true;
+            }
+        }
+        else
+        {
+            if(m_changedState)
+            {
+                m_lcd.print(F(" play as "));
+                for(int charIdx = 0; charIdx < LETTERS_IN_NAME; charIdx ++)
+                {
+                    m_lcd.print(m_nameArray[charIdx]);
+                }
+                m_lcd.print(" ?");
+
+                m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+                m_lcd.print(F("     "));
+                m_lcd.write(ARROW_RIGHT_CHAR);
+                m_lcd.print(F(" go "));
+                m_lcd.write(ARROW_LEFT_CHAR);
+
+                m_changedState = false;
+            }
+            if(m_hwCtrl.pressedBackButton())
+            {
+                m_inSubmenu = false;
+                m_changedState = true;
+                m_lcd.clear();
+                m_playGame = !m_playGame;   
+            }
             
-            m_lcd.print(F(" "));
-            m_lcd.write(ARROW_RIGHT_CHAR);
-            m_lcd.print(F(" start game "));
-            m_lcd.write(ARROW_LEFT_CHAR);
-
-            m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
-            m_lcd.print(F("  high  scores"));
-
-            m_changedState = false;
+            if(m_hwCtrl.pressedButton())
+            {
+                changeState(m_state, MENU_IN_GAME);
+                m_inSubmenu = false;
+                m_playGame = false;
+            }
+            
         }
 
-        if(m_hwCtrl.pressedButton())
-        {
-            changeState(m_state, MENU_IN_GAME);   
-        }
         break;
 
     case MENU_IN_HIGH_SCORES:

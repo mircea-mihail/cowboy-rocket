@@ -97,6 +97,7 @@ private:
     bool m_showAboutText = false;
     bool m_showHowToPlay = false;
     byte m_deleteHighScores = NOT_SURE_YET;
+    bool m_playGame = false;
 
     byte m_lcdContrast = PWM_RESOLUTION/2;
     byte m_lcdBrightness = PWM_RESOLUTION/2;
