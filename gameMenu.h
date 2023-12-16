@@ -52,6 +52,7 @@
 
 // miscelanious
 #define PWM_RESOLUTION 255
+#define SCORES_TO_SHOW_AT_A_TIME 2
 
 // reset scores stages
 #define NOT_SURE_YET 0 
@@ -71,6 +72,7 @@ private:
     int m_state = MENU_IN_START_GAME;
     int m_settingsState = RETURN_FROM_SETTINGS;
     int m_previousSettingsState = IN_MATRIX_BRIGHTNESS;
+    bool m_showFirstScores = true;
 
     bool m_changedState = true;
     unsigned long m_lastCycleTime = 0;
@@ -208,8 +210,15 @@ private:
 
     // updates the lcd brightness and does the logic to display it on the lcd
     void updateLcdBrightness();
+    
+    // displays up arrow under the appropriate selected name
+    void displayNameCharArrow(int p_initialSpaceOffset, int p_spaceOffset, int p_numberOfOffsets);
 
-    void displayNameCharArrow();
+    // gets from memory the winners' names and therir scores
+    void getWinnersAndScores(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], unsigned long p_winnerScores[NUMBER_OF_SCORES_KEPT]);
+
+    // dispays once two winners offset from the first winner by offset
+    void displayWinnersOnce(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], unsigned long p_winnerScores[NUMBER_OF_SCORES_KEPT], const byte p_offset = 0);
 
     /////////////////////////////////// FUNCTIONS TO ENTER SUBMENUS    
 

@@ -49,13 +49,14 @@
 
 // menu states
 #define MENU_IN_START_GAME 0 
-#define MENU_IN_SETTINGS 1
-#define MENU_IN_ABOUT 2
+#define MENU_IN_HIGH_SCORES 1
+#define MENU_IN_SETTINGS 2
+#define MENU_IN_ABOUT 3
 
 #define LOWEST_MENU_STATE MENU_IN_START_GAME
 #define HIGHEST_MENU_STATE MENU_IN_ABOUT
 // Not options but valid states
-#define MENU_IN_GAME 3
+#define MENU_IN_GAME (HIGHEST_MENU_STATE + 1)
 
 // menu time related
 #define CYCLE_DELAY_MILLIS 400
@@ -105,10 +106,11 @@
 #define MAX_JS_THRESHOLD 712
 
 // icons for the menu
-#define NUMBER_OF_ICONS 3
+#define NUMBER_OF_ICONS 4
 #define ICON_HAMMER 0
 #define ICON_START 1
 #define ICON_ABOUT 2
+#define ICON_TROPHY 3
 
 // player name
 #define LETTERS_IN_NAME 4

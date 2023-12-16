@@ -271,13 +271,19 @@ void gameMenu::updateLcdBrightness()
     }
 }
 
-void gameMenu::displayNameCharArrow()
+void gameMenu::displayNameCharArrow(int p_initialSpaceOffset, int p_spaceOffset, int p_numberOfOffsets)
 {
-    m_lcd.print("   ");
-
-    for(int idx = 0; idx < m_nameArrayIdx; idx++)
+    for(int i = 0; i < p_initialSpaceOffset; i++)
     {
-        m_lcd.print("   ");
+        m_lcd.print(" ");
+    }
+
+    for(int idx = 0; idx < p_numberOfOffsets; idx++)
+    {
+        for(int i = 0; i < p_initialSpaceOffset; i++)
+        {
+            m_lcd.print(" ");
+        }
     }
     
     m_lcd.write(ARROW_UP_CHAR);
@@ -310,7 +316,10 @@ void gameMenu::goToChangeName()
         }
         m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
         m_changedState = false;
-        displayNameCharArrow();
+
+        const byte spacesBeforeFirstArrow = 3;
+        const byte spacesBetweenArrows = 3;
+        displayNameCharArrow(spacesBeforeFirstArrow, spacesBetweenArrows, m_nameArrayIdx);
     }
 
     if(m_hwCtrl.joystickLeft())
@@ -718,6 +727,44 @@ gameMenu::gameMenu()
     m_lcd.createChar(ARROW_UP_CHAR, m_customCharArray[ARROW_UP_CHAR]);    
 }
 
+void gameMenu::getWinnersAndScores(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], unsigned long p_winnerScores[NUMBER_OF_SCORES_KEPT])
+{
+    for(int scoreIdx = 0; scoreIdx < NUMBER_OF_SCORES_KEPT; scoreIdx ++)
+    {
+        const int memoryIdx = SCORE_MEMORY_ADDRESS + scoreIdx + SCORE_SIZE_IN_MEMORY;
+        EEPROM.get(memoryIdx, p_winnerScores[scoreIdx]);
+    }
+    for(int nameIdx = 0; nameIdx < NUMBER_OF_SCORES_KEPT; nameIdx ++)
+    {
+        for(int charIdx = 0; charIdx < LETTERS_IN_NAME; charIdx ++)
+        {
+            const int memoryIdx = SCORE_NAMES_ADDRESS + nameIdx * SIZE_OF_NAME_IN_EEPROM + charIdx;
+            EEPROM.get(memoryIdx, p_namesOfWinners[nameIdx][charIdx]);
+        }
+    }
+}
+
+void gameMenu::displayWinnersOnce(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], unsigned long p_winnerScores[NUMBER_OF_SCORES_KEPT], const byte p_offset = 0)
+{
+    if(m_changedState)
+    {
+        for(int placeIdx = 0 + p_offset; placeIdx < SCORES_TO_SHOW_AT_A_TIME + p_offset; placeIdx ++)
+        {   
+            m_lcd.print(placeIdx + 1);
+            m_lcd.print(". ");
+            for(int charIdx = 0; charIdx < LETTERS_IN_NAME; charIdx ++)
+            {
+                m_lcd.print(p_namesOfWinners[placeIdx][charIdx]);
+            }
+            m_lcd.print(": ");
+            m_lcd.print(p_winnerScores[placeIdx]);
+            m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+        }
+
+        m_changedState = false;
+    }
+}
+
 int gameMenu::menuSequence()
 {
     // only do intro/outro message seq in menu sequence;
@@ -748,7 +795,7 @@ int gameMenu::menuSequence()
             m_lcd.write(ARROW_LEFT_CHAR);
 
             m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
-            m_lcd.print(F("    settings"));
+            m_lcd.print(F("  high  scores"));
 
             m_changedState = false;
         }
@@ -757,6 +804,77 @@ int gameMenu::menuSequence()
         {
             changeState(m_state, MENU_IN_GAME);   
         }
+        break;
+
+    case MENU_IN_HIGH_SCORES:
+        char namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM];
+        unsigned long winnerScores[NUMBER_OF_SCORES_KEPT];
+
+        if(!m_inSubmenu)
+        {
+            if(m_changedState)
+            {   
+                g_map.displayIcon(ICON_TROPHY);
+                
+                m_lcd.write(ARROW_RIGHT_CHAR);
+                m_lcd.print(F(" high  scores "));
+                m_lcd.write(ARROW_LEFT_CHAR);
+
+                m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+                m_lcd.print(F("    settings"));
+
+                m_changedState = false;
+
+                getWinnersAndScores(namesOfWinners, winnerScores);
+            }
+            if(m_hwCtrl.pressedButton())
+            {
+                m_inSubmenu = true;
+                m_changedState = true;
+                m_lcd.clear();
+            }
+        }
+        else
+        {
+            if(m_showFirstScores)
+            {
+                displayWinnersOnce(namesOfWinners, winnerScores);
+                
+                if(m_hwCtrl.joystickDown())
+                {
+                    m_showFirstScores = !m_showFirstScores;
+                    m_changedState = true;
+                    m_lcd.clear();
+                }
+            }
+            else
+            {   
+                if(m_changedState)
+                {
+                    const byte offset = 1;
+                    displayWinnersOnce(namesOfWinners, winnerScores, offset);
+
+
+                    m_changedState = false;
+                }
+                
+                if(m_hwCtrl.joystickUp())
+                {
+                    m_showFirstScores = !m_showFirstScores;
+                    m_changedState = true;
+                    m_lcd.clear();
+                }
+            }
+
+            if(m_hwCtrl.pressedBackButton())
+            {
+                m_changedState = true;
+                m_lcd.clear();
+                m_inSubmenu = false;
+            }
+        }
+        
+
         break;
 
     case MENU_IN_SETTINGS:
