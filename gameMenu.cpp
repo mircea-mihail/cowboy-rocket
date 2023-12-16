@@ -772,7 +772,7 @@ void gameMenu::displayWinnersOnce(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][S
 
 void gameMenu::displayHowToPlay()
 {
-    g_map.displayIcon(ICON_ABOUT);
+    g_map.displayIcon(ICON_GAME_PAD);
 
     if(!m_showHowToPlay)
     {
@@ -884,7 +884,7 @@ int gameMenu::menuSequence()
         {
             if(m_changedState)
             {   
-                g_map.displayIcon(ICON_TROPHY);
+                g_map.displayIcon(ICON_WINNERS);
                 
                 m_lcd.write(ARROW_RIGHT_CHAR);
                 m_lcd.print(F(" high  scores "));

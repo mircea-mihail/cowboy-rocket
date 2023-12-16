@@ -5,6 +5,7 @@ void score::updateMemoryScores(unsigned long scores[NUMBER_OF_SCORES_KEPT])
     byte scoreIdx = FIRST_SCORE_IDX;
     for(int addr = SCORE_MEMORY_ADDRESS; addr < ADDRESS_AFTER_LAST_SCORE; addr += sizeof(unsigned long))
     {
+        // Serial.print(scores[scoreIdx]);
         EEPROM.put(addr, scores[scoreIdx ++]);
     }
 }

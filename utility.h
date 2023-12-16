@@ -106,11 +106,12 @@
 #define MAX_JS_THRESHOLD 712
 
 // icons for the menu
-#define NUMBER_OF_ICONS 4
+#define NUMBER_OF_ICONS 5
 #define ICON_HAMMER 0
 #define ICON_START 1
 #define ICON_ABOUT 2
-#define ICON_TROPHY 3
+#define ICON_WINNERS 3
+#define ICON_GAME_PAD 4
 
 // player name
 #define LETTERS_IN_NAME 4
