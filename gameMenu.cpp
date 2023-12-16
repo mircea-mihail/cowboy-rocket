@@ -390,6 +390,7 @@ void gameMenu::doResetScoresLogic()
 {
     if(m_hwCtrl.pressedBackButton())
     {
+        m_deleteHighScores = NOT_SURE_YET;
         m_inSettingsSubmenu = false;
         m_changedState = true;
         m_lcd.clear();
@@ -404,9 +405,8 @@ void gameMenu::doResetScoresLogic()
             m_lcd.print(F("  reset scores"));
             m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
             
-            m_lcd.print("   ");
             m_lcd.write(ARROW_RIGHT_CHAR);
-            m_lcd.print(F(" delete "));
+            m_lcd.print(F("confirm delete"));
             m_lcd.write(ARROW_LEFT_CHAR);
 
             m_changedState = false;
@@ -416,14 +416,75 @@ void gameMenu::doResetScoresLogic()
             m_changedState = true;
             m_inSettingsSubmenu = true;
             m_lcd.clear();
-            // m_deleteHighScores ++;
+            m_deleteHighScores ++;
         }
 
         break;
     
     case ARE_YOU_SURE:
+        if(m_changedState)
+        {
+            //             ----\\\\----////
+            m_lcd.print(F("? are you sure ?"));
+            m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+            
+            m_lcd.print("  ");
+            m_lcd.write(ARROW_RIGHT_CHAR);
+            m_lcd.print(F(" yes I am "));
+            m_lcd.write(ARROW_LEFT_CHAR);
+
+            m_changedState = false;
+        }
+        if(m_hwCtrl.pressedButton())
+        {
+            m_changedState = true;
+            m_inSettingsSubmenu = true;
+            m_lcd.clear();
+            m_deleteHighScores ++;
+        }
 
         break;
+
+    case SURE_SURE:
+        if(m_changedState)
+        {
+            //             ----\\\\----////
+            m_lcd.print(F("  ? positive ?"));
+            m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+            
+            m_lcd.write(ARROW_RIGHT_CHAR);
+            m_lcd.print(F("delete my data"));
+            m_lcd.write(ARROW_LEFT_CHAR);
+
+            m_changedState = false;
+        }
+        if(m_hwCtrl.pressedButton())
+        {
+            m_changedState = true;
+            m_inSettingsSubmenu = true;
+            m_lcd.clear();
+            m_deleteHighScores ++;
+        }
+
+        break;
+
+    case ABSOLUTELY_POSITIVE:
+        if(m_changedState)
+        {
+            //             ----\\\\----////
+            m_lcd.print(F("  data deleted"));
+            m_changedState = false;
+        }
+        if(m_hwCtrl.pressedButton())
+        {
+            m_changedState = true;
+            m_inSettingsSubmenu = false;
+            m_lcd.clear();
+            m_deleteHighScores = NOT_SURE_YET;
+        }
+
+        break;
+
     default:
         break;
     }

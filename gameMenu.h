@@ -57,8 +57,7 @@
 #define NOT_SURE_YET 0 
 #define ARE_YOU_SURE 1
 #define SURE_SURE 2
-#define CERTAIN 3
-#define ABSOLUTELY_POSITIVE 4
+#define ABSOLUTELY_POSITIVE 3
 
 extern gameMap g_map;
 extern bool g_disableSound;
