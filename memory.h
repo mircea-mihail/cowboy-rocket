@@ -8,7 +8,7 @@
 // the start memory address is not zero in order to prevent early wear on the eeprom
 
 // score related
-#define SCORE_SIZE_IN_MEMORY (sizeof(unsigned long))
+#define SCORE_SIZE_IN_MEMORY (sizeof(long))
 #define SCORE_MEMORY_ADDRESS 900
 #define NUMBER_OF_SCORES_KEPT 3 
 #define ADDRESS_AFTER_LAST_SCORE (SCORE_MEMORY_ADDRESS + NUMBER_OF_SCORES_KEPT * SCORE_SIZE_IN_MEMORY)

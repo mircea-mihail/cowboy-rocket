@@ -7,6 +7,15 @@
 #include "gameMenu.h"
 #include "inputHwControl.h"
 
+//to do in order:
+// change scoring system 
+
+// make levels 
+
+// check tasks
+
+// do enemies 
+
 // skip animation 
 #define ANIMATION_SKIP_DELAY_MS 500
 
@@ -118,8 +127,10 @@ void doInGameRoutine()
         }
         if(millis() - g_timeForBulletUpdate > WINNING_FRAME_DISPLAY_TIME)
         {
+            g_menu.resetRunSpecificVariables();
             g_gameState = GAME_WON;
             g_timeForBulletUpdate = DEFAULT_TIME_VAL;
+
             Serial.print(F("Your score: "));
             Serial.println(g_score.stopCounting());
         }

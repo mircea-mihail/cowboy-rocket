@@ -9,6 +9,7 @@
 #include "gameMap.h"
 #include "memory.h"
 #include "player.h"
+#include "score.h"
 
 // lcd default characteristics
 #define LCD_COLS 16
@@ -65,6 +66,7 @@
 extern gameMap g_map;
 extern bool g_disableSound;
 extern player g_player1;
+extern score g_score;
 
 class gameMenu
 {
@@ -94,7 +96,9 @@ private:
 
     char m_nameArray[LETTERS_IN_NAME] = {'A', 'A', 'A', 'A'};
     int m_nameArrayIdx = 0;
-    int m_wallsLeftOnMap = 0;  
+    int m_wallsLeftOnMap = 0;
+    int m_enemiesLeftOnMap = 0;
+      
     byte m_playerLives = 0;
 
     // menu variables:
@@ -231,10 +235,10 @@ private:
     void displayNameCharArrow(int p_initialSpaceOffset, int p_spaceOffset, int p_numberOfOffsets);
 
     // gets from memory the winners' names and therir scores
-    void getWinnersAndScores(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], unsigned long p_winnerScores[NUMBER_OF_SCORES_KEPT]);
+    void getWinnersAndScores(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], long p_winnerScores[NUMBER_OF_SCORES_KEPT]);
 
     // dispays once two winners offset from the first winner by offset
-    void displayWinnersOnce(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], unsigned long p_winnerScores[NUMBER_OF_SCORES_KEPT], const byte p_offset = 0);
+    void displayWinnersOnce(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], long p_winnerScores[NUMBER_OF_SCORES_KEPT], const byte p_offset = 0);
 
     /////////////////////////////////// FUNCTIONS TO ENTER SUBMENUS    
 
@@ -271,6 +275,9 @@ public:
     
     // used to reset the menu state to begin printing all the settings options after finishing a game
     void setStateToDefault();
+
+    // reset variables depentent on runs 
+    void resetRunSpecificVariables();
 };
 
 #endif

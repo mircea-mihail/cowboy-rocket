@@ -475,7 +475,7 @@ void gameMenu::doResetScoresLogic()
             m_lcd.clear();
             m_deleteHighScores ++;
 
-            unsigned long smallestScore = 0;
+            long smallestScore = 0;
             char defaultLetter = ' ';
             for(int memPtr = SCORE_MEMORY_ADDRESS; memPtr < ADDRESS_AFTER_LAST_SCORE; memPtr += SCORE_SIZE_IN_MEMORY)
             {
@@ -731,11 +731,11 @@ gameMenu::gameMenu()
     m_lcd.createChar(PLAYER_LIFE_CHAR, m_customCharArray[PLAYER_LIFE_CHAR]);    
 }
 
-void gameMenu::getWinnersAndScores(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], unsigned long p_winnerScores[NUMBER_OF_SCORES_KEPT])
+void gameMenu::getWinnersAndScores(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], long p_winnerScores[NUMBER_OF_SCORES_KEPT])
 {
     for(int scoreIdx = 0; scoreIdx < NUMBER_OF_SCORES_KEPT; scoreIdx ++)
     {
-        const int memoryIdx = SCORE_MEMORY_ADDRESS + scoreIdx + SCORE_SIZE_IN_MEMORY;
+        const int memoryIdx = SCORE_MEMORY_ADDRESS + scoreIdx * SCORE_SIZE_IN_MEMORY;
         EEPROM.get(memoryIdx, p_winnerScores[scoreIdx]);
     }
     for(int nameIdx = 0; nameIdx < NUMBER_OF_SCORES_KEPT; nameIdx ++)
@@ -748,7 +748,7 @@ void gameMenu::getWinnersAndScores(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][
     }
 }
 
-void gameMenu::displayWinnersOnce(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], unsigned long p_winnerScores[NUMBER_OF_SCORES_KEPT], const byte p_offset = 0)
+void gameMenu::displayWinnersOnce(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], long p_winnerScores[NUMBER_OF_SCORES_KEPT], const byte p_offset = 0)
 {
     if(m_changedState)
     {
@@ -878,7 +878,7 @@ int gameMenu::menuSequence()
 
     case MENU_IN_HIGH_SCORES:
         char namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM];
-        unsigned long winnerScores[NUMBER_OF_SCORES_KEPT];
+        long winnerScores[NUMBER_OF_SCORES_KEPT];
 
         if(!m_inSubmenu)
         {
@@ -994,9 +994,15 @@ int gameMenu::menuSequence()
     case MENU_IN_GAME:
         int wallsOnMap = g_map.getWallsLeft();
         int playerLives = g_player1.getLives();
+        g_score.periodicScoreDecrease();
 
         if(wallsOnMap != m_wallsLeftOnMap || playerLives != m_playerLives)
         {
+            if(m_wallsLeftOnMap > wallsOnMap)
+            {
+                g_score.updateScore(m_wallsLeftOnMap - wallsOnMap);
+            }
+
             m_lcd.clear();
             m_wallsLeftOnMap = wallsOnMap;
             m_playerLives = playerLives;
@@ -1033,4 +1039,9 @@ void gameMenu::printEndMessage()
 void gameMenu::setStateToDefault()
 {
     changeState(m_state, MENU_IN_START_GAME);
+}
+
+void gameMenu::resetRunSpecificVariables()
+{
+    m_wallsLeftOnMap = 0;
 }

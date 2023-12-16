@@ -16,10 +16,9 @@ class player : public matrixEntity
     bool m_foundExplodingBullets = false;
 
     byte m_lives = 3;
-    unsigned long m_score = 0;
 
 private:
-    unsigned long long m_lastMoved = 0; // Tracks the last time the LED moved
+    unsigned long m_lastMoved = 0; // Tracks the last time the LED moved
 
     // stores the next movement of the player in the next move members
     void storeMovement(int p_xCommand, int p_yCommand);
