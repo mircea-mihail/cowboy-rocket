@@ -64,7 +64,6 @@
 
 // matrix occupation related
 #define MAP_NUMBER_OF_ORIENTATIONS 4
-#define MAP_BULLET_RANGE 1
 
 #define MAP_EMPTY 0
 #define MAP_WALL 1
@@ -81,7 +80,7 @@
 // bullet defines
 #define BULLET_TICK_RATE 200
 #define SHOOTING_COOLDOWN (BULLET_TICK_RATE)
-#define DEFAULT_RANGE 2
+#define DEFAULT_BULLET_RANGE 2
 #define BULLET_BLINK_INTERVAL 30
 
 // player defines 

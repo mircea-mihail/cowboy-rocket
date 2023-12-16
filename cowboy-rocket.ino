@@ -63,7 +63,7 @@ void startLevelSequence()
     g_score.startCounting();
     g_score.printHighScores();
     
-    g_player1.resetPowerUps();
+    g_player1.resetValues();
     g_player1.goToDefaultPosition();
 
     // g_map.printEmptyMatrix();
@@ -97,6 +97,7 @@ void doInGameRoutine()
     int xPosNewBullet, yPosNewBullet;
     byte bulletDirection;
     bool isExplodingType;
+
     if(g_player1.shoot(xPosNewBullet, yPosNewBullet, bulletDirection, isExplodingType))
     {
         g_bulletList.setLastBulletUpdate();
@@ -109,7 +110,7 @@ void doInGameRoutine()
 
     g_map.updateDisplay(xPosPlayer, yPosPlayer);
 
-    if(g_map.checkWinningCondition())
+    if(g_map.checkWinningCondition() || g_player1.getLives() == 0)
     {
         if(g_timeForBulletUpdate == DEFAULT_TIME_VAL)
         {

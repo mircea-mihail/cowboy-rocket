@@ -14,7 +14,9 @@ class player : public matrixEntity
     byte m_direction;
     unsigned long m_lastShot = 0;
     bool m_foundExplodingBullets = false;
+
     byte m_lives = 3;
+    unsigned long m_score = 0;
 
 private:
     unsigned long long m_lastMoved = 0; // Tracks the last time the LED moved
@@ -48,11 +50,14 @@ public:
     // puts the current player coordonates in p_xPosPlayer and p_yPosPlayer
     void getCoordonates(int &p_xPosPlayer, int &p_yPosPlayer);
 
-    // removes power ups from player
-    void resetPowerUps();
+    // removes power ups and gives back lives to player
+    void resetValues();
 
     // returns the number of lives the player has lefts
     byte getLives();
+
+    // decreases the player's life
+    void takeDamage();
 };
 
 #endif

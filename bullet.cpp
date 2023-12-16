@@ -1,6 +1,6 @@
 #include "bullet.h"
 
-bullet::bullet(int p_xPos, int p_yPos, byte p_direction, bool p_explodingBullets = false ,int p_rangeLeft = DEFAULT_RANGE) : m_direction(p_direction)
+bullet::bullet(int p_xPos, int p_yPos, byte p_direction, bool p_explodingBullets = false ,int p_rangeLeft = DEFAULT_BULLET_RANGE) : m_direction(p_direction)
 {
     m_xPos = p_xPos;
     m_yPos = p_yPos;
@@ -108,6 +108,18 @@ void bullet::explodeBullet()
             g_map.setPositionValue(m_xPos, explosionBottom, MAP_BULLET);
             
             m_hasWaitedATick = true;
+
+            int xPlayerPos, yPlayerPos;
+            g_player1.getCoordonates(xPlayerPos, yPlayerPos);
+            if( xPlayerPos == m_xPos && yPlayerPos == m_yPos ||
+                xPlayerPos == explosionLeft && yPlayerPos == m_yPos ||
+                xPlayerPos == explosionRight && yPlayerPos == m_yPos ||
+                xPlayerPos == m_xPos && yPlayerPos == explosionTop ||
+                xPlayerPos == m_xPos && yPlayerPos == explosionBottom
+            )
+            {
+                g_player1.takeDamage();
+            }
         }
         else
         {

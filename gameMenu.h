@@ -95,6 +95,7 @@ private:
     char m_nameArray[LETTERS_IN_NAME] = {'A', 'A', 'A', 'A'};
     int m_nameArrayIdx = 0;
     int m_wallsLeftOnMap = 0;  
+    byte m_playerLives = 0;
 
     // menu variables:
     bool m_showAboutText = false;

@@ -993,11 +993,13 @@ int gameMenu::menuSequence()
 
     case MENU_IN_GAME:
         int wallsOnMap = g_map.getWallsLeft();
-        
-        if(wallsOnMap != m_wallsLeftOnMap)
+        int playerLives = g_player1.getLives();
+
+        if(wallsOnMap != m_wallsLeftOnMap || playerLives != m_playerLives)
         {
             m_lcd.clear();
             m_wallsLeftOnMap = wallsOnMap;
+            m_playerLives = playerLives;
 
             for(int charIdx = 0; charIdx < LETTERS_IN_NAME; charIdx ++)
             {

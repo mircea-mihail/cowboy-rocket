@@ -3,8 +3,10 @@
 
 #include "matrixEntity.h"
 #include "gameMap.h"
+#include "player.h"
 
 extern gameMap g_map;
+extern player g_player1;
 
 #define EXPLOSION_RADIUS 1
 
@@ -20,7 +22,7 @@ private:
 
 public:
     // initialises the bullet members and interacts with the map element on the spawning position
-    bullet(int p_xPos, int p_yPos, byte p_direction, bool p_explodingBullets = false, int p_rangeLeft = DEFAULT_RANGE);
+    bullet(int p_xPos, int p_yPos, byte p_direction, bool p_explodingBullets = false, int p_rangeLeft = DEFAULT_BULLET_RANGE);
 
     // updates the bullet position using the direction it is going in
     bool updatePosition() override;

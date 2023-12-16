@@ -147,12 +147,21 @@ void player::getCoordonates(int &p_xPosPlayer, int &p_yPosPlayer)
     p_yPosPlayer = m_yPos;
 }
 
-void player::resetPowerUps()
+void player::resetValues()
 {
     m_foundExplodingBullets = false;
+    m_lives = 3;
 }
 
 byte player::getLives()
 {
     return m_lives;
+}
+
+void player::takeDamage()
+{
+    if(m_lives != 0)
+    {
+        m_lives --;
+    }
 }
