@@ -147,3 +147,8 @@ void player::resetPowerUps()
 {
     m_foundExplodingBullets = false;
 }
+
+byte player::getLives()
+{
+    return m_lives;
+}

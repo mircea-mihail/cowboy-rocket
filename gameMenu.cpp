@@ -728,6 +728,7 @@ gameMenu::gameMenu()
     m_lcd.createChar(ARROW_RIGHT_CHAR, m_customCharArray[ARROW_RIGHT_CHAR]);
     m_lcd.createChar(ARROW_LEFT_CHAR, m_customCharArray[ARROW_LEFT_CHAR]);
     m_lcd.createChar(ARROW_UP_CHAR, m_customCharArray[ARROW_UP_CHAR]);    
+    m_lcd.createChar(PLAYER_LIFE_CHAR, m_customCharArray[PLAYER_LIFE_CHAR]);    
 }
 
 void gameMenu::getWinnersAndScores(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], unsigned long p_winnerScores[NUMBER_OF_SCORES_KEPT])
@@ -842,12 +843,11 @@ int gameMenu::menuSequence()
         {
             if(m_changedState)
             {
-                m_lcd.print(F(" play as "));
+                m_lcd.print(F("  play as "));
                 for(int charIdx = 0; charIdx < LETTERS_IN_NAME; charIdx ++)
                 {
                     m_lcd.print(m_nameArray[charIdx]);
                 }
-                m_lcd.print(" ?");
 
                 m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
                 m_lcd.print(F("     "));
@@ -993,15 +993,25 @@ int gameMenu::menuSequence()
 
     case MENU_IN_GAME:
         int wallsOnMap = g_map.getWallsLeft();
+        
         if(wallsOnMap != m_wallsLeftOnMap)
         {
             m_lcd.clear();
             m_wallsLeftOnMap = wallsOnMap;
-            m_lcd.print(F(" walls left:"));
-            m_lcd.print(m_wallsLeftOnMap);
-                        
+
+            for(int charIdx = 0; charIdx < LETTERS_IN_NAME; charIdx ++)
+            {
+                m_lcd.print(m_nameArray[charIdx]);
+            }
+            m_lcd.print(" ");
+            for(int life = 0; life < g_player1.getLives(); life++)
+            {
+                m_lcd.write(PLAYER_LIFE_CHAR);
+            }
+
             m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
-            m_lcd.print(F(" get 'em COWBOY"));
+            m_lcd.print(m_wallsLeftOnMap);
+            m_lcd.print(F(" walls"));
         }
         break;    
     

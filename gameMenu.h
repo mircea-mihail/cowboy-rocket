@@ -8,6 +8,7 @@
 #include "inputHwControl.h"
 #include "gameMap.h"
 #include "memory.h"
+#include "player.h"
 
 // lcd default characteristics
 #define LCD_COLS 16
@@ -41,7 +42,7 @@
 
 // custom lcd characters
 #define LCD_CHARACTER_HEIGHT 8
-#define NUMBER_OF_CUSTOM_CHARACTERS 6
+#define NUMBER_OF_CUSTOM_CHARACTERS 7
 
 #define EMPTY_CHAR 0
 #define SUN_CHAR 1
@@ -49,6 +50,7 @@
 #define ARROW_RIGHT_CHAR 3
 #define ARROW_LEFT_CHAR 4
 #define ARROW_UP_CHAR 5
+#define PLAYER_LIFE_CHAR 6
 
 // miscelanious
 #define PWM_RESOLUTION 255
@@ -62,6 +64,7 @@
 
 extern gameMap g_map;
 extern bool g_disableSound;
+extern player g_player1;
 
 class gameMenu
 {
@@ -165,6 +168,16 @@ private:
             B01110,
             B00000,
             B00000
+        },
+        {
+            B11000,
+            B01000,
+            B01000,
+            B01000,
+            B01110,
+            B11010,
+            B01110,
+            B00111
         }
     };
 

@@ -66,7 +66,7 @@ void startLevelSequence()
     g_player1.resetPowerUps();
     g_player1.goToDefaultPosition();
 
-    g_map.printEmptyMatrix();
+    // g_map.printEmptyMatrix();
     // g_score.clearScores();
 }
 
