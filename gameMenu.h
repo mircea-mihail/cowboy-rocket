@@ -95,6 +95,7 @@ private:
 
     // menu variables:
     bool m_showAboutText = false;
+    bool m_showHowToPlay = false;
     byte m_deleteHighScores = NOT_SURE_YET;
 
     byte m_lcdContrast = PWM_RESOLUTION/2;
@@ -233,8 +234,11 @@ private:
     // deals with the display of the about in main menu and in submenu
     void displayAboutMenu();
 
-    // goes through the about submenu and exits/enters it depending on input
-    void doAboutMenuLogic();
+    // goes through the appropriate submenu and exits/enters it depending on input. Only scrolls through text left and right
+    void doScrollMenuLogic(bool &p_showText);
+
+    // deals with the display of the how to play menu in main menu and in submenu
+    void displayHowToPlay();
 
     // does quadruple checking before deleting high scores ( some people might be mad about the decision )
     void doResetScoresLogic();

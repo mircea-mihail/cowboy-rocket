@@ -663,9 +663,9 @@ void gameMenu::displayAboutMenu()
     }
 }
 
-void gameMenu::doAboutMenuLogic()
+void gameMenu::doScrollMenuLogic(bool &p_showText)
 {
-    if(m_showAboutText)
+    if(p_showText)
     {
         if(m_hwCtrl.joystickLeft())
         {
@@ -685,18 +685,18 @@ void gameMenu::doAboutMenuLogic()
         }
     }
 
-    if(m_hwCtrl.pressedButton() && !m_showAboutText)
+    if(m_hwCtrl.pressedButton() && !p_showText)
     {
         m_inSubmenu = true;
-        m_showAboutText = !m_showAboutText;
+        p_showText = !p_showText;
         m_lcd.clear();
         m_changedState = true;
     }
     
-    if(m_hwCtrl.pressedBackButton() && m_showAboutText)
+    if(m_hwCtrl.pressedBackButton() && p_showText)
     {
         m_inSubmenu = false;
-        m_showAboutText = !m_showAboutText;
+        p_showText = !p_showText;
         m_lcd.clear();
         m_changedState = true;
         }
@@ -761,6 +761,31 @@ void gameMenu::displayWinnersOnce(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][S
             m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
         }
 
+        m_changedState = false;
+    }
+}
+
+
+void gameMenu::displayHowToPlay()
+{
+    g_map.displayIcon(ICON_ABOUT);
+
+    if(!m_showHowToPlay)
+    {
+        m_lcd.write(ARROW_RIGHT_CHAR);
+        m_lcd.print(F(" how to play? "));
+        m_lcd.write(ARROW_LEFT_CHAR);
+
+        m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+        m_lcd.print(F("   learn more"));
+
+        m_changedState = false;
+    }
+    else
+    {                //____----____----____----____----____----
+        m_lcd.print(F("use js to move and blue button to shoot"));
+        m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_COL);
+        m_lcd.print(F("shoot the enemies, walls and don't die!"));
         m_changedState = false;
     }
 }
@@ -849,14 +874,8 @@ int gameMenu::menuSequence()
             }
             else
             {   
-                if(m_changedState)
-                {
-                    const byte offset = 1;
-                    displayWinnersOnce(namesOfWinners, winnerScores, offset);
-
-
-                    m_changedState = false;
-                }
+                const byte offset = 1;
+                displayWinnersOnce(namesOfWinners, winnerScores, offset);
                 
                 if(m_hwCtrl.joystickUp())
                 {
@@ -890,7 +909,7 @@ int gameMenu::menuSequence()
                 m_lcd.write(ARROW_LEFT_CHAR);
 
                 m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
-                m_lcd.print(F("   learn more"));
+                m_lcd.print(F("  how to play?"));
 
                 m_changedState = false;
                 m_inSubmenu = false;
@@ -914,9 +933,18 @@ int gameMenu::menuSequence()
             displayAboutMenu();
         }
 
-        doAboutMenuLogic();
+        doScrollMenuLogic(m_showAboutText);
 
         break; 
+
+    case MENU_IN_HOW_TO_PLAY:
+        if(m_changedState)
+        {
+            displayHowToPlay();
+        }
+        
+        doScrollMenuLogic(m_showHowToPlay);
+        break;
 
     case MENU_IN_GAME:
         int wallsOnMap = g_map.getWallsLeft();
