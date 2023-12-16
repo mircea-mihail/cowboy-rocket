@@ -115,7 +115,7 @@ bool player::updatePosition()
     return false;
 }
 
-void player::shoot()
+bool player::shoot(int &p_xPosNewBullet, int &p_yPosNewBullet, byte &p_bulletDirection, bool &p_isExplodingType)
 {
     if(millis() - m_lastShot > SHOOTING_COOLDOWN && pulledTrigger())
     {
@@ -124,11 +124,15 @@ void player::shoot()
         getBulletPlacement(xPos, yPos);
         dealWithOutOfBounds(xPos, yPos);
         
-        g_bulletList.setLastBulletUpdate();
-        g_bulletList.addBulletNode(new bullet(xPos, yPos, m_direction, m_foundExplodingBullets));
+        p_xPosNewBullet = xPos;
+        p_yPosNewBullet = yPos;
+        p_bulletDirection = m_direction;
+        p_isExplodingType = m_foundExplodingBullets;
 
         m_lastShot = millis();        
+        return true;
     }
+    return false;
 }
 
 void player::goToDefaultPosition()

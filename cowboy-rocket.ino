@@ -93,12 +93,21 @@ void doInGameRoutine()
 {
     g_bulletList.updateBullets();
     g_player1.updatePosition();
-    g_player1.shoot();
 
-    int p_xPosPlayer, p_yPosPlayer;
-    g_player1.getCoordonates(p_xPosPlayer, p_yPosPlayer);
+    int xPosNewBullet, yPosNewBullet;
+    byte bulletDirection;
+    bool isExplodingType;
+    if(g_player1.shoot(xPosNewBullet, yPosNewBullet, bulletDirection, isExplodingType))
+    {
+        g_bulletList.setLastBulletUpdate();
+        g_bulletList.addBulletNode(new bullet(xPosNewBullet, yPosNewBullet, bulletDirection, isExplodingType));
+        
+    }
 
-    g_map.updateDisplay(p_xPosPlayer, p_yPosPlayer);
+    int xPosPlayer, yPosPlayer;
+    g_player1.getCoordonates(xPosPlayer, yPosPlayer);
+
+    g_map.updateDisplay(xPosPlayer, yPosPlayer);
 
     if(g_map.checkWinningCondition())
     {

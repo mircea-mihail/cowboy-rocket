@@ -2,11 +2,9 @@
 #define PLAYER_H
 
 #include "matrixEntity.h"
-#include "bulletList.h"
 #include "gameMap.h"
 #include "inputHwControl.h"
 
-extern bulletList g_bulletList;
 extern gameMap g_map;
 
 // player class to control a player
@@ -40,8 +38,9 @@ public:
     // updates the player's position based on the joystick movement
     bool updatePosition() override;
 
-    // tries to shoot if the shooting cooldown has expired and the player pressed the shoot button
-    void shoot();
+    // returns true if the shooting cooldown has expired and the player pressed the shoot button. Also gives through its parrameters 
+    // sufficient information for the creation of a new bullet by the bulletList class
+    bool shoot(int &playerXPos, int &playerYPos, byte &facingDirection, bool &isExplodingType);
 
     // moves the player on their default position
     void goToDefaultPosition();
