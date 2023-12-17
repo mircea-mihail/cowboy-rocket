@@ -32,10 +32,15 @@
 #define ADDRESS_OF_SOUND_TOGGLE (ADDRESS_OF_LAST_NAME_USED + LAST_NAME_USED_SIZE)
 #define SIZE_OF_SOUND_TOGGLE sizeof(byte)
 
+#define ADDRESS_OF_CURRENT_DIFFICULTY (ADDRESS_OF_SOUND_TOGGLE + SIZE_OF_SOUND_TOGGLE)
+#define SIZE_OF_CURRENT_DIFFICULTY sizeof(byte)
+
 /// visual map:
 /*               addr (in EEPROM)
 ---------------- 1024 (Max size)
 ...
+---------------- 933
+difficulty 
 ---------------- 932
 sound toggle
 ---------------- 931

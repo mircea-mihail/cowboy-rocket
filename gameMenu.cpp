@@ -329,7 +329,7 @@ void gameMenu::displayNameCharArrow(int p_initialSpaceOffset, int p_spaceOffset,
 
     for(int idx = 0; idx < p_numberOfOffsets; idx++)
     {
-        for(int i = 0; i < p_initialSpaceOffset; i++)
+        for(int i = 0; i < p_spaceOffset; i++)
         {
             m_lcd.print(" ");
         }
@@ -439,6 +439,73 @@ void gameMenu::goToChangeName()
 
             m_lastNameArrowChange = millis();
             m_changedState = true;
+            m_lcd.clear();
+        }
+    }
+}
+
+
+void gameMenu::goToChangeDifficulty()
+{
+    if(m_hwCtrl.pressedBackButton())
+    {
+        m_inSettingsSubmenu = false;
+        m_changedState = true;
+        m_lcd.clear();
+
+        // save last difficulty picked used in memory
+        EEPROM.update(ADDRESS_OF_CURRENT_DIFFICULTY, m_currentDifficulty);
+        
+        return;
+    }
+
+    if(m_changedState)
+    {
+            //       ----====----====
+        m_lcd.print("easy  mid COWBOY");
+
+        m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+        m_changedState = false;
+
+        const byte spacesBeforeFirstArrow = 2;
+        const byte spacesBetweenArrows = 5;
+        displayNameCharArrow(spacesBeforeFirstArrow, spacesBetweenArrows, m_currentDifficulty - 1);
+    }
+
+    if(m_hwCtrl.joystickLeft())
+    {
+        if(millis() - m_lastDifficultyChange > CYCLE_DELAY_MILLIS)
+        {
+            m_changedState = true;
+            if(m_currentDifficulty == DIFFICULTY_EASY)
+            {
+                m_currentDifficulty = DIFFICULTY_COWBOY;
+            }
+            else
+            {
+                m_currentDifficulty --;
+            }
+            
+            m_lastDifficultyChange = millis();
+            m_lcd.clear();
+        }
+    }
+
+    if(m_hwCtrl.joystickRight())
+    {
+        if(millis() - m_lastDifficultyChange > CYCLE_DELAY_MILLIS)
+        {
+            m_changedState = true;
+            if(m_currentDifficulty == DIFFICULTY_COWBOY)
+            {
+                m_currentDifficulty = DIFFICULTY_EASY;
+            }
+            else
+            {
+                m_currentDifficulty++;
+            }
+
+            m_lastDifficultyChange = millis();
             m_lcd.clear();
         }
     }
@@ -678,6 +745,56 @@ void gameMenu::goToSettingsMenu()
 
     case IN_RESET_HIGH_SCORES:
         doResetScoresLogic();
+        
+        break;
+
+    case IN_SET_DIFFICULTY:
+        if(!m_inSettingsSubmenu)
+        {
+            if(m_changedState)
+            {
+                m_lcd.print(" ");
+                switch (m_currentDifficulty)
+                {
+                    case DIFFICULTY_EASY:
+                        m_lcd.print("simple");
+                        break;
+                        
+                    case DIFFICULTY_MEDIUM:
+                        m_lcd.print("medium");
+                        break;
+
+                    case DIFFICULTY_COWBOY:
+                        m_lcd.print("COWBOY");
+                        break;
+                    
+                    default:
+                        break;
+                }
+                
+                m_lcd.print(F(" scuffle"));
+
+                m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+                m_lcd.print("   ");
+                m_lcd.write(ARROW_RIGHT_CHAR);       
+                m_lcd.print(F(" change "));
+                m_lcd.write(ARROW_LEFT_CHAR);       
+
+                m_changedState = false;
+            }
+
+            if(m_hwCtrl.pressedButton())
+            {   
+                m_inSettingsSubmenu = true;
+                m_changedState = true;
+                m_lcd.clear();
+            }
+        }
+        else
+        {
+            goToChangeDifficulty();
+        }
+
         break;
 
     case RETURN_FROM_SETTINGS:
@@ -754,6 +871,40 @@ void gameMenu::doScrollMenuLogic(bool &p_showText)
         }
 }
 
+
+void gameMenu::updateInGameDisplay(int p_wallsOnMap, byte p_playerLives)
+{
+    long playerScore = g_score.getScore();
+    if(m_wallsLeftOnMap > p_wallsOnMap)
+    {
+        g_score.updateScore(m_wallsLeftOnMap - p_wallsOnMap);
+    }
+
+    m_lcd.clear();
+    m_wallsLeftOnMap = p_wallsOnMap;
+    m_playerLives = p_playerLives;
+
+    for(int charIdx = 0; charIdx < LETTERS_IN_NAME; charIdx ++)
+    {
+        m_lcd.print(m_nameArray[charIdx]);
+    }
+    m_lcd.print("  ");
+    m_lcd.print(playerScore);
+    m_lcd.print("P ");
+    m_lcd.setCursor(SCORE_COL_ON_LCD, FIRST_LCD_ROW);
+    for(int life = 0; life < g_player1.getLives(); life++)
+    {
+        m_lcd.write(PLAYER_LIFE_CHAR);
+    }
+
+    m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+    m_lcd.print(m_wallsLeftOnMap);
+    m_lcd.print(F(" walls"));
+
+    m_lcd.setCursor(GAMEPLAY_LVL_COL_ON_LCD, SECOND_LCD_ROW);
+    m_lcd.print(F("lvl "));
+    m_lcd.print(m_currentLevel);
+}
 ////////////////////////// public methods:
 
 gameMenu::gameMenu()
@@ -1042,47 +1193,17 @@ int gameMenu::menuSequence()
 
     case MENU_IN_GAME:
         int wallsOnMap = g_map.getWallsLeft();
-        int playerLives = g_player1.getLives();
+        byte playerLives = g_player1.getLives();
+
         if(!m_inAnimation)
         {
             g_score.periodicScoreDecrease();
         }
 
-        if( (wallsOnMap != m_wallsLeftOnMap 
-            || playerLives != m_playerLives
-            || g_score.changedScore())
-            && !m_inAnimation)
+        if( (wallsOnMap != m_wallsLeftOnMap || playerLives != m_playerLives
+            || g_score.changedScore()) && !m_inAnimation)
         {
-            long playerScore = g_score.getScore();
-            if(m_wallsLeftOnMap > wallsOnMap)
-            {
-                g_score.updateScore(m_wallsLeftOnMap - wallsOnMap);
-            }
-
-            m_lcd.clear();
-            m_wallsLeftOnMap = wallsOnMap;
-            m_playerLives = playerLives;
-
-            for(int charIdx = 0; charIdx < LETTERS_IN_NAME; charIdx ++)
-            {
-                m_lcd.print(m_nameArray[charIdx]);
-            }
-            m_lcd.print("  ");
-            m_lcd.print(playerScore);
-            m_lcd.print("P ");
-            m_lcd.setCursor(SCORE_COL_ON_LCD, FIRST_LCD_ROW);
-            for(int life = 0; life < g_player1.getLives(); life++)
-            {
-                m_lcd.write(PLAYER_LIFE_CHAR);
-            }
-
-            m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
-            m_lcd.print(m_wallsLeftOnMap);
-            m_lcd.print(F(" walls"));
-
-            m_lcd.setCursor(GAMEPLAY_LVL_COL_ON_LCD, SECOND_LCD_ROW);
-            m_lcd.print(F("lvl "));
-            m_lcd.print(m_currentLevel);
+            updateInGameDisplay(wallsOnMap, playerLives);
         }
         break;    
     

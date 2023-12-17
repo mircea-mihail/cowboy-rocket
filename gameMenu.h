@@ -40,11 +40,12 @@
 #define IN_ENTER_NAME 3
 #define IN_TOGGLE_SOUND 4
 #define IN_RESET_HIGH_SCORES 5
+#define IN_SET_DIFFICULTY 6
 
-#define RETURN_FROM_SETTINGS 6 // always the biggest of the options
+#define RETURN_FROM_SETTINGS 7 // always the biggest of the options
 
 #define LOWEST_SETTINGS_STATE IN_MATRIX_BRIGHTNESS
-#define HIGHEST_SETTINGS_STATE IN_RESET_HIGH_SCORES
+#define HIGHEST_SETTINGS_STATE IN_SET_DIFFICULTY
 
 // custom lcd characters
 #define LCD_CHARACTER_HEIGHT 8
@@ -97,6 +98,7 @@ private:
     unsigned long m_lcdScrollChange = 0;
     unsigned long m_lastMatrixBrightnessChange = 0;
     unsigned long m_lastNameArrowChange = 0;
+    unsigned long m_lastDifficultyChange = 0;
 
     char m_nameArray[LETTERS_IN_NAME] = {'A', 'A', 'A', 'A'};
     int m_nameArrayIdx = 0;
@@ -114,6 +116,8 @@ private:
     bool m_inAnimation = false;
     bool m_showFirstEndScreen = true;
     byte m_currentLevel = FIRST_LEVEL;
+    byte m_currentDifficulty = DIFFICULTY_MEDIUM;
+    
 
     byte m_lcdContrast = PWM_RESOLUTION/2;
     byte m_lcdBrightness = PWM_RESOLUTION/2;
@@ -256,8 +260,12 @@ private:
     // the settings menu logic that orchestrates the changes between settings-menu options
     void goToSettingsMenu();
 
-    // call this to go to change name submenu of the settings submenu
+    // call this to go to change name submenu of the settings submenu. Does the change name logic
     void goToChangeName();
+    
+    // call this to go to change difficulty submenu of the settings submenu 
+    // does the change difficulty logic(similar in function to gotochangename)
+    void goToChangeDifficulty();
 
     /////////////////////////////////// MAIN MENU UTILITY FUNCTIONS
     
@@ -273,6 +281,8 @@ private:
     // does quadruple checking before deleting high scores ( some people might be mad about the decision )
     void doResetScoresLogic();
 
+    // updates the in game display with the most recent variables  
+    void updateInGameDisplay(int p_wallsOnMap, byte p_playerLives);
 
 public:
     // constructor, does the initializations and setups for the lcd
