@@ -14,7 +14,10 @@
 #define SECOND_SCORE_IDX 1
 #define THIRD_SCORE_IDX 2
 
+#define PLAYER_NO_RANK 0;
 #define PLAYER_FIRST_RANK 1
+#define PLAYER_SECOND_RANK 2
+#define PLAYER_THIRD_RANK 3
 
 #define DECREASE_TIME_MILLIS 3000
 
@@ -25,6 +28,8 @@ private:
     unsigned long m_lastScoreDecrease = 0;
     long m_score = 0;
     char m_winnerName[LETTERS_IN_NAME] = {'A', 'A', 'A', 'A'};
+    long m_lastScoreChecked;
+    byte m_scoreRank = PLAYER_NO_RANK;
 
     // writes new scores to memory along with the winners
     void updateMemoryScores(long p_scores[NUMBER_OF_SCORES_KEPT], char p_scoresNames[NUMBER_OF_SCORES_KEPT][LETTERS_IN_NAME]);
@@ -42,11 +47,20 @@ public:
     // prints the high scores recorded in memory
     void printHighScores();
 
-    // updates the current score 
+    // updates the current score and returns it
     void updateScore(int p_wallsDestroyed, int p_enemiesKilled = 0);
 
     // periodic decrease of score depending on the time it took the player
     void periodicScoreDecrease();
+
+    // returns true if the score changed from the last check
+    bool changedScore();
+
+    // returns the score value
+    long getScore();
+
+    // returns 0 if not high score and 1, 2, or 3 if it is on the respective place
+    byte isHighScore();
 };
 
 /*

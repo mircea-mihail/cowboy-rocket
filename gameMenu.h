@@ -56,6 +56,7 @@
 // miscelanious
 #define PWM_RESOLUTION 255
 #define SCORES_TO_SHOW_AT_A_TIME 2
+#define SCORE_COL_ON_LCD 13
 
 // reset scores stages
 #define NOT_SURE_YET 0 
@@ -106,6 +107,8 @@ private:
     bool m_showHowToPlay = false;
     byte m_deleteHighScores = NOT_SURE_YET;
     bool m_playGame = false;
+    bool m_hasDisplayedEmptyStats = false;
+    bool m_inAnimation = false;
 
     byte m_lcdContrast = PWM_RESOLUTION/2;
     byte m_lcdBrightness = PWM_RESOLUTION/2;
@@ -281,6 +284,9 @@ public:
 
     // copies the name of the player in the char* given in the parameter
     void getPlayerName(char p_playerName[LETTERS_IN_NAME]);
+
+    // displays a template lcd screen at the start game animation
+    void displayEmptyStatsOnce();
 };
 
 #endif

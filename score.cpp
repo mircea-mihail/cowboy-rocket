@@ -43,8 +43,12 @@ void score::writeScoreToMemory(long p_scoreToWrite, char p_nameToWrite[LETTERS_I
         Serial.println(".");
     }
     
+    m_scoreRank = PLAYER_NO_RANK; 
+    
     if(p_scoreToWrite > scores[FIRST_SCORE_IDX])
     {
+        m_scoreRank = PLAYER_FIRST_RANK; 
+
         scores[THIRD_SCORE_IDX] = scores[SECOND_SCORE_IDX];
         memcpy(scoresNames[THIRD_SCORE_IDX], scoresNames[SECOND_SCORE_IDX], LETTERS_IN_NAME);
 
@@ -56,6 +60,8 @@ void score::writeScoreToMemory(long p_scoreToWrite, char p_nameToWrite[LETTERS_I
     }
     else if(p_scoreToWrite > scores[SECOND_SCORE_IDX])
     {
+        m_scoreRank = PLAYER_SECOND_RANK; 
+
         scores[THIRD_SCORE_IDX] = scores[SECOND_SCORE_IDX];
         memcpy(scoresNames[THIRD_SCORE_IDX], scoresNames[SECOND_SCORE_IDX], LETTERS_IN_NAME);
      
@@ -64,6 +70,8 @@ void score::writeScoreToMemory(long p_scoreToWrite, char p_nameToWrite[LETTERS_I
     }
     else if(p_scoreToWrite > scores[THIRD_SCORE_IDX])
     {
+        m_scoreRank = PLAYER_THIRD_RANK; 
+
         scores[THIRD_SCORE_IDX] = p_scoreToWrite;
         memcpy(scoresNames[THIRD_SCORE_IDX], p_nameToWrite, LETTERS_IN_NAME);
     }
@@ -113,4 +121,24 @@ void score::periodicScoreDecrease()
         m_lastScoreDecrease = millis();
         m_score --;
     }
+}
+
+bool score::changedScore()
+{
+    if(m_score != m_lastScoreChecked)
+    {
+        m_lastScoreChecked = m_score;
+        return true;
+    }
+    return false;
+}
+
+long score::getScore()
+{
+    return m_score;
+}
+
+byte score::isHighScore()
+{
+    return m_scoreRank;
 }

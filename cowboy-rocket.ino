@@ -8,8 +8,7 @@
 #include "inputHwControl.h"
 
 //to do in order:
-// change scoring system 
-
+// display the end stats at the end
 // make levels 
 
 // check tasks
@@ -71,12 +70,15 @@ void startLevelSequence()
 
     char playerName[LETTERS_IN_NAME];
     g_menu.getPlayerName(playerName);
+    g_menu.resetRunSpecificVariables();
+
     g_score.startCounting(playerName);
     g_score.printHighScores();
     
     g_player1.resetValues();
     g_player1.goToDefaultPosition();
 
+    // debug
     // g_map.printEmptyMatrix();
     // g_score.clearScores();
 }
@@ -133,8 +135,7 @@ void doInGameRoutine()
             g_gameState = GAME_WON;
             g_timeForBulletUpdate = DEFAULT_TIME_VAL;
 
-            Serial.print(F("Your score: "));
-            Serial.println(g_score.stopCounting());
+            g_score.stopCounting();
         }
     }
 }
@@ -142,6 +143,8 @@ void doInGameRoutine()
 void doInStartAnimationRoutine()
 {
     // skip animation 
+    g_menu.displayEmptyStatsOnce();
+
     if(g_hwCtrl.pressedBackButton())
     {
         g_finishedAnimiation = true;
