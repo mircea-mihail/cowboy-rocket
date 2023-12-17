@@ -135,6 +135,10 @@ void gameMap::generateMap(byte p_currentLevel)
             {
                 matrix[row][col] = MAP_WALL; 
             }
+            else
+            {
+                matrix[row][col] = MAP_EMPTY;
+            }
         }       
     }
 
