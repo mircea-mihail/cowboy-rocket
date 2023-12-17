@@ -79,7 +79,7 @@ void startLevelSequence()
     g_player1.goToDefaultPosition();
 
     // debug
-    // g_map.printEmptyMatrix();
+    g_map.printEmptyMatrix();
     // g_score.clearScores();
 }
 
@@ -172,6 +172,7 @@ void doInStartAnimationRoutine()
 
 void doInWinningStateRoutine()
 {
+    g_menu.setInAnimationVar(true);
     // skip animation 
     if(g_hwCtrl.pressedBackButton())
     {
@@ -197,6 +198,7 @@ void doInWinningStateRoutine()
         g_gameState = GAME_IN_MENU;
         g_menu.setStateToDefault();
         g_menu.printEndMessage();
+        g_menu.setInAnimationVar(false);
     }
 }
 

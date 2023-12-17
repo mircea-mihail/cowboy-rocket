@@ -55,19 +55,39 @@ bool gameMenu::doEndMessageSequence()
         return false;
     }
 
-    if(m_changedState)
+    if(m_showFirstEndScreen)
     {
-        displayEndMessage();
-        m_changedState = false;
+        if(m_changedState)
+        {
+            displayFirstEndMessage();
+            m_changedState = false;
+        }
+
+        if ((m_hwCtrl.pressedBackButton() || m_hwCtrl.pressedButton()))
+        {
+            m_showFirstEndScreen = false;
+            m_lcd.clear();
+            m_changedState = true;
+        }
+    }
+    else
+    {
+        if(m_changedState)
+        {
+            displaySecondEndMessage();
+            m_changedState = false;
+        }
+
+        if ((m_hwCtrl.pressedBackButton() || m_hwCtrl.pressedButton()))
+        {
+            m_showFirstEndScreen = true;
+            m_showEndMessage = false;
+            m_lcd.clear();
+            m_changedState = true;
+            return false;
+        }
     }
 
-    if ((m_hwCtrl.pressedBackButton() || m_hwCtrl.pressedButton()) && m_showEndMessage)
-    {
-        m_showEndMessage = false;
-        m_lcd.clear();
-        m_changedState = true;
-        return false;
-    }
 
     return true;
 }
@@ -80,21 +100,49 @@ void gameMenu::displayStartMessage()
     m_lcd.print(F("COWBOY  ROCKET"));
 }
 
-void gameMenu::displayEndMessage()
+void gameMenu::displayFirstEndMessage()
 {
     m_lcd.setCursor(FIRST_LCD_COL, FIRST_LCD_ROW);
-    m_lcd.print(F("score: "));
+    
+    m_lcd.print((g_player1.getLives() == 0) ? F("    YOU DIED") :  F("congrats COWBOY!"));
+
+    m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+
+    long playerScore = g_score.getScore();
+    m_lcd.print(" ");
+    m_lcd.print(playerScore);
+    m_lcd.print("P");
+
+    m_lcd.setCursor(FINAL_LVL_COL_ON_LCD, SECOND_LCD_ROW);
+    m_lcd.print("lvl 2");
+}
+
+void gameMenu::displaySecondEndMessage()
+{
+    m_lcd.setCursor(FIRST_LCD_COL, FIRST_LCD_ROW);
     long playerScore = g_score.getScore();
     m_lcd.print(playerScore);
     m_lcd.print("P");
+
+    m_lcd.setCursor(FINAL_SCREEN_LIVES_COL, FIRST_LCD_COL);
+    for(int life = 0; life < g_player1.getLives(); life ++)
+    {
+        m_lcd.write(PLAYER_LIFE_CHAR);
+    }
+    m_lcd.setCursor(FINAL_LVL_COL_ON_LCD, FIRST_LCD_COL);
+    m_lcd.print(" lvl 2");
 
     m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
     byte playerRank = g_score.isHighScore();
     
     if(playerRank != 0)
     {
-        m_lcd.print(F("You're no. "));
+        m_lcd.print(F("  you're no. "));
         m_lcd.print(playerRank);   
+    }
+    else
+    {
+        m_lcd.print(F(" not in the top"));
     }
 }
 
@@ -993,7 +1041,10 @@ int gameMenu::menuSequence()
     case MENU_IN_GAME:
         int wallsOnMap = g_map.getWallsLeft();
         int playerLives = g_player1.getLives();
-        g_score.periodicScoreDecrease();
+        if(!m_inAnimation)
+        {
+            g_score.periodicScoreDecrease();
+        }
 
         if( (wallsOnMap != m_wallsLeftOnMap 
             || playerLives != m_playerLives
@@ -1039,7 +1090,6 @@ int gameMenu::menuSequence()
 void gameMenu::printEndMessage()
 {
     m_showEndMessage = true;
-    m_endMessageTime = millis();
 }
 
 void gameMenu::setStateToDefault()
@@ -1087,4 +1137,9 @@ void gameMenu::displayEmptyStatsOnce()
 
         m_hasDisplayedEmptyStats = true;
     }
+}
+
+void gameMenu::setInAnimationVar(bool p_inAnimation)
+{
+    m_inAnimation = p_inAnimation;
 }

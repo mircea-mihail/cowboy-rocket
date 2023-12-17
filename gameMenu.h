@@ -57,6 +57,8 @@
 #define PWM_RESOLUTION 255
 #define SCORES_TO_SHOW_AT_A_TIME 2
 #define SCORE_COL_ON_LCD 13
+#define FINAL_LVL_COL_ON_LCD 10
+#define FINAL_SCREEN_LIVES_COL 6
 
 // reset scores stages
 #define NOT_SURE_YET 0 
@@ -87,7 +89,6 @@ private:
     unsigned long m_introMessageTime = 0;
 
     bool m_showEndMessage = false;
-    unsigned long m_endMessageTime = 0;
 
     unsigned long m_lastContrastChange = 0;
     unsigned long m_lastBrightnessChange = 0;
@@ -109,6 +110,7 @@ private:
     bool m_playGame = false;
     bool m_hasDisplayedEmptyStats = false;
     bool m_inAnimation = false;
+    bool m_showFirstEndScreen = true;
 
     byte m_lcdContrast = PWM_RESOLUTION/2;
     byte m_lcdBrightness = PWM_RESOLUTION/2;
@@ -200,8 +202,11 @@ private:
     // only does the printing of the acutal intro words
     void displayStartMessage();
     
-    // only does the printing of the acutal end game words
-    void displayEndMessage();
+    // only does the printing of the acutal end game words first screen
+    void displayFirstEndMessage();
+
+    // only does the printing of the acutal end game words second screen
+    void displaySecondEndMessage();
 
     /////////////////////////////////// GENERAL MENU UTILITY FUNCTIONS
 
@@ -287,6 +292,9 @@ public:
 
     // displays a template lcd screen at the start game animation
     void displayEmptyStatsOnce();
+
+    // sets the in anmiation variable
+    void setInAnimationVar(bool p_inAnimation);
 };
 
 #endif
