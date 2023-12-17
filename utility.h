@@ -125,6 +125,8 @@
 #define DIFFICULTY_MEDIUM 2
 #define DIFFICULTY_COWBOY 3
 
+#define PLAYER_DEFAULT_LIVES 5
+
 // reverses the direction. If it is up it makes it down. If it's right makes it left
 #define reverseDirection(direction) (direction = (direction + (MAP_NUMBER_OF_ORIENTATIONS/2)) % MAP_NUMBER_OF_ORIENTATIONS) 
 

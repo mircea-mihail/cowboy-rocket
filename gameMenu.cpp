@@ -877,7 +877,7 @@ void gameMenu::updateInGameDisplay(int p_wallsOnMap, byte p_playerLives)
     long playerScore = g_score.getScore();
     if(m_wallsLeftOnMap > p_wallsOnMap)
     {
-        g_score.updateScore(m_wallsLeftOnMap - p_wallsOnMap);
+        g_score.updateScore(m_wallsLeftOnMap - p_wallsOnMap, m_currentDifficulty);
     }
 
     m_lcd.clear();
@@ -891,7 +891,7 @@ void gameMenu::updateInGameDisplay(int p_wallsOnMap, byte p_playerLives)
     m_lcd.print("  ");
     m_lcd.print(playerScore);
     m_lcd.print("P ");
-    m_lcd.setCursor(SCORE_COL_ON_LCD, FIRST_LCD_ROW);
+    m_lcd.setCursor(SCORE_COL_ON_LCD + m_currentDifficulty - DIFFICULTY_MEDIUM , FIRST_LCD_ROW);
     for(int life = 0; life < g_player1.getLives(); life++)
     {
         m_lcd.write(PLAYER_LIFE_CHAR);
@@ -922,6 +922,7 @@ gameMenu::gameMenu()
         m_nameArray[nameIdx] = EEPROM.read(ADDRESS_OF_LAST_NAME_USED + nameIdx);
     }
     g_disableSound = EEPROM.read(ADDRESS_OF_SOUND_TOGGLE);
+    m_currentDifficulty = EEPROM.read(ADDRESS_OF_CURRENT_DIFFICULTY);
 
     m_lcd.createChar(SUN_CHAR, m_customCharArray[SUN_CHAR]);
     m_lcd.createChar(CONTRAST_CHAR, m_customCharArray[CONTRAST_CHAR]);
@@ -1290,4 +1291,9 @@ byte gameMenu::goToNextLevel()
     }
 
     return m_currentLevel;
+}
+
+byte gameMenu::getDifficulty()
+{
+    return m_currentDifficulty;
 }

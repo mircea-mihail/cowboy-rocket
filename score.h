@@ -48,7 +48,7 @@ public:
     void printHighScores();
 
     // updates the current score and returns it
-    void updateScore(int p_wallsDestroyed, int p_enemiesKilled = 0);
+    void updateScore(int p_wallsDestroyed, byte p_currentDifficulty, int p_enemiesKilled = 0);
 
     // periodic decrease of score depending on the time it took the player
     void periodicScoreDecrease();

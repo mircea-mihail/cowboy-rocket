@@ -165,3 +165,8 @@ void player::takeDamage()
         m_lives --;
     }
 }
+
+void player::setLives(byte p_difficulty)
+{
+    m_lives = p_difficulty;
+}

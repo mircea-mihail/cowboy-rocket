@@ -107,9 +107,9 @@ void score::printHighScores()
     }
 }
 
-void score::updateScore(int p_wallsDestroyed, int p_enemiesKilled = 0)
+void score::updateScore(int p_wallsDestroyed, byte p_currentDifficulty, int p_enemiesKilled = 0)
 {   
-    m_score += p_wallsDestroyed;
+    m_score += p_wallsDestroyed * p_currentDifficulty;
     Serial.print("score: ");
     Serial.println(m_score);
 }

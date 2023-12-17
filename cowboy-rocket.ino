@@ -78,6 +78,7 @@ void startLevelSequence()
     
     g_player1.resetValues();
     g_player1.goToDefaultPosition();
+    g_player1.setLives(PLAYER_DEFAULT_LIVES - g_menu.getDifficulty());
 
     // debug
     // g_map.printEmptyMatrix();

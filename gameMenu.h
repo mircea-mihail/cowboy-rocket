@@ -317,6 +317,9 @@ public:
 
     // goes to the next level
     byte goToNextLevel();
+
+    // returns the current difficulty
+    byte getDifficulty();
 };
 
 #endif

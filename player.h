@@ -57,6 +57,9 @@ public:
 
     // decreases the player's life
     void takeDamage();
+
+    // sets player's lives depending on the difficulty
+    void setLives(byte p_difficulty);
 };
 
 #endif
