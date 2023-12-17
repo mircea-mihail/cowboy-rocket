@@ -46,6 +46,7 @@
 #define GAME_LOST 3
 #define GAME_WON 4
 #define GAME_IN_MENU 5
+#define GAME_BETWEEN_LEVELS 6
 
 // menu states
 #define MENU_IN_START_GAME 0 
@@ -106,12 +107,13 @@
 #define MAX_JS_THRESHOLD 712
 
 // icons for the menu
-#define NUMBER_OF_ICONS 5
+#define NUMBER_OF_ICONS 6
 #define ICON_HAMMER 0
 #define ICON_START 1
 #define ICON_ABOUT 2
 #define ICON_WINNERS 3
 #define ICON_GAME_PAD 4
+#define ICON_LVL_UP 5
 
 // player name
 #define LETTERS_IN_NAME 4

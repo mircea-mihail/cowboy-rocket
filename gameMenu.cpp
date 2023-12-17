@@ -217,6 +217,24 @@ void gameMenu::printHashesLCD(int p_fillAmount)
     }
 }
 
+void gameMenu::printHashesContrastLCD(int p_fillAmount)
+{
+    m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+
+    int percent = map(p_fillAmount, 0, LCD_MAX_VISIBLE_CONTRAST, LCD_COLS, 0);
+    for(int i = 0; i < LCD_COLS; i++)
+    {
+        if(i < percent)
+        {
+            m_lcd.print("#");
+        }
+        else
+        {
+            m_lcd.print(" ");
+        }
+    }
+}
+
 void gameMenu::printHashesForMatrix(int p_fillAmount)
 {
     m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
@@ -261,6 +279,9 @@ void gameMenu::updateMatrixBrightness()
     }
 }
 
+// 16 * 16 = 256
+// 11 contrast increment for min of 80
+
 void gameMenu::updateLcdContrast()
 {
     if(m_hwCtrl.joystickLeft())
@@ -268,8 +289,13 @@ void gameMenu::updateLcdContrast()
         if(millis() - m_lastContrastChange > CYCLE_DELAY_MILLIS)
         {
             m_lastContrastChange = millis();
-            m_lcdContrast += LCD_INCREMENT_VAL;
-            printHashesLCD(m_lcdContrast);
+            m_lcdContrast += LCD_CONTRAST_INCREMENT_VAL;
+            if(m_lcdContrast > LCD_MAX_VISIBLE_CONTRAST)
+            {
+                m_lcdContrast = 0;
+            }
+
+            printHashesContrastLCD(m_lcdContrast);
 
             analogWrite(LCD_CONTRAST, m_lcdContrast);
             EEPROM.update(EEPROM_LCD_CONTRAST_ADDRESS, m_lcdContrast);
@@ -281,8 +307,12 @@ void gameMenu::updateLcdContrast()
         if(millis() - m_lastContrastChange > CYCLE_DELAY_MILLIS)
         {
             m_lastContrastChange = millis();
-            m_lcdContrast -= LCD_INCREMENT_VAL;
-            printHashesLCD(m_lcdContrast);
+            m_lcdContrast -= LCD_CONTRAST_INCREMENT_VAL;
+            if(m_lcdContrast > LCD_MAX_VISIBLE_CONTRAST)
+            {
+                m_lcdContrast = LCD_MAX_VISIBLE_CONTRAST;
+            }
+            printHashesContrastLCD(m_lcdContrast);
 
             analogWrite(LCD_CONTRAST, m_lcdContrast);
             EEPROM.update(EEPROM_LCD_CONTRAST_ADDRESS, m_lcdContrast);
@@ -667,7 +697,7 @@ void gameMenu::goToSettingsMenu()
         {
             m_lcd.print(F("      lcd "));
             m_lcd.write(CONTRAST_CHAR);
-            printHashesLCD(m_lcdContrast);
+            printHashesContrastLCD(m_lcdContrast);
             
             m_changedState = false;
         }
@@ -823,7 +853,7 @@ void gameMenu::displayAboutMenu()
     }
     else
     {
-        m_lcd.print(F("Cowboy Rocket by Mircea Mihail Ionescu"));
+        m_lcd.print(F("Hey, I'm Mircea. This is Cowboy Rocket"));
         m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_COL);
         m_lcd.print(F("github.com/mircea-mihail/cowboy-rocket"));
         m_changedState = false;
@@ -1296,4 +1326,12 @@ byte gameMenu::goToNextLevel()
 byte gameMenu::getDifficulty()
 {
     return m_currentDifficulty;
+}
+
+void gameMenu::displayLvlUp()
+{
+    m_lcd.clear();
+    m_lcd.print(F("    LEVEL UP"));
+    m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
+    m_lcd.print(F("    LEVEL UP"));
 }

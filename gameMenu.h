@@ -14,6 +14,8 @@
 // lcd default characteristics
 #define LCD_COLS 16
 #define LCD_ROWS 2
+#define LCD_MAX_VISIBLE_CONTRAST 176
+#define LCD_CONTRAST_INCREMENT_VAL 11
 
 #define LCD_INCREMENT_VAL 16
 
@@ -231,8 +233,11 @@ private:
 
     /////////////////////////////////// SUBMENU UTILITY FUNCTIONS
 
-    // used to print percent hashes showing LCD related info in a graphical manner
+    // used to print percent hashes showing LCD brightness info in a graphical manner
     void printHashesLCD(int p_fillAmount);
+    
+    // used to print percent hashes showing LCD contrast info in a graphical manner
+    void printHashesContrastLCD(int p_fillAmount);
     
     // used to print percent hashes showing Matrix related info in a graphical manner
     void printHashesForMatrix(int p_fillAmount);
@@ -320,6 +325,9 @@ public:
 
     // returns the current difficulty
     byte getDifficulty();
+
+    // displays level up message
+    void displayLvlUp();
 };
 
 #endif

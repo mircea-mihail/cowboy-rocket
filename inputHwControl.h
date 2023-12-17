@@ -6,7 +6,7 @@
 #include "mySounds.h"
 
 // button
-#define DEBOUNCE_TIME 50
+#define DEBOUNCE_TIME 30
 
 extern bool g_disableSound;
 

@@ -17,6 +17,7 @@
 
 // skip animation 
 #define ANIMATION_SKIP_DELAY_MS 500
+#define LVL_UP_ICON_MILLIS 1000
 
 gameMap g_map;
 player g_player1(MATRIX_MIDDLE, MATRIX_MIDDLE);
@@ -33,6 +34,8 @@ bool g_finishedAnimiation = false;
 unsigned long g_timeForLastFrame = 0;
 unsigned long g_timeForBulletUpdate = 0;
 bool g_disableSound = false;
+bool g_shownLvlUpIcon = false;
+unsigned long g_timeForLvlUpIcon = 0;
 
 void initAllHw()
 {
@@ -81,24 +84,42 @@ void startLevelSequence()
     g_player1.setLives(PLAYER_DEFAULT_LIVES - g_menu.getDifficulty());
 
     // debug
-    // g_map.printEmptyMatrix();
+    g_map.printEmptyMatrix();
     // g_score.clearScores();
 }
 
 void goToNextLevelSequence()
 {
-    g_map.refreshAnimationValues();               
-    g_map.generateMap(g_menu.getLevel());
+    if(!g_shownLvlUpIcon)
+    {
+        g_shownLvlUpIcon = true;
+        g_timeForLvlUpIcon = millis();
+        g_map.displayIcon(ICON_LVL_UP); 
+        g_gameState = GAME_BETWEEN_LEVELS;
+        g_menu.displayLvlUp();
+        g_menu.setInAnimationVar(true);
+    }
+    else
+    {
+        if(millis() - g_timeForLvlUpIcon > LVL_UP_ICON_MILLIS)
+        {
+            g_shownLvlUpIcon = false;
+            g_gameState = GAME_IN_GAME;
+            
+            g_map.refreshAnimationValues();               
+            g_map.generateMap(g_menu.getLevel());
 
-    g_menu.resetRunSpecificVariables();
-    g_menu.goToNextLevel();
-    
-    g_player1.resetValues();
-    g_player1.goToDefaultPosition();
-    g_player1.setLives(PLAYER_DEFAULT_LIVES - g_menu.getDifficulty());
-
-    // debug
-    // g_map.printEmptyMatrix();
+            g_menu.resetRunSpecificVariables();
+            g_menu.goToNextLevel();
+            g_menu.setInAnimationVar(false);
+            
+            g_player1.resetValues();
+            g_player1.goToDefaultPosition();
+            g_player1.setLives(PLAYER_DEFAULT_LIVES - g_menu.getDifficulty());
+            // debug
+            g_map.printEmptyMatrix();
+        }
+    }
 }
 
 // adjust brightness using the sensor
@@ -273,6 +294,10 @@ void loop()
                 g_gameState = GAME_IN_START_ANIMATION;
                 g_map.refreshAnimationValues();
             }
+            break;
+        
+        case GAME_BETWEEN_LEVELS:
+            goToNextLevelSequence();
             break;
 
         default:
