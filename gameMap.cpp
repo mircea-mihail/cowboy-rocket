@@ -301,4 +301,7 @@ void gameMap::printEmptyMatrix()
     }
 
     matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE] = MAP_WALL;
+    matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE - 1] = MAP_WALL;
+    matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE + 1] = MAP_WALL;
+    matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE - 2] = MAP_WALL;
 }

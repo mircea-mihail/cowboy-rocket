@@ -24,6 +24,11 @@
 #define FIRST_LCD_COL 0
 #define SECOND_LCD_COL 1
 
+#define SCORE_COL_ON_LCD 13
+#define FINAL_LVL_COL_ON_LCD 10
+#define GAMEPLAY_LVL_COL_ON_LCD 11
+#define FINAL_SCREEN_LIVES_COL 6
+
 // menu cycling
 #define INTRO_MESSAGE_MILLIS 3000
 #define END_MESSAGE_MILLIS 3000
@@ -56,9 +61,10 @@
 // miscelanious
 #define PWM_RESOLUTION 255
 #define SCORES_TO_SHOW_AT_A_TIME 2
-#define SCORE_COL_ON_LCD 13
-#define FINAL_LVL_COL_ON_LCD 10
-#define FINAL_SCREEN_LIVES_COL 6
+
+// levels
+#define NUMBER_OF_LEVELS 5
+#define FIRST_LEVEL 1
 
 // reset scores stages
 #define NOT_SURE_YET 0 
@@ -111,6 +117,7 @@ private:
     bool m_hasDisplayedEmptyStats = false;
     bool m_inAnimation = false;
     bool m_showFirstEndScreen = true;
+    byte m_currentLevel = FIRST_LEVEL;
 
     byte m_lcdContrast = PWM_RESOLUTION/2;
     byte m_lcdBrightness = PWM_RESOLUTION/2;
@@ -295,6 +302,15 @@ public:
 
     // sets the in anmiation variable
     void setInAnimationVar(bool p_inAnimation);
+
+    // returns the current level
+    byte getLevel();
+
+    // resets the current level
+    void resetLevel();
+
+    // goes to the next level
+    byte goToNextLevel();
 };
 
 #endif

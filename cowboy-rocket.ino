@@ -71,6 +71,7 @@ void startLevelSequence()
     char playerName[LETTERS_IN_NAME];
     g_menu.getPlayerName(playerName);
     g_menu.resetRunSpecificVariables();
+    g_menu.resetLevel();
 
     g_score.startCounting(playerName);
     g_score.printHighScores();
@@ -81,6 +82,21 @@ void startLevelSequence()
     // debug
     g_map.printEmptyMatrix();
     // g_score.clearScores();
+}
+
+void goToNextLevelSequence()
+{
+    g_map.refreshAnimationValues();               
+    g_map.generateMap();
+
+    g_menu.resetRunSpecificVariables();
+    g_menu.goToNextLevel();
+    
+    g_player1.resetValues();
+    g_player1.goToDefaultPosition();
+
+    // debug
+    g_map.printEmptyMatrix();
 }
 
 // adjust brightness using the sensor
@@ -123,7 +139,24 @@ void doInGameRoutine()
 
     g_map.updateDisplay(xPosPlayer, yPosPlayer);
 
-    if(g_map.checkWinningCondition() || g_player1.getLives() == 0)
+    // logic for getting to next level
+    if((g_map.checkWinningCondition() && g_menu.getLevel() != NUMBER_OF_LEVELS))
+    {
+        if(g_timeForBulletUpdate == DEFAULT_TIME_VAL)
+        {
+            g_timeForBulletUpdate = millis();
+        }
+        if(millis() - g_timeForBulletUpdate > WINNING_FRAME_DISPLAY_TIME)
+        {
+            g_menu.resetRunSpecificVariables();
+            g_timeForBulletUpdate = DEFAULT_TIME_VAL;
+
+            goToNextLevelSequence();
+        }
+    }        
+
+    // logic for the end of the run
+    if((g_map.checkWinningCondition() && g_menu.getLevel() == NUMBER_OF_LEVELS) || g_player1.getLives() == 0)
     {
         if(g_timeForBulletUpdate == DEFAULT_TIME_VAL)
         {
@@ -201,6 +234,7 @@ void doInWinningStateRoutine()
         g_menu.setInAnimationVar(false);
     }
 }
+
 
 void setup()
 {

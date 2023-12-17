@@ -114,7 +114,8 @@ void gameMenu::displayFirstEndMessage()
     m_lcd.print("P");
 
     m_lcd.setCursor(FINAL_LVL_COL_ON_LCD, SECOND_LCD_ROW);
-    m_lcd.print("lvl 2");
+    m_lcd.print("lvl ");
+    m_lcd.print(m_currentLevel);
 }
 
 void gameMenu::displaySecondEndMessage()
@@ -130,7 +131,8 @@ void gameMenu::displaySecondEndMessage()
         m_lcd.write(PLAYER_LIFE_CHAR);
     }
     m_lcd.setCursor(FINAL_LVL_COL_ON_LCD, FIRST_LCD_COL);
-    m_lcd.print(" lvl 2");
+    m_lcd.print(" lvl ");
+    m_lcd.print(m_currentLevel);
 
     m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
     byte playerRank = g_score.isHighScore();
@@ -1077,6 +1079,10 @@ int gameMenu::menuSequence()
             m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
             m_lcd.print(m_wallsLeftOnMap);
             m_lcd.print(F(" walls"));
+
+            m_lcd.setCursor(GAMEPLAY_LVL_COL_ON_LCD, SECOND_LCD_ROW);
+            m_lcd.print(F("lvl "));
+            m_lcd.print(m_currentLevel);
         }
         break;    
     
@@ -1122,9 +1128,7 @@ void gameMenu::displayEmptyStatsOnce()
         {
             m_lcd.print(m_nameArray[charIdx]);
         }
-        m_lcd.print("  ");
-        m_lcd.print(0);
-        m_lcd.print("P ");
+        m_lcd.print("  0P ");
         m_lcd.setCursor(SCORE_COL_ON_LCD, FIRST_LCD_ROW);
         for(int life = 0; life < g_player1.getLives(); life++)
         {
@@ -1136,10 +1140,33 @@ void gameMenu::displayEmptyStatsOnce()
         m_lcd.print(F(" walls"));   
 
         m_hasDisplayedEmptyStats = true;
+
+        m_lcd.setCursor(GAMEPLAY_LVL_COL_ON_LCD, SECOND_LCD_ROW);
+        m_lcd.print(F("lvl 1"));
     }
 }
 
 void gameMenu::setInAnimationVar(bool p_inAnimation)
 {
     m_inAnimation = p_inAnimation;
+}
+
+byte gameMenu::getLevel()
+{
+    return m_currentLevel;
+}
+
+void gameMenu::resetLevel()
+{
+    m_currentLevel = FIRST_LEVEL;
+}
+
+byte gameMenu::goToNextLevel()
+{
+    if(m_currentLevel < NUMBER_OF_LEVELS)
+    {
+        m_currentLevel ++;
+    }
+
+    return m_currentLevel;
 }
