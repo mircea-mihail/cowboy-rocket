@@ -69,7 +69,9 @@ void startLevelSequence()
     g_map.refreshAnimationValues();               
     g_map.generateMap();
 
-    g_score.startCounting();
+    char playerName[LETTERS_IN_NAME];
+    g_menu.getPlayerName(playerName);
+    g_score.startCounting(playerName);
     g_score.printHighScores();
     
     g_player1.resetValues();

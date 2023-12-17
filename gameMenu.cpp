@@ -1045,3 +1045,8 @@ void gameMenu::resetRunSpecificVariables()
 {
     m_wallsLeftOnMap = 0;
 }
+
+void gameMenu::getPlayerName(char p_playerName[LETTERS_IN_NAME])
+{
+    memcpy(p_playerName, m_nameArray, LETTERS_IN_NAME);
+}

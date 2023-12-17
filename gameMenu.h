@@ -278,6 +278,9 @@ public:
 
     // reset variables depentent on runs 
     void resetRunSpecificVariables();
+
+    // copies the name of the player in the char* given in the parameter
+    void getPlayerName(char p_playerName[LETTERS_IN_NAME]);
 };
 
 #endif

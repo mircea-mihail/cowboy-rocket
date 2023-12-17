@@ -1,52 +1,85 @@
 #include "score.h"
 
-void score::updateMemoryScores(long scores[NUMBER_OF_SCORES_KEPT])
+void score::updateMemoryScores(long p_scores[NUMBER_OF_SCORES_KEPT], char p_scoresNames[NUMBER_OF_SCORES_KEPT][LETTERS_IN_NAME])
 {
     byte scoreIdx = FIRST_SCORE_IDX;
     for(int addr = SCORE_MEMORY_ADDRESS; addr < ADDRESS_AFTER_LAST_SCORE; addr += sizeof(long))
     {
-        EEPROM.put(addr, scores[scoreIdx ++]);
+        EEPROM.put(addr, p_scores[scoreIdx ++]);
     }
+
+    scoreIdx = FIRST_SCORE_IDX;
+    for(int nameIdx = 0; nameIdx < NUMBER_OF_SCORES_KEPT; nameIdx ++)
+    {
+        for(int charIdx = 0; charIdx < LETTERS_IN_NAME; charIdx ++)
+        {
+            const int memoryIdx = SCORE_NAMES_ADDRESS + nameIdx * SIZE_OF_NAME_IN_EEPROM + charIdx;
+            EEPROM.update(memoryIdx, p_scoresNames[nameIdx][charIdx]);
+        }
+    }
+    
 }
 
-void score::writeScoreToMemory(long p_scoreToWrite)
+void score::writeScoreToMemory(long p_scoreToWrite, char p_nameToWrite[LETTERS_IN_NAME])
 {
     long scores[NUMBER_OF_SCORES_KEPT];
+    char scoresNames[NUMBER_OF_SCORES_KEPT][LETTERS_IN_NAME];
+
     byte scoreIdx = FIRST_SCORE_IDX;
     Serial.println("current winner scores");
     for(int addr = SCORE_MEMORY_ADDRESS; addr < ADDRESS_AFTER_LAST_SCORE; addr += sizeof(long))
     {
         EEPROM.get(addr, scores[scoreIdx ++]);
-        Serial.println(scores[scoreIdx - 1]);
     }
-    Serial.println(p_scoreToWrite);
+    for(int nameIdx = 0; nameIdx < NUMBER_OF_SCORES_KEPT; nameIdx ++)
+    {
+        Serial.print("name:");
+        for(int charIdx = 0; charIdx < LETTERS_IN_NAME; charIdx ++)
+        {
+            const int memoryIdx = SCORE_NAMES_ADDRESS + nameIdx * SIZE_OF_NAME_IN_EEPROM + charIdx;
+            scoresNames[nameIdx][charIdx] = EEPROM.read(memoryIdx);
+            Serial.print(scoresNames[nameIdx][charIdx]);
+        }
+        Serial.println(".");
+    }
+    
     if(p_scoreToWrite > scores[FIRST_SCORE_IDX])
     {
         scores[THIRD_SCORE_IDX] = scores[SECOND_SCORE_IDX];
+        memcpy(scoresNames[THIRD_SCORE_IDX], scoresNames[SECOND_SCORE_IDX], LETTERS_IN_NAME);
+
         scores[SECOND_SCORE_IDX] = scores[FIRST_SCORE_IDX];
+        memcpy(scoresNames[SECOND_SCORE_IDX], scoresNames[FIRST_SCORE_IDX], LETTERS_IN_NAME);
+
         scores[FIRST_SCORE_IDX] = p_scoreToWrite;
+        memcpy(scoresNames[FIRST_SCORE_IDX], p_nameToWrite, LETTERS_IN_NAME);
     }
     else if(p_scoreToWrite > scores[SECOND_SCORE_IDX])
     {
         scores[THIRD_SCORE_IDX] = scores[SECOND_SCORE_IDX];
+        memcpy(scoresNames[THIRD_SCORE_IDX], scoresNames[SECOND_SCORE_IDX], LETTERS_IN_NAME);
+     
         scores[SECOND_SCORE_IDX] = p_scoreToWrite;
+        memcpy(scoresNames[SECOND_SCORE_IDX], p_nameToWrite, LETTERS_IN_NAME);
     }
     else if(p_scoreToWrite > scores[THIRD_SCORE_IDX])
     {
         scores[THIRD_SCORE_IDX] = p_scoreToWrite;
+        memcpy(scoresNames[THIRD_SCORE_IDX], p_nameToWrite, LETTERS_IN_NAME);
     }
 
-    updateMemoryScores(scores);
+    updateMemoryScores(scores, scoresNames);
 }
 
-void score::startCounting()
+void score::startCounting(char p_nameOfPlayer[LETTERS_IN_NAME])
 {
+    memcpy(m_winnerName, p_nameOfPlayer, LETTERS_IN_NAME);
     m_score = 0;
 }
 
 long score::stopCounting()
 {
-    writeScoreToMemory(m_score);        
+    writeScoreToMemory(m_score, m_winnerName);        
 
     return m_score;
 }

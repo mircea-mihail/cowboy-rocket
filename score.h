@@ -24,16 +24,17 @@ class score
 private:
     unsigned long m_lastScoreDecrease = 0;
     long m_score = 0;
+    char m_winnerName[LETTERS_IN_NAME] = {'A', 'A', 'A', 'A'};
 
-    // writes new scores to memory
-    void updateMemoryScores(long scores[NUMBER_OF_SCORES_KEPT]);
+    // writes new scores to memory along with the winners
+    void updateMemoryScores(long p_scores[NUMBER_OF_SCORES_KEPT], char p_scoresNames[NUMBER_OF_SCORES_KEPT][LETTERS_IN_NAME]);
 
     // starts the memory writing process by reading the current scores and including the new score if necessary
-    void writeScoreToMemory(long p_scoreToWrite);
+    void writeScoreToMemory(long p_scoreToWrite, char p_nameToWrite[LETTERS_IN_NAME]);
 
 public:
     // starts the score timer, call this when the level begins
-    void startCounting();
+    void startCounting(char p_nameOfPlayer[LETTERS_IN_NAME]);
 
     // stops the score timer, call this when the level ends. It also writes to memory the new score if the case by calling the private functions
     long stopCounting();
