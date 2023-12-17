@@ -121,7 +121,7 @@ bool gameMap::isMapElement(const byte p_mapElement, int p_xPos, int p_yPos)
     return false;
 }
 
-void gameMap::generateMap()
+void gameMap::generateMap(byte p_currentLevel)
 {
     randomSeed(analogRead(BUTTON_PIN));
     // randomly generate walls
@@ -130,7 +130,8 @@ void gameMap::generateMap()
         for(int col = 0; col < MATRIX_SIZE; col++)
         {
             long chance = random(0, GRANULARITY_OF_CHANCE);
-            if(chance < CHANCE_OF_WALL)
+            // the bigger the level the higher the chance
+            if(chance < CHANCE_OF_WALL - NUMBER_OF_LEVELS + p_currentLevel)
             {
                 matrix[row][col] = MAP_WALL; 
             }

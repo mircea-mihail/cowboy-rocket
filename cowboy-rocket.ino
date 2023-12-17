@@ -65,13 +65,13 @@ void startLevelSequence()
 {
     g_gameState = GAME_IN_GAME;    
 
-    g_map.refreshAnimationValues();               
-    g_map.generateMap();
-
     char playerName[LETTERS_IN_NAME];
     g_menu.getPlayerName(playerName);
     g_menu.resetRunSpecificVariables();
     g_menu.resetLevel();
+
+    g_map.refreshAnimationValues();               
+    g_map.generateMap(g_menu.getLevel());
 
     g_score.startCounting(playerName);
     g_score.printHighScores();
@@ -80,14 +80,14 @@ void startLevelSequence()
     g_player1.goToDefaultPosition();
 
     // debug
-    g_map.printEmptyMatrix();
+    // g_map.printEmptyMatrix();
     // g_score.clearScores();
 }
 
 void goToNextLevelSequence()
 {
     g_map.refreshAnimationValues();               
-    g_map.generateMap();
+    g_map.generateMap(g_menu.getLevel());
 
     g_menu.resetRunSpecificVariables();
     g_menu.goToNextLevel();
@@ -96,7 +96,7 @@ void goToNextLevelSequence()
     g_player1.goToDefaultPosition();
 
     // debug
-    g_map.printEmptyMatrix();
+    // g_map.printEmptyMatrix();
 }
 
 // adjust brightness using the sensor

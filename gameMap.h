@@ -241,7 +241,7 @@ public:
     bool isMapElement(const byte p_mapElement, int p_xPos, int p_yPos);
 
     // generates a new level, placing walls power ups and clearing the area around the player
-    void generateMap();
+    void generateMap(byte p_currentLevel);
 
     // goes through the whole matrix and checks if there are any walls left    
     bool checkWinningCondition();

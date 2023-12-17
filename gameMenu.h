@@ -62,10 +62,6 @@
 #define PWM_RESOLUTION 255
 #define SCORES_TO_SHOW_AT_A_TIME 2
 
-// levels
-#define NUMBER_OF_LEVELS 5
-#define FIRST_LEVEL 1
-
 // reset scores stages
 #define NOT_SURE_YET 0 
 #define ARE_YOU_SURE 1

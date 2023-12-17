@@ -116,6 +116,15 @@
 // player name
 #define LETTERS_IN_NAME 4
 
+// levels
+#define NUMBER_OF_LEVELS 5
+#define FIRST_LEVEL 1
+
+// difficulty
+#define DIFFICULTY_EASY 1
+#define DIFFICULTY_MEDIUM 2
+#define DIFFICULTY_COWBOY 3
+
 // reverses the direction. If it is up it makes it down. If it's right makes it left
 #define reverseDirection(direction) (direction = (direction + (MAP_NUMBER_OF_ORIENTATIONS/2)) % MAP_NUMBER_OF_ORIENTATIONS) 
 
