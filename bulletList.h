@@ -38,6 +38,9 @@ public:
     // sets the last bullet uupdate time to the current time for better sync
     // of the new bullets to the tick rate ( better to have slower bullets than faster ones)
     void setLastBulletUpdate();
+
+    // checks if any bullet is on the given position and returns true if so
+    bool checkBulletOnPos(int p_xPos, int p_yPos);
 };
 
 

@@ -179,7 +179,8 @@ bool gameMap::checkWinningCondition()
     {
         for(int col = 0; col < MATRIX_SIZE; col++)
         {
-            if(matrix[row][col] != MAP_BULLET && matrix[row][col] != MAP_PLAYER && matrix[row][col] != MAP_EMPTY)
+            if( matrix[row][col] != MAP_BULLET && matrix[row][col] != MAP_PLAYER 
+                && matrix[row][col] != MAP_EMPTY && matrix[row][col] != MAP_ENEMY)
             {
                 return false;
             }
@@ -314,14 +315,16 @@ void gameMap::printEmptyMatrix()
             matrix[row][col] = MAP_EMPTY;
         }
     }
+    
+    matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE] = MAP_POWER_UP;
 
-    matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE - 1] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE + 1] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE - 2] = MAP_WALL;
+    matrix[MATRIX_MIDDLE - 2][MATRIX_MIDDLE] = MAP_WALL;
+    matrix[MATRIX_MIDDLE - 2][MATRIX_MIDDLE - 1] = MAP_WALL;
+    matrix[MATRIX_MIDDLE - 2][MATRIX_MIDDLE + 1] = MAP_WALL;
+    matrix[MATRIX_MIDDLE - 2][MATRIX_MIDDLE - 2] = MAP_WALL;
 
-    matrix[MATRIX_MIDDLE - 4][MATRIX_MIDDLE] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 4][MATRIX_MIDDLE - 1] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 4][MATRIX_MIDDLE + 1] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 4][MATRIX_MIDDLE - 2] = MAP_WALL;
+    matrix[MATRIX_MIDDLE + 3][MATRIX_MIDDLE] = MAP_WALL;
+    matrix[MATRIX_MIDDLE + 3][MATRIX_MIDDLE - 1] = MAP_WALL;
+    matrix[MATRIX_MIDDLE + 3][MATRIX_MIDDLE + 1] = MAP_WALL;
+    matrix[MATRIX_MIDDLE + 3][MATRIX_MIDDLE - 2] = MAP_WALL;
 }

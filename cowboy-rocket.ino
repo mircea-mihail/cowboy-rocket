@@ -24,7 +24,7 @@ bulletList g_bulletList;
 score g_score;
 inputHwControl g_hwCtrl;
 gameMenu g_menu;
-// enemy *g_enemy;
+enemy *g_enemyArray[MAX_ENEMY_COUNT];
 
 byte g_gameState;
 byte g_menuState;
@@ -37,6 +37,46 @@ bool g_disableSound = false;
 bool g_shownLvlUpIcon = false;
 unsigned long g_timeForLvlUpIcon = 0;
 unsigned long g_lastNoteTime = 0; 
+
+void initEnemies()
+{
+    for(int enemyIdx = 0; enemyIdx < MAX_ENEMY_COUNT; enemyIdx++)
+    {
+        if(g_enemyArray[enemyIdx] != nullptr)
+        {
+            delete(g_enemyArray[enemyIdx]);
+            g_enemyArray[enemyIdx] = nullptr;
+        }
+    }
+    g_enemyArray[0] = new enemy(10, 7, DIRECTION_UP);
+}
+
+void doEnemyRoutine()
+{
+    for(int enemyIdx = 0; enemyIdx < MAX_ENEMY_COUNT; enemyIdx++)
+    {
+        if(g_enemyArray[enemyIdx] != nullptr)
+        {
+            int xEnemyPos, yEnemyPos;
+            g_enemyArray[enemyIdx]->getCoordonates(xEnemyPos, yEnemyPos);
+            
+            if(g_bulletList.checkBulletOnPos(xEnemyPos, yEnemyPos))
+            {
+                g_enemyArray[enemyIdx]->damageEnemy();
+            }
+
+            if(g_enemyArray[enemyIdx]->getLives() == 0)
+            {
+                delete(g_enemyArray[enemyIdx]);
+                g_enemyArray[enemyIdx] = nullptr;
+            }
+            else
+            {
+                g_enemyArray[enemyIdx]->updatePosition();
+            }
+        }
+    }
+}
 
 void playMelody()
 {
@@ -95,6 +135,7 @@ void initAllHw()
 // call this when starting a new level
 void startLevelSequence()
 {
+    initEnemies();
     g_gameState = GAME_IN_GAME;    
 
     char playerName[LETTERS_IN_NAME];
@@ -114,12 +155,12 @@ void startLevelSequence()
 
     // debug
     g_map.printEmptyMatrix();
-    // g_enemy = new enemy(6, 7, DIRECTION_UP);
     // g_score.clearScores();
 }
 
 void goToNextLevelSequence()
 {
+    initEnemies();
     playMelody();
 
     if(!g_shownLvlUpIcon)
@@ -175,7 +216,8 @@ void adjustBrightness()
 
 void doInGameRoutine()
 {
-    // g_enemy->updatePosition();
+    doEnemyRoutine();
+
     g_bulletList.updateBullets();
     g_player1.updatePosition();
 
@@ -306,6 +348,7 @@ void setup()
 void loop() 
 {
     //adjustBrightness();
+    Serial.print("stuff\n");
 
     g_menuState = g_menu.menuSequence();
 

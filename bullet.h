@@ -45,6 +45,9 @@ public:
     // plays the bullet's sound 
     void playBulletCollisionSound();
 
+    // get x and y coordonates
+    void getCoordonates(int &p_xPos, int &p_yPos);
+
     // deletes the bullet and the explosion area if the bullet is the exploding type
     ~bullet();
 };

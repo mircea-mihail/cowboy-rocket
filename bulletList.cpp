@@ -100,6 +100,58 @@ void bulletList::updateBullets()
     }
 }
 
+bool bulletList::checkBulletOnPos(int p_xPos, int p_yPos)
+{
+    bulletNode *currentNode = m_firstBulletNode;
+    while(currentNode != NULL)
+    {
+        int xBulletPos, yBulletPos;
+        currentNode->m_bullet->getCoordonates(xBulletPos, yBulletPos);
+        if(xBulletPos == p_xPos && yBulletPos == p_yPos)
+        {
+            return true;
+        }
+
+        // if in explosion make it damage the enemy as well 
+        if(currentNode->m_bullet->isExplodingType() && !currentNode->m_bullet->hasRange())
+        {
+            int leftOfExplosion = xBulletPos - 1;
+            int rightOfExplosion = xBulletPos + 1;
+            int topOfExplosion = yBulletPos - 1;
+            int bottomOfExplosion = yBulletPos + 1;
+
+            if(leftOfExplosion < 0)
+            {
+                leftOfExplosion = MATRIX_SIZE - 1;
+            }
+            if(topOfExplosion < 0)
+            {
+                topOfExplosion = MATRIX_SIZE - 1;
+            }
+            if(rightOfExplosion == MATRIX_SIZE)
+            {
+                rightOfExplosion = 0;
+            }
+            if(bottomOfExplosion == MATRIX_SIZE)
+            {
+                bottomOfExplosion = 0;
+            }
+
+            if(    leftOfExplosion == p_xPos && yBulletPos == p_yPos
+                || rightOfExplosion == p_xPos && yBulletPos == p_yPos 
+                || xBulletPos == p_xPos && topOfExplosion == p_yPos 
+                || xBulletPos == p_xPos && bottomOfExplosion == p_yPos )
+            {
+                return true;
+            }
+
+        }
+
+        currentNode = currentNode->m_nextBulletNode;
+    }
+    return false;
+}
+
 void bulletList::setLastBulletUpdate()
 {
     m_lastBulletUpdate = millis();

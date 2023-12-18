@@ -76,3 +76,22 @@ bool enemy::updatePosition()
     
     return false;
 }
+
+void enemy::damageEnemy()
+{
+    if(m_lives > 0)
+    {
+        m_lives --;
+    }
+}
+
+byte enemy::getLives()
+{
+    return m_lives;
+}
+
+void enemy::getCoordonates(int &p_xPos, int &p_yPos)
+{
+    p_xPos = m_xPos;
+    p_yPos = m_yPos;
+}
