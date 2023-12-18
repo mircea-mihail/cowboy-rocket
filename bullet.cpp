@@ -1,12 +1,13 @@
 #include "bullet.h"
 
-bullet::bullet(int p_xPos, int p_yPos, byte p_direction, bool p_explodingBullets = false ,int p_rangeLeft = DEFAULT_BULLET_RANGE) : m_direction(p_direction)
+bullet::bullet(int p_xPos, int p_yPos, byte p_direction, bool p_explodingBullets = false ,int p_rangeLeft = DEFAULT_BULLET_RANGE)
 {
+    m_direction = p_direction;
     m_xPos = p_xPos;
     m_yPos = p_yPos;
     m_rangeLeft = p_rangeLeft;
     m_explodingBullets = p_explodingBullets;
-    
+
     interactWithMapElement(m_xPos, m_yPos);
     g_map.setPositionValue(m_xPos, m_yPos, MAP_BULLET); 
 }

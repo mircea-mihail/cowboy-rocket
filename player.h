@@ -12,7 +12,6 @@ extern bool g_disableSound;
 class player : public matrixEntity
 {
     inputHwControl m_hwCtrl;
-    byte m_direction;
     unsigned long m_lastShot = 0;
     bool m_foundExplodingBullets = false;
 

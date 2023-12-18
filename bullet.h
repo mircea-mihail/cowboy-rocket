@@ -15,7 +15,6 @@ extern bool g_disableSound;
 class bullet : public matrixEntity
 {
 private:
-    byte m_direction;
     int m_rangeLeft;
     bool m_explodingBullets = false;
     bool m_hasWaitedATick = false;

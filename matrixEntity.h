@@ -16,6 +16,7 @@ protected:
     int m_xNextPos = 0;
     int m_yNextPos = 0;
 
+    byte m_direction;
 public:
     // pure virtual class that should be implemented by all children
     virtual bool updatePosition() = 0;
