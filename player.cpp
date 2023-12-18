@@ -62,6 +62,22 @@ void player::getBulletPlacement(int &p_xPos, int &p_yPos)
     }
 }
 
+void player::playPowerUpPickupSound()
+{
+    if(!g_disableSound)
+    {
+        tone(BUZZER_PIN, FREQ_POWER_UP_PICKUP, DEFAULT_SOUND_DURATION);
+    }
+}
+
+void player::playTakeDamageSound()
+{
+    if(!g_disableSound)
+    {
+        tone(BUZZER_PIN, FREQ_TAKE_DAMAGE, DEFAULT_SOUND_DURATION);
+    }
+}
+
 //////////////// public
 
 player::player(int p_xPos, int p_yPos)
@@ -91,6 +107,7 @@ bool player::updatePosition()
             {
                 if(g_map.isMapElement(MAP_POWER_UP, m_xNextPos, m_yNextPos))
                 {
+                    playPowerUpPickupSound();
                     m_foundExplodingBullets = true;
                 }
                 g_map.setPositionValue(m_xNextPos, m_yNextPos, MAP_PLAYER);
@@ -163,6 +180,7 @@ void player::takeDamage()
     if(m_lives != 0)
     {
         m_lives --;
+        playTakeDamageSound();
     }
 }
 
@@ -170,3 +188,4 @@ void player::setLives(byte p_difficulty)
 {
     m_lives = p_difficulty;
 }
+

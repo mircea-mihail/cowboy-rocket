@@ -6,6 +6,7 @@
 #include "score.h"
 #include "gameMenu.h"
 #include "inputHwControl.h"
+#include "mySounds.h"
 
 //to do in order:
 //do sounds 
@@ -34,6 +35,32 @@ unsigned long g_timeForBulletUpdate = 0;
 bool g_disableSound = false;
 bool g_shownLvlUpIcon = false;
 unsigned long g_timeForLvlUpIcon = 0;
+unsigned long g_lastNoteTime = 0; 
+
+void playMelody()
+{
+    if(g_disableSound)
+    {
+        return;
+    }
+
+    if(millis() - g_lastNoteTime > TIME_BETWEEN_NOTES * NUMBER_OF_END_NOTES)
+    {
+        g_lastNoteTime = millis();
+    }
+    else if(millis() - g_lastNoteTime > TIME_BETWEEN_NOTES * SECOND_NOTE_IDX)
+    {
+        tone(BUZZER_PIN, FREQ_END_THIRD_NOTE, TIME_OF_NOTE);
+    }
+    else if(millis() - g_lastNoteTime > TIME_BETWEEN_NOTES)
+    {
+        tone(BUZZER_PIN, FREQ_END_SECOND_NOTE, TIME_OF_NOTE);
+    }
+    else
+    {
+        tone(BUZZER_PIN, FREQ_END_FIRST_NOTE, TIME_OF_NOTE);
+    }
+}
 
 void initAllHw()
 {
@@ -88,6 +115,8 @@ void startLevelSequence()
 
 void goToNextLevelSequence()
 {
+    playMelody();
+
     if(!g_shownLvlUpIcon)
     {
         g_shownLvlUpIcon = true;
@@ -226,6 +255,8 @@ void doInStartAnimationRoutine()
 
 void doInWinningStateRoutine()
 {
+    playMelody();
+    
     g_menu.setInAnimationVar(true);
     // skip animation 
     if(g_hwCtrl.pressedBackButton())

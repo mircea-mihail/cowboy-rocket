@@ -6,6 +6,7 @@
 #include "inputHwControl.h"
 
 extern gameMap g_map;
+extern bool g_disableSound;
 
 // player class to control a player
 class player : public matrixEntity
@@ -31,6 +32,12 @@ private:
 
     // checks where to place the bullet by looking at the direction the player faces
     void getBulletPlacement(int &p_xPos, int &p_yPos);
+
+    // plays a high pitched sound when picking up a power up
+    void playPowerUpPickupSound();
+
+    // plays a low note when taking damage
+    void playTakeDamageSound();
 
 public:
     // initialises the player's position, direction and places them on the map

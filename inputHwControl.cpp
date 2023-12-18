@@ -8,7 +8,7 @@ void inputHwControl::playButtonSound(const int p_frequency)
         return;
     }
 
-    tone(BUZZER_PIN, p_frequency, SOUND_DURATION_BTN_PRESS);
+    tone(BUZZER_PIN, p_frequency, DEFAULT_SOUND_DURATION);
 }
 
 bool inputHwControl::pressedButton()
@@ -116,7 +116,7 @@ void inputHwControl::playJoystickSound()
     if(millis() - m_lastJoystickSound > CYCLE_DELAY_MILLIS)
     {
         m_lastJoystickSound = millis();
-        tone(BUZZER_PIN, FREQ_JOYSTICK, SOUND_DURATION_BTN_PRESS);
+        tone(BUZZER_PIN, FREQ_JOYSTICK, DEFAULT_SOUND_DURATION);
     }
 }
 

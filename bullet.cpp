@@ -135,7 +135,10 @@ bool bullet::hasExploded()
 
 void bullet::playBulletCollisionSound()
 {
-    tone(BUZZER_PIN, FREQ_BULLET, SOUND_DURATION_BTN_PRESS);
+    if(!g_disableSound)
+    {
+        tone(BUZZER_PIN, FREQ_BULLET, DEFAULT_SOUND_DURATION);
+    }
 }
 
 bullet::~bullet()

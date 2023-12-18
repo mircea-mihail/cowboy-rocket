@@ -7,6 +7,7 @@
 
 extern gameMap g_map;
 extern player g_player1;
+extern bool g_disableSound;
 
 #define EXPLOSION_RADIUS 1
 
