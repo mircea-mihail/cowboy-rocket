@@ -2,6 +2,7 @@
 #define UTILITY_H
 
 /////////////////////////// pins
+// still got a free PWM pin 9
 
 // player pins
 #define JS_X_PIN A0
@@ -10,7 +11,7 @@
 #define BACK_BUTTON_PIN A3
 
 // LCD display pins
-#define RESET 9
+#define RESET A5
 #define ENABLE 8
 #define DATA4 7
 #define DATA5 A4

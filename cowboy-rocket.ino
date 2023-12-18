@@ -85,7 +85,10 @@ void initAllHw()
     pinMode(LCD_CONTRAST, OUTPUT);
 
     // brightness sensor
-    pinMode(BRIGHTNESS_PIN, INPUT);    
+    pinMode(BRIGHTNESS_PIN, INPUT);
+
+    // buzzer
+    pinMode(BUZZER_PIN, OUTPUT);
 }
 
 // call this when starting a new level
@@ -256,7 +259,7 @@ void doInStartAnimationRoutine()
 void doInWinningStateRoutine()
 {
     playMelody();
-    
+
     g_menu.setInAnimationVar(true);
     // skip animation 
     if(g_hwCtrl.pressedBackButton())
