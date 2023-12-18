@@ -10,7 +10,6 @@
 #include "enemy.h"
 
 //to do in order:
-// check spawns
 // get points from enemies
 // make a sound on enemy death
 // blink lcd when taking damage
@@ -43,6 +42,14 @@ unsigned long g_lastNoteTime = 0;
 
 enemySpawnCoordonates easyEnemySpawn[NUMBER_OF_EASY_SPAWNS];
 enemySpawnCoordonates hardEnemySpawn[NUMBER_OF_HARD_SPAWNS];
+
+void playEnemyDeathNote()
+{
+    if(!g_disableSound)
+    {
+        tone(BUZZER_PIN, FREQ_ENEMY_DEATH, ENEMY_DEATH_SOUND_DURATION);
+    }
+}
 
 void initEnemySpawns()
 {
@@ -80,8 +87,6 @@ void initEnemies()
         }
     }
     byte currentLevel = g_menu.getLevel();
-    currentLevel = 5;
-
     //spawn them depending on the level
     
     // 6 max ez enemies 
@@ -189,6 +194,7 @@ void doEnemyRoutine()
 
             if(g_enemyArray[enemyIdx]->getLives() == 0)
             {
+                playEnemyDeathNote();
                 delete(g_enemyArray[enemyIdx]);
                 g_enemyArray[enemyIdx] = nullptr;
             }
