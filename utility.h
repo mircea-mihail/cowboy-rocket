@@ -72,6 +72,7 @@
 #define MAP_PLAYER 2
 #define MAP_BULLET 3
 #define MAP_POWER_UP 4
+#define MAP_ENEMY 5
 
 // facing direction of player/bullet/other things
 #define DIRECTION_UP 0
@@ -89,8 +90,9 @@
 #define PLAYER_MOVEMENT_MILLIS 400
 #define PLAYER_BLINK_INTERVAL 200
 
-// power up defines
+// map elements defines
 #define POWER_UP_BLINK_INTERVAL 500
+#define ENEMY_BLINK_INTERVAL 100
 
 // animation defines
 #define DEFAULT_TIME_VAL 0

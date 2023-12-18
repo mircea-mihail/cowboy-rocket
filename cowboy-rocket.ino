@@ -7,16 +7,16 @@
 #include "gameMenu.h"
 #include "inputHwControl.h"
 #include "mySounds.h"
+#include "enemy.h"
 
 //to do in order:
-//do sounds 
-
 // do enemies 
 
 // skip animation 
 #define ANIMATION_SKIP_DELAY_MS 500
 #define LVL_UP_ICON_MILLIS 1000
 #define WAIT_TIME_AFTER_LEVEL_FINISH 600
+#define MAX_ENEMY_COUNT 8
 
 gameMap g_map;
 player g_player1(MATRIX_MIDDLE, MATRIX_MIDDLE);
@@ -24,6 +24,7 @@ bulletList g_bulletList;
 score g_score;
 inputHwControl g_hwCtrl;
 gameMenu g_menu;
+// enemy *g_enemy;
 
 byte g_gameState;
 byte g_menuState;
@@ -112,7 +113,8 @@ void startLevelSequence()
     g_player1.setLives(PLAYER_DEFAULT_LIVES - g_menu.getDifficulty());
 
     // debug
-    // g_map.printEmptyMatrix();
+    g_map.printEmptyMatrix();
+    // g_enemy = new enemy(6, 7, DIRECTION_UP);
     // g_score.clearScores();
 }
 
@@ -173,6 +175,7 @@ void adjustBrightness()
 
 void doInGameRoutine()
 {
+    // g_enemy->updatePosition();
     g_bulletList.updateBullets();
     g_player1.updatePosition();
 

@@ -42,6 +42,16 @@ void gameMap::displayElement(int realRow, int realCol, int p_row, int p_col)
             }
             break;
 
+        case MAP_ENEMY:
+            m_ledControl.setLed(MATRIX_ADDRESS, realRow, realCol, m_blinkEnemy);
+
+            if(millis() - m_lastEnemyBlink > ENEMY_BLINK_INTERVAL)
+            {
+                m_lastEnemyBlink = millis();
+                m_blinkEnemy = !m_blinkEnemy;
+            }
+
+            break;
 
         default:
             break;
@@ -309,4 +319,9 @@ void gameMap::printEmptyMatrix()
     matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE - 1] = MAP_WALL;
     matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE + 1] = MAP_WALL;
     matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE - 2] = MAP_WALL;
+
+    matrix[MATRIX_MIDDLE - 4][MATRIX_MIDDLE] = MAP_WALL;
+    matrix[MATRIX_MIDDLE - 4][MATRIX_MIDDLE - 1] = MAP_WALL;
+    matrix[MATRIX_MIDDLE - 4][MATRIX_MIDDLE + 1] = MAP_WALL;
+    matrix[MATRIX_MIDDLE - 4][MATRIX_MIDDLE - 2] = MAP_WALL;
 }
