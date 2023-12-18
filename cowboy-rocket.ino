@@ -156,7 +156,6 @@ void startLevelSequence()
     g_map.generateMap(g_menu.getLevel());
 
     g_score.startCounting(playerName);
-    g_score.printHighScores();
     
     g_player1.resetValues();
     g_player1.goToDefaultPosition();
@@ -347,7 +346,7 @@ void doInWinningStateRoutine()
 
 void setup()
 {
-    Serial.begin(115200);
+    // Serial.begin(115200);
     initAllHw();
 
     g_gameState = GAME_IN_MENU;
@@ -357,7 +356,6 @@ void setup()
 void loop() 
 {
     //adjustBrightness();
-    Serial.print("stuff\n");
 
     g_menuState = g_menu.menuSequence();
 

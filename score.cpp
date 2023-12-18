@@ -26,21 +26,17 @@ void score::writeScoreToMemory(long p_scoreToWrite, char p_nameToWrite[LETTERS_I
     char scoresNames[NUMBER_OF_SCORES_KEPT][LETTERS_IN_NAME];
 
     byte scoreIdx = FIRST_SCORE_IDX;
-    Serial.println("current winner scores");
     for(int addr = SCORE_MEMORY_ADDRESS; addr < ADDRESS_AFTER_LAST_SCORE; addr += sizeof(long))
     {
         EEPROM.get(addr, scores[scoreIdx ++]);
     }
     for(int nameIdx = 0; nameIdx < NUMBER_OF_SCORES_KEPT; nameIdx ++)
     {
-        Serial.print("name:");
         for(int charIdx = 0; charIdx < LETTERS_IN_NAME; charIdx ++)
         {
             const int memoryIdx = SCORE_NAMES_ADDRESS + nameIdx * SIZE_OF_NAME_IN_EEPROM + charIdx;
             scoresNames[nameIdx][charIdx] = EEPROM.read(memoryIdx);
-            Serial.print(scoresNames[nameIdx][charIdx]);
         }
-        Serial.println(".");
     }
     
     m_scoreRank = PLAYER_NO_RANK; 
@@ -92,26 +88,9 @@ long score::stopCounting()
     return m_score;
 }
 
-void score::printHighScores()
-{
-    int playerRank = PLAYER_FIRST_RANK;
-    for(int addr = SCORE_MEMORY_ADDRESS; addr < ADDRESS_AFTER_LAST_SCORE; addr += sizeof(long))
-    {
-        long score;
-        EEPROM.get(addr, score);
-        Serial.print(F("no. "));
-        Serial.print(playerRank);
-        Serial.print(F(": "));
-        Serial.println(score);
-        playerRank ++;
-    }
-}
-
 void score::updateScore(int p_wallsDestroyed, byte p_currentDifficulty, int p_enemiesKilled = 0)
 {   
     m_score += p_wallsDestroyed * p_currentDifficulty;
-    Serial.print("score: ");
-    Serial.println(m_score);
 }
 
 void score::periodicScoreDecrease()

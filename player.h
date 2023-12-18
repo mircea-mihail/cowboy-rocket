@@ -20,6 +20,12 @@ class player : public matrixEntity
 private:
     unsigned long m_lastMoved = 0; // Tracks the last time the LED moved
 
+    // if both x and y axes are changed by the joystick this function only makes the entity choose one axis
+    void pickAnAxes(int &p_xNextPos, int &p_yNextPos, int p_xPos, int p_yPos, int p_xCommand, int p_yCommand);
+
+    // moves the entity in a direction if the entity is controlled by a joystick
+    void initialPositionUpdate(int &p_xPos, int &p_yPos, int p_xCommand, int p_yCommand);
+
     // stores the next movement of the player in the next move members
     void storeMovement(int p_xCommand, int p_yCommand);
     

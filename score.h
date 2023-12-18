@@ -44,9 +44,6 @@ public:
     // stops the score timer, call this when the level ends. It also writes to memory the new score if the case by calling the private functions
     long stopCounting();
 
-    // prints the high scores recorded in memory
-    void printHighScores();
-
     // updates the current score and returns it
     void updateScore(int p_wallsDestroyed, byte p_currentDifficulty, int p_enemiesKilled = 0);
 
