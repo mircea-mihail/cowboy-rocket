@@ -41,6 +41,9 @@ public:
 
     // checks if the bullet has exploded
     bool hasExploded();
+    
+    // plays the bullet's sound 
+    void playBulletCollisionSound();
 
     // deletes the bullet and the explosion area if the bullet is the exploding type
     ~bullet();

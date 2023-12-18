@@ -126,10 +126,18 @@ void gameMenu::displaySecondEndMessage()
     m_lcd.print("P");
 
     m_lcd.setCursor(FINAL_SCREEN_LIVES_COL, FIRST_LCD_COL);
-    for(int life = 0; life < g_player1.getLives(); life ++)
+    byte playerLives = g_player1.getLives();
+    for(int life = 0; life < playerLives; life ++)
     {
         m_lcd.write(PLAYER_LIFE_CHAR);
     }
+
+    m_lcd.setCursor(FINAL_SCREEN_DEAD_COL, FIRST_LCD_ROW);
+    if(playerLives == 0)
+    {
+        m_lcd.print("DEAD");
+    }
+
     m_lcd.setCursor(FINAL_LVL_COL_ON_LCD, FIRST_LCD_COL);
     m_lcd.print(" lvl ");
     m_lcd.print(m_currentLevel);

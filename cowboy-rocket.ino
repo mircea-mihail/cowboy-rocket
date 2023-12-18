@@ -8,16 +8,14 @@
 #include "inputHwControl.h"
 
 //to do in order:
-// display the end stats at the end
-// make levels 
-
-// check tasks
+//do sounds 
 
 // do enemies 
 
 // skip animation 
 #define ANIMATION_SKIP_DELAY_MS 500
 #define LVL_UP_ICON_MILLIS 1000
+#define WAIT_TIME_AFTER_LEVEL_FINISH 600
 
 gameMap g_map;
 player g_player1(MATRIX_MIDDLE, MATRIX_MIDDLE);
@@ -84,7 +82,7 @@ void startLevelSequence()
     g_player1.setLives(PLAYER_DEFAULT_LIVES - g_menu.getDifficulty());
 
     // debug
-    g_map.printEmptyMatrix();
+    // g_map.printEmptyMatrix();
     // g_score.clearScores();
 }
 
@@ -117,7 +115,7 @@ void goToNextLevelSequence()
             g_player1.goToDefaultPosition();
             g_player1.setLives(PLAYER_DEFAULT_LIVES - g_menu.getDifficulty());
             // debug
-            g_map.printEmptyMatrix();
+            // g_map.printEmptyMatrix();
         }
     }
 }
@@ -169,7 +167,7 @@ void doInGameRoutine()
         {
             g_timeForBulletUpdate = millis();
         }
-        if(millis() - g_timeForBulletUpdate > WINNING_FRAME_DISPLAY_TIME)
+        if(millis() - g_timeForBulletUpdate > WAIT_TIME_AFTER_LEVEL_FINISH)
         {
             g_menu.resetRunSpecificVariables();
             g_timeForBulletUpdate = DEFAULT_TIME_VAL;
@@ -185,7 +183,7 @@ void doInGameRoutine()
         {
             g_timeForBulletUpdate = millis();
         }
-        if(millis() - g_timeForBulletUpdate > WINNING_FRAME_DISPLAY_TIME)
+        if(millis() - g_timeForBulletUpdate > WAIT_TIME_AFTER_LEVEL_FINISH)
         {
             g_menu.resetRunSpecificVariables();
             g_gameState = GAME_WON;

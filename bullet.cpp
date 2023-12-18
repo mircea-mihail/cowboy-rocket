@@ -133,6 +133,10 @@ bool bullet::hasExploded()
     return m_hasExploded;
 }
 
+void bullet::playBulletCollisionSound()
+{
+    tone(BUZZER_PIN, FREQ_BULLET, SOUND_DURATION_BTN_PRESS);
+}
 
 bullet::~bullet()
 {

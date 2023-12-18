@@ -66,6 +66,8 @@ void bulletList::updateBullets()
         {
             if(!currentNode->m_bullet->hasRange())
             {
+                currentNode->m_bullet->playBulletCollisionSound();
+                
                 if(!currentNode->m_bullet->isExplodingType())
                 {
                     bulletNode *nodeToDelete = currentNode; 
