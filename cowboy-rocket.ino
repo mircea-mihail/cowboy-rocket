@@ -126,7 +126,8 @@ void initEnemies()
             numberOfHardEnemies = HARD_ENEMIES_ON_FIFTH_LVL;
             break;
     }
-
+    numberOfEasyEnemies = 0;
+    numberOfHardEnemies = 4;
 
     for(int enemyIdx = 0; enemyIdx < numberOfEasyEnemies; enemyIdx++)
     {

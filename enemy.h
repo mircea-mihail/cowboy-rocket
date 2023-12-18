@@ -4,8 +4,8 @@
 #include "matrixEntity.h"
 #include "player.h"
 
-#define ENEMY_MOVE_INTERVAL 200
-#define HARD_ENEMY_MOVE_INTERVAL 550
+#define ENEMY_MOVE_INTERVAL 400
+#define HARD_ENEMY_MOVE_INTERVAL 700
 
 // enemy types
 #define EASY_180_TYPE 0
@@ -75,7 +75,7 @@ private:
     bool isValidMove(int p_xPos, int p_yPos);
 
     // for hard enemies. When hitting a wall try to go around instead of going after the player
-    bool tryAllOtherMoves(int &p_xNextPos, int &p_yNextPos);
+    bool tryToGoBack(int &p_xNextPos, int &p_yNextPos);
 
 public:
     enemy(int p_xPos, int p_yPos, byte p_direction, byte p_type = EASY_180_TYPE);

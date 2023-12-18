@@ -39,71 +39,62 @@ bool enemy::isValidMove(int p_xPos, int p_yPos)
     return true;
 }
 
-bool enemy::tryAllOtherMoves(int &p_xNextPos, int &p_yNextPos)
+bool enemy::tryToGoBack(int &p_xNextPos, int &p_yNextPos)
 {
     if(p_xNextPos != m_xPos)
     {
-        p_xNextPos = m_xPos;
-        p_yNextPos = m_yPos;
-        p_yNextPos ++;
-
-        dealWithOutOfBounds(p_xNextPos, p_yNextPos);
-        if(isValidMove(p_xNextPos, p_yNextPos))
+        if(p_xNextPos < m_xPos)
         {
-            return true;
+            p_xNextPos = m_xPos;
+            p_yNextPos = m_yPos;
+            p_xNextPos ++;
+
+            dealWithOutOfBounds(p_xNextPos, p_yNextPos);
+            if(isValidMove(p_xNextPos, p_yNextPos))
+            {
+                return true;
+            }
         }
-
-        p_xNextPos = m_xPos;
-        p_yNextPos = m_yPos;
-        p_yNextPos --;
-
-        dealWithOutOfBounds(p_xNextPos, p_yNextPos);
-        if(isValidMove(p_xNextPos, p_yNextPos))
+        else
         {
-            return true;
+            p_xNextPos = m_xPos;
+            p_yNextPos = m_yPos;
+            p_xNextPos --;
+
+            dealWithOutOfBounds(p_xNextPos, p_yNextPos);
+            if(isValidMove(p_xNextPos, p_yNextPos))
+            {
+                return true;
+            }
         }
     }
-
-    p_xNextPos = m_xPos;
-    p_yNextPos = m_yPos;
-    p_xNextPos ++;
-
-    dealWithOutOfBounds(p_xNextPos, p_yNextPos);
-    if(isValidMove(p_xNextPos, p_yNextPos))
+    else
     {
-        return true;
+        if(p_yNextPos < m_yPos)
+        {
+            p_xNextPos = m_xPos;
+            p_yNextPos = m_yPos;
+            p_yNextPos ++;
+
+            dealWithOutOfBounds(p_xNextPos, p_yNextPos);
+            if(isValidMove(p_xNextPos, p_yNextPos))
+            {
+                return true;
+            }
+        }
+        else
+        {
+            p_xNextPos = m_xPos;
+            p_yNextPos = m_yPos;
+            p_yNextPos --;
+
+            dealWithOutOfBounds(p_xNextPos, p_yNextPos);
+            if(isValidMove(p_xNextPos, p_yNextPos))
+            {
+                return true;
+            }
+        }
     }
-
-    p_xNextPos = m_xPos;
-    p_yNextPos = m_yPos;
-    p_xNextPos --;
-
-    dealWithOutOfBounds(p_xNextPos, p_yNextPos);
-    if(isValidMove(p_xNextPos, p_yNextPos))
-    {
-        return true;
-    }
-
-    p_xNextPos = m_xPos;
-    p_yNextPos = m_yPos;
-    p_yNextPos ++;
-
-    dealWithOutOfBounds(p_xNextPos, p_yNextPos);
-    if(isValidMove(p_xNextPos, p_yNextPos))
-    {
-        return true;
-    }
-
-    p_xNextPos = m_xPos;
-    p_yNextPos = m_yPos;
-    p_yNextPos --;
-
-    dealWithOutOfBounds(p_xNextPos, p_yNextPos);
-    if(isValidMove(p_xNextPos, p_yNextPos))
-    {
-        return true;
-    }
-        
     return false;
 }
 
@@ -185,7 +176,7 @@ bool enemy::updatePosition()
         {
             if(m_type == HARD_TYPE)
             {
-                if(!tryAllOtherMoves(m_xNextPos, m_yNextPos))
+                if(!tryToGoBack(m_xNextPos, m_yNextPos))
                 {
                     return false;
                 }
