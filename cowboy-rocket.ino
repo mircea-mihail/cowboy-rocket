@@ -474,9 +474,13 @@ void setup()
     g_map.initMatrix();
 }
 
+
+// unsigned long time = 0;
 void loop() 
 {
     //adjustBrightness();
+    // Serial.println(millis() - time);
+    // time = millis();
 
     g_menuState = g_menu.menuSequence();
 
