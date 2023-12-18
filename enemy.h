@@ -24,8 +24,6 @@ public:
     void damageEnemy();
 
     byte getLives();
-
-    void getCoordonates(int &p_xPos, int &p_yPos);
 };
 
 #endif

@@ -142,13 +142,6 @@ void bullet::playBulletCollisionSound()
     }
 }
 
-void bullet::getCoordonates(int &p_xPos, int &p_yPos)
-{
-    p_xPos = m_xPos;
-    p_yPos = m_yPos;
-}
-
-
 bullet::~bullet()
 {
     g_map.setPositionValue(m_xPos, m_yPos, MAP_EMPTY);

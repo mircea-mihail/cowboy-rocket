@@ -29,6 +29,9 @@ public:
 
     // if both x and y axes are changed by the joystick this function only makes the entity choose one axis
     void pickAnAxes(int &p_xNextPos, int &p_yNextPos, int p_xPos, int p_yPos, int p_xCommand, int p_yCommand);
+
+    // get x and y coordonates of the entity
+    void getCoordonates(int &p_xPos, int &p_yPos);
 };
 
 #endif

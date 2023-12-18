@@ -54,3 +54,9 @@ void matrixEntity::pickAnAxes(int &p_xNextPos, int &p_yNextPos, int p_xPos, int 
         }
     }
 }
+
+void matrixEntity::getCoordonates(int &p_xPos, int &p_yPos)
+{
+    p_xPos = m_xPos;
+    p_yPos = m_yPos;
+}

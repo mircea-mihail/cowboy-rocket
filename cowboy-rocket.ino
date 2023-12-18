@@ -58,8 +58,17 @@ void doEnemyRoutine()
         if(g_enemyArray[enemyIdx] != nullptr)
         {
             int xEnemyPos, yEnemyPos;
+            int xPlayerPos, yPlayerPos;
+
+            g_player1.getCoordonates(xPlayerPos, yPlayerPos);
             g_enemyArray[enemyIdx]->getCoordonates(xEnemyPos, yEnemyPos);
-            
+
+            if(xPlayerPos == xEnemyPos && yPlayerPos == yEnemyPos)
+            {
+                g_player1.takeDamage();
+                g_enemyArray[enemyIdx]->damageEnemy();
+            }
+
             if(g_bulletList.checkBulletOnPos(xEnemyPos, yEnemyPos))
             {
                 g_enemyArray[enemyIdx]->damageEnemy();
