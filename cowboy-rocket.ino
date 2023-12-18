@@ -10,8 +10,8 @@
 #include "enemy.h"
 
 //to do in order:
+
 // get points from enemies
-// make a sound on enemy death
 // blink lcd when taking damage
 
 // skip animation 
@@ -183,6 +183,7 @@ void doEnemyRoutine()
 
             if(xPlayerPos == xEnemyPos && yPlayerPos == yEnemyPos)
             {
+                g_menu.setBlinkDisplayTimer();
                 g_player1.takeDamage();
                 g_enemyArray[enemyIdx]->damageEnemy();
             }

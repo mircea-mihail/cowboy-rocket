@@ -909,6 +909,26 @@ void gameMenu::doScrollMenuLogic(bool &p_showText)
         }
 }
 
+void gameMenu::blinkDisplayWhenDamaged()
+{
+    if(millis() - m_lastDisplayToggle < FIRST_DISPLAY_OFF_MILLIS)
+    {
+        analogWrite(LCD_BRIGHTNESS, 0);
+    }
+    else if(millis() - m_lastDisplayToggle < FIRST_DISPLAY_ON_MILLIS)
+    {
+        analogWrite(LCD_BRIGHTNESS, m_lcdBrightness);
+    }
+    else if(millis() - m_lastDisplayToggle < SECOND_DISPLAY_OFF_MILLIS)
+    {
+        analogWrite(LCD_BRIGHTNESS, 0);    
+    }
+    else if(millis() - m_lastDisplayToggle < SECOND_DISPLAY_ON_MILLIS)
+    {
+        analogWrite(LCD_BRIGHTNESS, m_lcdBrightness);    
+    }
+    
+}
 
 void gameMenu::updateInGameDisplay(int p_wallsOnMap, byte p_playerLives)
 {
@@ -1231,6 +1251,7 @@ int gameMenu::menuSequence()
         break;
 
     case MENU_IN_GAME:
+        blinkDisplayWhenDamaged();
         int wallsOnMap = g_map.getWallsLeft();
         byte playerLives = g_player1.getLives();
 
@@ -1342,4 +1363,9 @@ void gameMenu::displayLvlUp()
     m_lcd.print(F("    LEVEL UP"));
     m_lcd.setCursor(FIRST_LCD_COL, SECOND_LCD_ROW);
     m_lcd.print(F("    LEVEL UP"));
+}
+
+void gameMenu::setBlinkDisplayTimer()
+{
+    m_lastDisplayToggle = millis();
 }

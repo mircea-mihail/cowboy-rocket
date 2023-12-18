@@ -72,6 +72,12 @@
 #define SURE_SURE 2
 #define ABSOLUTELY_POSITIVE 3
 
+// display blink on damage
+#define FIRST_DISPLAY_OFF_MILLIS 100
+#define FIRST_DISPLAY_ON_MILLIS 200
+#define SECOND_DISPLAY_OFF_MILLIS 400
+#define SECOND_DISPLAY_ON_MILLIS 500
+
 extern gameMap g_map;
 extern bool g_disableSound;
 extern player g_player1;
@@ -102,6 +108,7 @@ private:
     unsigned long m_lastMatrixBrightnessChange = 0;
     unsigned long m_lastNameArrowChange = 0;
     unsigned long m_lastDifficultyChange = 0;
+    unsigned long m_lastDisplayToggle = 0;
 
     char m_nameArray[LETTERS_IN_NAME] = {'A', 'A', 'A', 'A'};
     int m_nameArrayIdx = 0;
@@ -261,6 +268,9 @@ private:
     // dispays once two winners offset from the first winner by offset
     void displayWinnersOnce(char p_namesOfWinners[NUMBER_OF_SCORES_KEPT][SIZE_OF_NAME_IN_EEPROM], long p_winnerScores[NUMBER_OF_SCORES_KEPT], const byte p_offset = 0);
 
+    // when the player takes damage blink the LCD display
+    void blinkDisplayWhenDamaged();
+
     /////////////////////////////////// FUNCTIONS TO ENTER SUBMENUS    
 
     // the settings menu logic that orchestrates the changes between settings-menu options
@@ -329,6 +339,9 @@ public:
 
     // displays level up message
     void displayLvlUp();
+
+    // sets the timer that works the blink display when blinkDisplayWhenDamaged
+    void setBlinkDisplayTimer();
 };
 
 #endif

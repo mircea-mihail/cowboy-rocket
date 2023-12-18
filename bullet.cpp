@@ -119,6 +119,7 @@ void bullet::explodeBullet()
                 xPlayerPos == m_xPos && yPlayerPos == explosionBottom
             )
             {
+                g_menu.setBlinkDisplayTimer();
                 g_player1.takeDamage();
             }
         }

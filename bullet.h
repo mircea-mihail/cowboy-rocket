@@ -4,7 +4,9 @@
 #include "matrixEntity.h"
 #include "gameMap.h"
 #include "player.h"
+#include "gameMenu.h"
 
+extern gameMenu g_menu;
 extern gameMap g_map;
 extern player g_player1;
 extern bool g_disableSound;
