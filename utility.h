@@ -124,6 +124,11 @@
 // levels
 #define NUMBER_OF_LEVELS 5
 #define FIRST_LEVEL 1
+#define SECOND_LEVEL 2
+#define THIRD_LEVEL 3
+#define FOURTH_LEVEL 4
+#define FIFTH_LEVEL 5
+
 
 // difficulty
 #define DIFFICULTY_EASY 1

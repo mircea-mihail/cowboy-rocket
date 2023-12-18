@@ -10,10 +10,10 @@
 #include "enemy.h"
 
 //to do in order:
-
-// do hard enemies 
-// spawn all enemies depending on the current level
+// check spawns
 // get points from enemies
+// make a sound on enemy death
+// blink lcd when taking damage
 
 // skip animation 
 #define ANIMATION_SKIP_DELAY_MS 500
@@ -79,7 +79,89 @@ void initEnemies()
             g_enemyArray[enemyIdx] = nullptr;
         }
     }
-    g_enemyArray[0] = new enemy(5, 7, DIRECTION_UP, HARD_TYPE);
+    byte currentLevel = g_menu.getLevel();
+    currentLevel = 5;
+
+    //spawn them depending on the level
+    
+    // 6 max ez enemies 
+    // 4 max hard enemies 
+    // 1 -> 2 ez
+    // 2 -> 4 ez 
+    // 3 -> 4 ez 1 hard
+    // 4 -> 6 ez 2 hard
+    // 5 -> 6 ez 4 hard
+    int numberOfEasyEnemies;
+    int numberOfHardEnemies;
+
+    switch(currentLevel)
+    {
+        case FIRST_LEVEL:
+            numberOfEasyEnemies = EASY_ENEMIES_ON_FIRST_LVL;
+            numberOfHardEnemies = HARD_ENEMIES_ON_FIRST_LVL;
+            break;
+
+        case SECOND_LEVEL:
+            numberOfEasyEnemies = EASY_ENEMIES_ON_SECOND_LVL;
+            numberOfHardEnemies = HARD_ENEMIES_ON_SECOND_LVL;
+            break;
+
+        case THIRD_LEVEL:
+            numberOfEasyEnemies = EASY_ENEMIES_ON_THIRD_LVL;
+            numberOfHardEnemies = HARD_ENEMIES_ON_THIRD_LVL;
+            break;
+
+        case FOURTH_LEVEL:
+            numberOfEasyEnemies = EASY_ENEMIES_ON_FOURTH_LVL;
+            numberOfHardEnemies = HARD_ENEMIES_ON_FOURTH_LVL;
+            break;
+
+        case FIFTH_LEVEL:
+            numberOfEasyEnemies = EASY_ENEMIES_ON_FIFTH_LVL;
+            numberOfHardEnemies = HARD_ENEMIES_ON_FIFTH_LVL;
+            break;
+    }
+
+
+    for(int enemyIdx = 0; enemyIdx < numberOfEasyEnemies; enemyIdx++)
+    {
+        int ezPosIdx = random(0, NUMBER_OF_EASY_SPAWNS);
+        int xEnemyPos = easyEnemySpawn[ezPosIdx].m_xPos;
+        int yEnemyPos = easyEnemySpawn[ezPosIdx].m_yPos;
+
+        byte direction = random(0, MAP_NUMBER_OF_ORIENTATIONS);
+        byte easyType = random(0, NUMBER_OF_EASY_TYPES);
+
+        g_enemyArray[enemyIdx] = new enemy(xEnemyPos, yEnemyPos, direction, easyType);
+    }
+
+    if(currentLevel == FIFTH_LEVEL)
+    {
+        // on the last level make sure that all the hard enemies are in their designated spots
+        for(int enemyIdx = numberOfEasyEnemies; enemyIdx < numberOfHardEnemies; enemyIdx++)
+        {
+            int hardPosIdx = enemyIdx - numberOfEasyEnemies;
+            int xEnemyPos = hardEnemySpawn[hardPosIdx].m_xPos;
+            int yEnemyPos = hardEnemySpawn[hardPosIdx].m_yPos;
+
+            byte direction = random(0, MAP_NUMBER_OF_ORIENTATIONS);
+
+            g_enemyArray[enemyIdx] = new enemy(xEnemyPos, yEnemyPos, direction, HARD_TYPE);
+        }    
+    }
+    else
+    {
+        for(int enemyIdx = numberOfEasyEnemies; enemyIdx < numberOfHardEnemies; enemyIdx++)
+        {
+            int hardPosIdx = random(0, NUMBER_OF_HARD_SPAWNS);
+            int xEnemyPos = hardEnemySpawn[hardPosIdx].m_xPos;
+            int yEnemyPos = hardEnemySpawn[hardPosIdx].m_yPos;
+
+            byte direction = random(0, MAP_NUMBER_OF_ORIENTATIONS);
+
+            g_enemyArray[enemyIdx] = new enemy(xEnemyPos, yEnemyPos, direction, HARD_TYPE);
+        }
+    }
 }
 
 void doEnemyRoutine()
@@ -193,7 +275,7 @@ void startLevelSequence()
     g_player1.setLives(PLAYER_DEFAULT_LIVES - g_menu.getDifficulty());
 
     // debug
-    g_map.printEmptyMatrix();
+    // g_map.printEmptyMatrix();
     // g_score.clearScores();
 }
 
@@ -377,7 +459,7 @@ void doInWinningStateRoutine()
 
 void setup()
 {
-    // Serial.begin(115200);
+    Serial.begin(115200);
     initAllHw();
     initEnemySpawns();
 
