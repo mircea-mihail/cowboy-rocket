@@ -9,16 +9,11 @@
 #include "mySounds.h"
 #include "enemy.h"
 
-//to do in order:
-
-// get points from enemies
-// blink lcd when taking damage
-
 // skip animation 
 #define ANIMATION_SKIP_DELAY_MS 500
 #define LVL_UP_ICON_MILLIS 1000
 #define WAIT_TIME_AFTER_LEVEL_FINISH 600
-#define MAX_ENEMY_COUNT 8
+#define MAX_ENEMY_COUNT 10
 
 gameMap g_map;
 player g_player1(MATRIX_MIDDLE, MATRIX_MIDDLE);
@@ -126,8 +121,8 @@ void initEnemies()
             numberOfHardEnemies = HARD_ENEMIES_ON_FIFTH_LVL;
             break;
     }
-    numberOfEasyEnemies = 0;
-    numberOfHardEnemies = 4;
+    // numberOfEasyEnemies = 0;
+    // numberOfHardEnemies = 4;
 
     for(int enemyIdx = 0; enemyIdx < numberOfEasyEnemies; enemyIdx++)
     {
@@ -197,6 +192,10 @@ void doEnemyRoutine()
             if(g_enemyArray[enemyIdx]->getLives() == 0)
             {
                 playEnemyDeathNote();
+                int wallsDestroyed = 0;
+                int enemiesKilled = 1;
+                g_score.updateScore(wallsDestroyed, g_enemyArray[enemyIdx]->getType(), enemiesKilled);
+                
                 delete(g_enemyArray[enemyIdx]);
                 g_enemyArray[enemyIdx] = nullptr;
             }

@@ -5,7 +5,10 @@
 #include <Arduino.h>
 #include "utility.h"
 #include "memory.h"
+#include "enemy.h"
+#include "player.h"
 
+extern player g_player1;
 
 // scoring related
 #define WORST_SCORE 0xFFFFFFFF
@@ -45,7 +48,7 @@ public:
     long stopCounting();
 
     // updates the current score and returns it
-    void updateScore(int p_wallsDestroyed, byte p_currentDifficulty, int p_enemiesKilled = 0);
+    void updateScore(int p_wallsDestroyed, byte p_currentDifficulty, int p_enemiesKilled = 0, byte p_enemyType = EASY_180_TYPE);
 
     // periodic decrease of score depending on the time it took the player
     void periodicScoreDecrease();

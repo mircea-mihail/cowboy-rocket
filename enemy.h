@@ -4,8 +4,13 @@
 #include "matrixEntity.h"
 #include "player.h"
 
-#define ENEMY_MOVE_INTERVAL 400
-#define HARD_ENEMY_MOVE_INTERVAL 700
+// move patterns
+#define ENEMY_MOVE_INTERVAL 300
+#define HARD_ENEMY_MOVE_INTERVAL 600
+
+// enemy points
+#define EASY_ENEMY_POINTS 10
+#define HARD_ENEMY_POINTS 20
 
 // enemy types
 #define EASY_180_TYPE 0
@@ -49,7 +54,6 @@
 #define EASY_ENEMIES_ON_FOURTH_LVL 6
 #define EASY_ENEMIES_ON_FIFTH_LVL 6
 
-
 #define HARD_ENEMIES_ON_FIRST_LVL 0
 #define HARD_ENEMIES_ON_SECOND_LVL 0 
 #define HARD_ENEMIES_ON_THIRD_LVL 1
@@ -88,6 +92,9 @@ public:
 
     // returns the enemy life left
     byte getLives();
+
+    // returns the enemy type
+    byte getType();
 };
 
 // enemy spawn spots

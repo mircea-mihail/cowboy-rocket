@@ -214,3 +214,8 @@ byte enemy::getLives()
 {
     return m_lives;
 }
+
+byte enemy::getType()
+{
+    return m_type;
+}

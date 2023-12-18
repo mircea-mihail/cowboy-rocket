@@ -72,6 +72,9 @@ public:
 
     // sets player's lives depending on the difficulty
     void setLives(byte p_difficulty);
+
+    // returns true if the player found exploding bullets
+    bool foundExplodingBullets();
 };
 
 #endif

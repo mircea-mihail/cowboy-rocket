@@ -88,9 +88,15 @@ long score::stopCounting()
     return m_score;
 }
 
-void score::updateScore(int p_wallsDestroyed, byte p_currentDifficulty, int p_enemiesKilled = 0)
+void score::updateScore(int p_wallsDestroyed, byte p_currentDifficulty, int p_enemiesKilled = 0, byte p_enemyType = EASY_180_TYPE)
 {   
     m_score += p_wallsDestroyed * p_currentDifficulty;
+    m_score += (p_enemiesKilled * ((p_enemyType != HARD_TYPE) ? EASY_ENEMY_POINTS : HARD_ENEMY_POINTS)); 
+    
+    if(g_player1.foundExplodingBullets())
+    {
+        m_score ++;
+    }
 }
 
 void score::periodicScoreDecrease()

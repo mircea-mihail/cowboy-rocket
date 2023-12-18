@@ -224,3 +224,7 @@ void player::setLives(byte p_difficulty)
     m_lives = p_difficulty;
 }
 
+bool player::foundExplodingBullets()
+{
+    return m_foundExplodingBullets;
+}
