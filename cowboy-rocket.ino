@@ -38,6 +38,34 @@ bool g_shownLvlUpIcon = false;
 unsigned long g_timeForLvlUpIcon = 0;
 unsigned long g_lastNoteTime = 0; 
 
+enemySpawnCoordonates easyEnemySpawn[NUMBER_OF_EASY_SPAWNS];
+enemySpawnCoordonates hardEnemySpawn[NUMBER_OF_HARD_SPAWNS];
+
+void initEnemySpawns()
+{
+    easyEnemySpawn[0].m_xPos = FIRST_EASY_ENEMY_X;
+    easyEnemySpawn[0].m_yPos = FIRST_EASY_ENEMY_Y;
+    easyEnemySpawn[1].m_xPos = SECOND_EASY_ENEMY_X;
+    easyEnemySpawn[1].m_yPos = SECOND_EASY_ENEMY_Y;
+    easyEnemySpawn[2].m_xPos = THIRD_EASY_ENEMY_X;
+    easyEnemySpawn[2].m_yPos = THIRD_EASY_ENEMY_Y;
+    easyEnemySpawn[3].m_xPos = FOURTH_EASY_ENEMY_X;
+    easyEnemySpawn[3].m_yPos = FOURTH_EASY_ENEMY_Y;
+    easyEnemySpawn[4].m_xPos = FIFTH_EASY_ENEMY_X;
+    easyEnemySpawn[4].m_yPos = FIFTH_EASY_ENEMY_Y;
+    easyEnemySpawn[5].m_xPos = SIXTH_EASY_ENEMY_X;
+    easyEnemySpawn[5].m_yPos = SIXTH_EASY_ENEMY_Y;
+
+    hardEnemySpawn[0].m_xPos = FIRST_HARD_ENEMY_X;
+    hardEnemySpawn[0].m_yPos = FIRST_HARD_ENEMY_Y;
+    hardEnemySpawn[1].m_xPos = SECOND_HARD_ENEMY_X;
+    hardEnemySpawn[1].m_yPos = SECOND_HARD_ENEMY_Y;
+    hardEnemySpawn[2].m_xPos = THIRD_HARD_ENEMY_X;
+    hardEnemySpawn[2].m_yPos = THIRD_HARD_ENEMY_Y;
+    hardEnemySpawn[3].m_xPos = FOURTH_HARD_ENEMY_X;
+    hardEnemySpawn[3].m_yPos = FOURTH_HARD_ENEMY_Y;
+}
+
 void initEnemies()
 {
     for(int enemyIdx = 0; enemyIdx < MAX_ENEMY_COUNT; enemyIdx++)
@@ -348,6 +376,7 @@ void setup()
 {
     // Serial.begin(115200);
     initAllHw();
+    initEnemySpawns();
 
     g_gameState = GAME_IN_MENU;
     g_map.initMatrix();
