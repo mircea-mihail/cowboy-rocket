@@ -134,6 +134,7 @@
 
 // reverses the direction. If it is up it makes it down. If it's right makes it left
 #define reverseDirection(direction) (direction = (direction + (MAP_NUMBER_OF_ORIENTATIONS/2)) % MAP_NUMBER_OF_ORIENTATIONS) 
+#define turnDirection90Deg(direction) (direction = (direction + 1) % MAP_NUMBER_OF_ORIENTATIONS)
 
 // when a column in a matrix is encoded in a byte this functions returns the saught after bit value
 #define getColValFromByte(byteValue, col) ((byteValue >> col) & 1)

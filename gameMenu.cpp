@@ -690,7 +690,7 @@ void gameMenu::goToSettingsMenu()
     case IN_MATRIX_BRIGHTNESS:
         if(m_changedState)
         {
-            m_lcd.print(F("      mat "));
+            m_lcd.print(F("    matrix "));
             m_lcd.write(SUN_CHAR);
             printHashesForMatrix(g_map.getMatrixBrightness());
 
@@ -703,7 +703,7 @@ void gameMenu::goToSettingsMenu()
     case IN_LCD_CONTRAST:
         if(m_changedState)
         {
-            m_lcd.print(F("      lcd "));
+            m_lcd.print(F("      LCD "));
             m_lcd.write(CONTRAST_CHAR);
             printHashesContrastLCD(m_lcdContrast);
             
@@ -716,7 +716,7 @@ void gameMenu::goToSettingsMenu()
     case IN_LCD_BRIGHTNESS:
         if(m_changedState)
         {
-            m_lcd.print(F("      lcd "));
+            m_lcd.print(F("      LCD "));
             m_lcd.write(SUN_CHAR);
             printHashesLCD(PWM_RESOLUTION - m_lcdBrightness);
 

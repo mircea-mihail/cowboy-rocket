@@ -10,7 +10,10 @@
 #include "enemy.h"
 
 //to do in order:
-// do enemies 
+
+// do hard enemies 
+// spawn all enemies depending on the current level
+// get points from enemies
 
 // skip animation 
 #define ANIMATION_SKIP_DELAY_MS 500
@@ -76,7 +79,7 @@ void initEnemies()
             g_enemyArray[enemyIdx] = nullptr;
         }
     }
-    g_enemyArray[0] = new enemy(10, 7, DIRECTION_UP);
+    g_enemyArray[0] = new enemy(5, 7, DIRECTION_UP, HARD_TYPE);
 }
 
 void doEnemyRoutine()

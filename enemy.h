@@ -2,13 +2,16 @@
 #define ENEMY_H
 
 #include "matrixEntity.h"
+#include "player.h"
 
 #define ENEMY_MOVE_INTERVAL 200
+#define HARD_ENEMY_MOVE_INTERVAL 550
 
 // enemy types
-#define EASY_TURN_TYPE 0
+#define EASY_180_TYPE 0
 #define EASY_90_TYPE 1
-#define HARD_TYPE 2
+#define EASY_RANDOM_TYPE 2
+#define HARD_TYPE 3
 
 #define NUMBER_OF_POSSIBLE_SPAWNS 10
 #define NUMBER_OF_EASY_SPAWNS 6
@@ -38,6 +41,8 @@
 #define FOURTH_HARD_ENEMY_X 14
 #define FOURTH_HARD_ENEMY_Y 14
 
+extern player g_player1;
+
 struct enemySpawnCoordonates
 {
     int m_xPos;
@@ -48,20 +53,25 @@ class enemy: public matrixEntity
 {
 private:
     byte m_lives = 1;
-
+    byte m_type = EASY_180_TYPE;
     unsigned long m_lastMoveTime = 0;
 
     // checks if the next position is valid and if not modifies the enemy direction
     bool isValidMove(int p_xPos, int p_yPos);
 
+    // for hard enemies. When hitting a wall try to go around instead of going after the player
+    bool tryAllOtherMoves(int &p_xNextPos, int &p_yNextPos);
+
 public:
-    enemy(int p_xPos, int p_yPos, byte p_direction);
+    enemy(int p_xPos, int p_yPos, byte p_direction, byte p_type = EASY_180_TYPE);
 
     // updates the enemy position in the direction he is going
     bool updatePosition() override;   
 
+    // decreases enemy lives to 0 if they are not 0 already
     void damageEnemy();
 
+    // returns the enemy life left
     byte getLives();
 };
 
