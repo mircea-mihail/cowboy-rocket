@@ -76,6 +76,7 @@ As I said before, you're a cowboy looking to raise some scuffle. There are 5 lev
 * you can shoot at a wall while near it without taking damage with rocket bullets if you move away fast enough 
 * there is both hardware and software support for auto brightness but it annoys me too much so I soft blocked it
 * there is only one pin left unused on the arduino Uno, other than pin 0 and 1 (i need my serial comms)
+* there are 241 defines in this code
 
 
 
