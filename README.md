@@ -1,6 +1,10 @@
 # COWBOY ROCKET
 
-# ADD PICTURES AND VIDEO ALSO ADD COLLABORATORS
+## The project:
+Nothing to motivate a reader better than seeing the magnificent project they've started reading about.
+<img src="media/gameConsole.jpg" alt="gameConsole" height="300"/>
+<img src="media/gameConsole1.jpg" alt="gameConsole1" height="300"/>
+also a youtube link:
 
 ## Motivation and inspiration
 ### Quick context
