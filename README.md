@@ -5,7 +5,7 @@ Nothing to motivate a reader better than seeing the magnificent project they've 
 
 <img src="media/gameConsole.jpg" alt="gameConsole" height="300"/>
 <img src="media/gameConsole1.jpg" alt="gameConsole1" height="300"/>
-also a youtube link:
+Also a youtube link with the working project:
 https://youtu.be/3kBMjN-ncu4?si=xZXxHHO56YsO3chx 
 
 ## Motivation and inspiration
