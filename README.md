@@ -28,9 +28,7 @@ matrix.
 By this point on I started to realise how annoying it is to have two different breadboards on a single
 project, especially when they are not connected and components tend to disconnect. Therefore I dedicated some hours into cramming everythin on a single breadboard.
 
-<img src="media/matrix-connections.jpg" alt="matrix-connections" height="300"/>
-<img src="media/matrix-close-up.jpg" alt="matrix-close-up" height="300"/>
-<img src="media/lcd-close-up.jpg" alt="lcd-close-up" height="300"/>
+<img src="media/matrix-connections.jpg" alt="matrix-connections" height="300"/> <img src="media/matrix-close-up.jpg" alt="matrix-close-up" height="300"/> <img src="media/lcd-close-up.jpg" alt="lcd-close-up" height="300"/>
 
 I also had a rudimentary menu on the LCD as a requirement for this stage in the project so I also started working on that. It was a little tedious but in the end I do believe it adds a lot to the 
 project ( the menu and LCD that is )
@@ -46,8 +44,7 @@ mentioned below.
 But this was not enough. I wanted a finished project. An actual console, something standalone and somewhat complete. The breadboard mess thethered to the computer would not do. As a result I went ahead and bought some components and started soldering. This took a LONG time. Far longer than I could have anticipated. 6 hours in and I was barely a quarter of the way there. But at last, 15 hours later, 
 my vision came true. A bit uglier and more asymetrical than I initially wanted but that's fine. I love my child for what he is not how he looks.
 
-<img src="media/finished-project-side.jpg" alt="finished-project-side" height="300"/>
-<img src="media/finished-project-front.jpg" alt="finished-project-front" height="300"/>
+<img src="media/finished-project-side.jpg" alt="finished-project-side" height="300"/> <img src="media/finished-project-front.jpg" alt="finished-project-front" height="300"/>
 <img src="media/finished-project.jpg" alt="finished-project" height="300"/>
 
 And so, this chapter ends, not with a bang but with a *beep*.
