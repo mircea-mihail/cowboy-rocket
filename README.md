@@ -1,28 +1,5 @@
 # COWBOY ROCKET
 
-## The project:
-Nothing to motivate a reader better than seeing the magnificent project they've started reading about.
-
-<img src="media/gameConsole.jpg" alt="gameConsole" height="300"/>
-<img src="media/gameConsole1.jpg" alt="gameConsole1" height="300"/>
-Also a youtube link with the working project:
-https://youtu.be/3kBMjN-ncu4?si=xZXxHHO56YsO3chx 
-
-## Motivation and inspiration
-### Quick context
-This game was the main project for my Introduction To Robotics course I took at uni. The task is listed below but the
-main requirement was to design a game for an eight by eight LED matrix that would funciton using an arduino uno alone.
-
-### Inspiration
-We had some liberty in choosing the game and I ended up going for a top down arcade shooter where you have to kill 
-all the enemies and destroy their lair to advance to the next level, where even more enemies and thicker walls emerge.
-I created this game out of nostalgia for the top down flash shooters I used to play at my friends' houses when I was younger. There's a game in particular that I remember really enjoying but I've no idea what it's called.
-
-### Why the name
-The name of this game actually came as a result of the shooting mechanics I wanted to implement. I wanted to be able to 
-both shoot normal and exploding bullets and rockets were the perfect excuse. As for the cowboy, I'm not sure what sparked
-the idea but I knew I wanted to have a mascot and what better mascot than a COWBOY. Thus, COWBOY ROCKET was born.
-
 
 
 ## About the projcet itself
@@ -38,6 +15,59 @@ a great experience.
 
 ### What about the hardware??
 When it comes to hardware, at the time of writing, I managed to cram everythin on a single breadboard but a fully soldered version of the project is yet to come this week (I've got a package of electronics waiting for me at an easybox)
+
+
+## The history
+There have been four main stages to this project, dictated both by the requirements and by the 
+time on my hands. It all started with a simple matrix game where you could only destroy walls and 
+shoot bullets. No lcd, no case, no game personality. More of a start to get used to programming the 
+matrix.
+<img src="media/matrix-only-game.jpg" alt="matrix-only-game" height="300"/>
+
+By this point on I started to realise how annoying it is to have two different breadboards on a single
+project, especially when they are not connected and components tend to disconnect. Therefore I dedicated some hours into cramming everythin on a single breadboard.
+
+<img src="media/matrix-connections.jpg" alt="matrix-connections" height="300"/>
+
+I also had a rudimentary menu on the LCD as a requirement for this stage in the project so I also started working on that. It was a little tedious but in the end I do believe it adds a lot to the 
+project ( the menu and LCD that is )
+
+<img src="media/matrix-and-lcd.jpg" alt="matrix-and-lcd" height="300"/>
+
+Then, the final deadline came up and all the work up to this point was all about the software.
+Enemies, a better, more complete menu, an actual game with a purpose, a scoring system, everything
+mentioned below.
+
+<img src="media/gameConsole.jpg" alt="gameConsole" height="300"/>
+
+But this was not enough. I wanted a finished project. An actual console, something standalone and somewhat complete. The breadboard mess thethered to the computer would not do. As a result I went ahead and bought some components and started soldering. This took a LONG time. Far longer than I could have anticipated. 6 hours in and I was barely a quarter of the way there. But at last, 15 hours later, 
+my vision came true. A bit uglier and more asymetrical than I initially wanted but that's fine. I love my child for what he is not how he looks.
+
+<img src="media/finished-project-side.jpg" alt="finished-project-side" height="300"/>
+<img src="media/finished-project-front.jpg" alt="finished-project-front" height="300"/>
+<img src="media/finished-project.jpg" alt="finished-project" height="300"/>
+
+And so, this chapter ends, not with a bang but with a *beep*.
+
+Also here's a youtube link with the working project befroe soldering:
+https://youtu.be/3kBMjN-ncu4?si=xZXxHHO56YsO3chx 
+
+
+
+## Motivation and inspiration
+### Quick context
+This game was the main project for my Introduction To Robotics course I took at uni. The task is listed below but the
+main requirement was to design a game for an eight by eight LED matrix that would funciton using an arduino uno alone.
+
+### Inspiration
+We had some liberty in choosing the game and I ended up going for a top down arcade shooter where you have to kill 
+all the enemies and destroy their lair to advance to the next level, where even more enemies and thicker walls emerge.
+I created this game out of nostalgia for the top down flash shooters I used to play at my friends' houses when I was younger. There's a game in particular that I remember really enjoying but I've no idea what it's called.
+
+### Why the name
+The name of this game actually came as a result of the shooting mechanics I wanted to implement. I wanted to be able to 
+both shoot normal and exploding bullets and rockets were the perfect excuse. As for the cowboy, I'm not sure what sparked
+the idea but I knew I wanted to have a mascot and what better mascot than a COWBOY. Thus, COWBOY ROCKET was born.
 
 
 
@@ -75,8 +105,9 @@ As I said before, you're a cowboy looking to raise some scuffle. There are 5 lev
 * you can get a negative score (just don't do anything for a while then start playing)
 * you can shoot at a wall while near it without taking damage with rocket bullets if you move away fast enough 
 * there is both hardware and software support for auto brightness but it annoys me too much so I soft blocked it
-* there is only one pin left unused on the arduino Uno, other than pin 0 and 1 (i need my serial comms)
+* there is only one pin left unused on the arduino Uno, other than pin 0 and 1 (I need my serial comms)
 * there are 241 defines in this code
+* soldering is hard. It took a wapping 15 hours to get it done (I *need* to learn PCB design)
 
 
 
