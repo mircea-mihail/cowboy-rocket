@@ -212,10 +212,14 @@ byte player::getLives()
 
 void player::takeDamage()
 {
-    if(m_lives != 0)
+    if(millis() - m_lastTakeDamageTime > TAKE_DAMAGE_COOLDOWN_MILLIS)
     {
-        m_lives --;
-        playTakeDamageSound();
+        m_lastTakeDamageTime = millis();
+        if(m_lives != 0)
+        {
+            m_lives --;
+            playTakeDamageSound();
+        }
     }
 }
 

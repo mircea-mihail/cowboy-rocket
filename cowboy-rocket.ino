@@ -121,14 +121,18 @@ void initEnemies()
             numberOfHardEnemies = HARD_ENEMIES_ON_FIFTH_LVL;
             break;
     }
+
     // numberOfEasyEnemies = 0;
     // numberOfHardEnemies = 4;
+    // g_map.clearMapAround(5, 5);
+    // g_enemyArray[0] = new enemy(5, 5, DIRECTION_DOWN, HARD_TYPE);
 
     for(int enemyIdx = 0; enemyIdx < numberOfEasyEnemies; enemyIdx++)
     {
         int ezPosIdx = random(0, NUMBER_OF_EASY_SPAWNS);
         int xEnemyPos = easyEnemySpawn[ezPosIdx].m_xPos;
         int yEnemyPos = easyEnemySpawn[ezPosIdx].m_yPos;
+        g_map.clearMapAround(xEnemyPos, yEnemyPos);
 
         byte direction = random(0, MAP_NUMBER_OF_ORIENTATIONS);
         byte easyType = random(0, NUMBER_OF_EASY_TYPES);
@@ -139,11 +143,13 @@ void initEnemies()
     if(currentLevel == FIFTH_LEVEL)
     {
         // on the last level make sure that all the hard enemies are in their designated spots
-        for(int enemyIdx = numberOfEasyEnemies; enemyIdx < numberOfHardEnemies; enemyIdx++)
+        for(int enemyIdx = numberOfEasyEnemies; enemyIdx < numberOfEasyEnemies + numberOfHardEnemies; enemyIdx++)
         {
             int hardPosIdx = enemyIdx - numberOfEasyEnemies;
             int xEnemyPos = hardEnemySpawn[hardPosIdx].m_xPos;
             int yEnemyPos = hardEnemySpawn[hardPosIdx].m_yPos;
+
+            g_map.clearMapAround(xEnemyPos, yEnemyPos);
 
             byte direction = random(0, MAP_NUMBER_OF_ORIENTATIONS);
 
@@ -152,11 +158,13 @@ void initEnemies()
     }
     else
     {
-        for(int enemyIdx = numberOfEasyEnemies; enemyIdx < numberOfHardEnemies; enemyIdx++)
+        for(int enemyIdx = numberOfEasyEnemies; enemyIdx < numberOfEasyEnemies +  numberOfHardEnemies; enemyIdx++)
         {
             int hardPosIdx = random(0, NUMBER_OF_HARD_SPAWNS);
             int xEnemyPos = hardEnemySpawn[hardPosIdx].m_xPos;
             int yEnemyPos = hardEnemySpawn[hardPosIdx].m_yPos;
+
+            g_map.clearMapAround(xEnemyPos, yEnemyPos);
 
             byte direction = random(0, MAP_NUMBER_OF_ORIENTATIONS);
 
@@ -167,10 +175,22 @@ void initEnemies()
 
 void doEnemyRoutine()
 {
+    int ezEnemiesNr = 0;
+    int hardEnemiesNr = 0;
+
     for(int enemyIdx = 0; enemyIdx < MAX_ENEMY_COUNT; enemyIdx++)
     {
         if(g_enemyArray[enemyIdx] != nullptr)
         {
+            if(g_enemyArray[enemyIdx]->getType() == HARD_TYPE)
+            {
+                hardEnemiesNr ++;
+            }
+            else
+            {
+                ezEnemiesNr ++;
+            }
+
             int xEnemyPos, yEnemyPos;
             int xPlayerPos, yPlayerPos;
 
@@ -205,6 +225,7 @@ void doEnemyRoutine()
             }
         }
     }
+
 }
 
 void playMelody()
@@ -264,7 +285,6 @@ void initAllHw()
 // call this when starting a new level
 void startLevelSequence()
 {
-    initEnemies();
     g_gameState = GAME_IN_GAME;    
 
     char playerName[LETTERS_IN_NAME];
@@ -284,11 +304,12 @@ void startLevelSequence()
     // debug
     // g_map.printEmptyMatrix();
     // g_score.clearScores();
+    initEnemies();
+
 }
 
 void goToNextLevelSequence()
 {
-    initEnemies();
     playMelody();
 
     if(!g_shownLvlUpIcon)
@@ -319,6 +340,7 @@ void goToNextLevelSequence()
             g_player1.setLives(PLAYER_DEFAULT_LIVES - g_menu.getDifficulty());
             // debug
             // g_map.printEmptyMatrix();
+            initEnemies();
         }
     }
 }
@@ -466,7 +488,7 @@ void doInWinningStateRoutine()
 
 void setup()
 {
-    Serial.begin(115200);
+    // Serial.begin(115200);
     initAllHw();
     initEnemySpawns();
 

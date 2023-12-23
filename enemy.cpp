@@ -8,6 +8,15 @@ enemy::enemy(int p_xPos, int p_yPos, byte p_direction, byte p_type = EASY_180_TY
     m_direction = p_direction;
     m_type = p_type;
     g_map.setPositionValue(m_xPos, m_yPos, MAP_EMPTY); 
+    
+    if(m_type == HARD_TYPE)
+    {
+        m_lives = HARD_ENEMY_LIVES;
+    }
+    else 
+    {
+        m_lives = EASY_ENEMY_LIVES;
+    }
 }
 
 bool enemy::isValidMove(int p_xPos, int p_yPos)
@@ -204,9 +213,13 @@ bool enemy::updatePosition()
 
 void enemy::damageEnemy()
 {
-    if(m_lives > 0)
+    if(millis() - m_lastDamageTakenTime > TAKE_DAMAGE_COOLDOWN_MILLIS)
     {
-        m_lives --;
+        m_lastDamageTakenTime = millis();
+        if(m_lives > 0)
+        {
+            m_lives --;
+        }
     }
 }
 

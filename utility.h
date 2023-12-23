@@ -5,16 +5,16 @@
 // still got a free PWM pin 9
 
 // player pins
-#define JS_X_PIN A0
-#define JS_Y_PIN A1
+#define JS_X_PIN A4
+#define JS_Y_PIN A5
 #define BUTTON_PIN 13
 #define BACK_BUTTON_PIN A3
 
 // LCD display pins
-#define RESET A5
+#define RESET A1
 #define ENABLE 8
 #define DATA4 7
-#define DATA5 A4
+#define DATA5 A0
 #define DATA6 2
 #define DATA7 4
 #define LCD_CONTRAST 10

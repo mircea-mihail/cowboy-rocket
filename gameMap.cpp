@@ -162,15 +162,19 @@ void gameMap::generateMap(byte p_currentLevel)
     }
 
     // plant power up
-    int powerUpXPos = random(0, MATRIX_SIZE);
-    int powerUpYPos = random(0, MATRIX_SIZE);
 
-    if(powerUpXPos == MATRIX_MIDDLE)
+    for(int pwUpIdx = 0; pwUpIdx < POWER_UPS_ON_MAP; pwUpIdx ++)
     {
-        powerUpXPos ++;
-    }
+        int powerUpXPos = random(0, MATRIX_SIZE);
+        int powerUpYPos = random(0, MATRIX_SIZE);
 
-    matrix[powerUpXPos][powerUpYPos] = MAP_POWER_UP;
+        if(powerUpXPos == MATRIX_MIDDLE)
+        {
+            powerUpXPos ++;
+        }
+
+        matrix[powerUpXPos][powerUpYPos] = MAP_POWER_UP;
+    }
 }
 
 bool gameMap::checkWinningCondition()
@@ -294,6 +298,35 @@ byte gameMap::decrementMatrixBrightness()
     return m_matrixBrightness;
 }
 
+void gameMap::clearMapAround(int p_xPos, int p_yPos)
+{
+    if(isWithinBounds(p_xPos , p_yPos))
+    {
+        matrix[p_xPos][p_yPos] = MAP_EMPTY;
+    }
+
+    if(isWithinBounds(p_xPos - 1, p_yPos))
+    {
+        matrix[p_xPos - 1][p_yPos] = MAP_EMPTY;
+    }
+    
+    if(isWithinBounds(p_xPos , p_yPos - 1))
+    {
+        matrix[p_xPos][p_yPos - 1] = MAP_EMPTY;
+    }
+    
+    if(isWithinBounds(p_xPos + 1, p_yPos))
+    {
+        matrix[p_xPos + 1][p_yPos] = MAP_EMPTY;
+    }
+    
+    if(isWithinBounds(p_xPos , p_yPos + 1))
+    {
+        matrix[p_xPos][p_yPos + 1] = MAP_EMPTY;
+    }
+}
+
+
 void gameMap::displayIcon(const byte p_iconIndex)
 {
     for(int row = 0; row < REAL_MATRIX_SIZE; row++)
@@ -317,25 +350,18 @@ void gameMap::printEmptyMatrix()
     }
     
     matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE] = MAP_POWER_UP;
+
+    matrix[6][6] = MAP_WALL;
+    matrix[6][5] = MAP_WALL;
+    matrix[5][6] = MAP_WALL;
+    matrix[5][5] = MAP_WALL;
+    matrix[5][4] = MAP_WALL;
+    matrix[4][5] = MAP_WALL;
+    matrix[4][4] = MAP_WALL;
+    matrix[6][4] = MAP_WALL;
+    matrix[4][6] = MAP_WALL;
     matrix[5][7] = MAP_WALL;
-
-    matrix[MATRIX_MIDDLE - 2][MATRIX_MIDDLE] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 2][MATRIX_MIDDLE - 1] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 2][MATRIX_MIDDLE + 1] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 2][MATRIX_MIDDLE - 2] = MAP_WALL;
-
-    matrix[MATRIX_MIDDLE + 2][MATRIX_MIDDLE] = MAP_WALL;
-    matrix[MATRIX_MIDDLE + 2][MATRIX_MIDDLE - 1] = MAP_WALL;
-    matrix[MATRIX_MIDDLE + 2][MATRIX_MIDDLE + 1] = MAP_WALL;
-    matrix[MATRIX_MIDDLE + 2][MATRIX_MIDDLE - 2] = MAP_WALL;
-
-    matrix[MATRIX_MIDDLE][MATRIX_MIDDLE - 2] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE - 2] = MAP_WALL;
-    matrix[MATRIX_MIDDLE + 1][MATRIX_MIDDLE - 2] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 2][MATRIX_MIDDLE - 2] = MAP_WALL;
-
-    matrix[MATRIX_MIDDLE][MATRIX_MIDDLE + 2] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 1][MATRIX_MIDDLE + 2] = MAP_WALL;
-    matrix[MATRIX_MIDDLE + 1][MATRIX_MIDDLE + 2] = MAP_WALL;
-    matrix[MATRIX_MIDDLE - 2][MATRIX_MIDDLE + 2] = MAP_WALL;
+    matrix[7][5] = MAP_WALL;
+    matrix[5][3] = MAP_WALL;
+    matrix[3][5] = MAP_WALL;
 }

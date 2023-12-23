@@ -20,6 +20,8 @@
 #define GAME_START_FRAME_NUMBER 4
 #define DEFAULT_FRAME_INDEX_VALUE 0
 
+#define POWER_UPS_ON_MAP 3
+
 // deals with the map interaction and animation displaying
 class gameMap
 {   
@@ -272,6 +274,9 @@ public:
 
     // decrements the current matrix brightness value and assigns it
     byte decrementMatrixBrightness();
+
+    // clears the map around the given pos (only up down left right)
+    void clearMapAround(int p_xPos, int p_yPos);
 
     ////////////////////////// animation and graphics related
 

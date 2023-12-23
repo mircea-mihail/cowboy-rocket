@@ -5,6 +5,8 @@
 #include "gameMap.h"
 #include "inputHwControl.h"
 
+#define TAKE_DAMAGE_COOLDOWN_MILLIS 300
+
 extern gameMap g_map;
 extern bool g_disableSound;
 
@@ -14,6 +16,8 @@ class player : public matrixEntity
     inputHwControl m_hwCtrl;
     unsigned long m_lastShot = 0;
     bool m_foundExplodingBullets = false;
+
+    unsigned long m_lastTakeDamageTime = 0;
 
     byte m_lives = 3;
 

@@ -60,6 +60,12 @@
 #define HARD_ENEMIES_ON_FOURTH_LVL 2
 #define HARD_ENEMIES_ON_FIFTH_LVL 4
 
+// enemy lives
+#define EASY_ENEMY_LIVES 2
+#define HARD_ENEMY_LIVES 1
+
+#define TAKE_DAMAGE_COOLDOWN_MILLIS 300
+
 extern player g_player1;
 
 struct enemySpawnCoordonates
@@ -71,9 +77,10 @@ struct enemySpawnCoordonates
 class enemy: public matrixEntity
 {
 private:
-    byte m_lives = 1;
+    byte m_lives = 0;
     byte m_type = EASY_180_TYPE;
     unsigned long m_lastMoveTime = 0;
+    unsigned long m_lastDamageTakenTime = 0;
 
     // checks if the next position is valid and if not modifies the enemy direction
     bool isValidMove(int p_xPos, int p_yPos);
