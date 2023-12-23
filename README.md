@@ -53,7 +53,8 @@ And so, this chapter ends, not with a bang but with a *beep*.
 Also here's a youtube link with the working project befroe soldering:
 https://youtu.be/3kBMjN-ncu4?si=xZXxHHO56YsO3chx 
 
-
+Now I know what you're thinking. You want to also play this game so bad but you don't have the time, hardware and we're not that close to ask me to lend you the game. That's fine (you could still ask you know?). I also went throught the trouble to simulate the game on an online simulator but the menu and some matrix icons are messed up. Also the eeprom is not propperly simulated or at least i could not get it to work. The game plays pretty well though: all you have to do is click play on the simulation and select the joystick. Shoot with space and move around using the arrow keys. You're welcome.
+https://wokwi.com/projects/384763967342383105
 
 ## Motivation and inspiration
 ### Quick context
