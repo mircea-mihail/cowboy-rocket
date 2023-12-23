@@ -34,6 +34,8 @@ I also had a rudimentary menu on the LCD as a requirement for this stage in the 
 project ( the menu and LCD that is )
 
 <img src="media/matrix-and-lcd.jpg" alt="matrix-and-lcd" height="300"/>
+<img src="media/matrix-close-up.jpg" alt="matrix-close-up" height="300"/>
+<img src="media/lcd-close-up.jpg" alt="lcd-close-up" height="300"/>
 
 Then, the final deadline came up and all the work up to this point was all about the software.
 Enemies, a better, more complete menu, an actual game with a purpose, a scoring system, everything
